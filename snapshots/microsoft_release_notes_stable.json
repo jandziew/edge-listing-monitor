@@ -1,0 +1,266 @@
+{
+  "channel": "stable",
+  "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
+  "fetched_at": "2026-05-17T23:56:16.471433+00:00",
+  "versions": [
+    {
+      "version": "148.0.3967.55",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "May 11, 2026",
+      "sections": [
+        {
+          "heading": "General updates",
+          "body": "[iOS] Upgrade Tunnel SDK to version 2.0.0\n[iOS & Android] Upgrade OneAuth SDK to version 9.3.3"
+        },
+        {
+          "heading": "New Policies",
+          "body": "[iOS & Android] Added support for the\nCopilotNewTabPageEnabled\npolicy to configure the availability of the Copilot new tab page\nMicrosoft Edge Browser Policy Documentation â CopilotNewTabPageEnabled | Microsoft Learn"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[iOS] Fix the issue about data leak under\nIncognitoModeAvailability\npolicy\n[Android] Fix the issue where the Policies of Brand Info does not work under some environment"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[iOS] Improve the user experience of Copilot New Tab Card\n[iOS & Android] Improve the user experience of Copilot Multi Tab Summary feature\n[iOS & Android] Improve the user experience of Copilot Video Summary feature\n[iOS & Android] Improve the user experience of Web single sign on"
+        }
+      ]
+    },
+    {
+      "version": "147.0.3912.87",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "April 27, 2026",
+      "sections": []
+    },
+    {
+      "version": "147.0.3912.77",
+      "platforms": [
+        "Android"
+      ],
+      "date": "April 21, 2026",
+      "sections": []
+    },
+    {
+      "version": "147.0.3912.75",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "April 20, 2026",
+      "sections": []
+    },
+    {
+      "version": "147.0.3912.71",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "April 16, 2026",
+      "sections": []
+    },
+    {
+      "version": "147.0.3912.60",
+      "platforms": [
+        "Android"
+      ],
+      "date": "April 15, 2026",
+      "sections": [
+        {
+          "heading": "New Policies",
+          "body": "[Android] Support New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[Android] Support New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[Android] Fix the file upload to\nOneDrive\nfailing issue under Intune MAM\n[Android] Fix the issue about file upload from\nOneDrive\nfailing under Intune\n[Android] Fix the issue about opening attachments in Outlook.com triggers switch to personal account sometimes"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[Android] Improve the user experience of AAD Copilot\n[Android] Improve the user experience of Copilot New Tab Card\n[Android] Improve the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
+        }
+      ]
+    },
+    {
+      "version": "147.0.3912.60",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "April 14, 2026",
+      "sections": [
+        {
+          "heading": "General updates",
+          "body": "[iOS] Upgrade Intune MAM SDK to version 21.5.1\n[iOS] Upgrade Tunnel SDK to version 1.7.1"
+        },
+        {
+          "heading": "New Policies",
+          "body": "[iOS] Support New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[iOS] Support New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[iOS] Fix the issue where the exit InPrivate button still show when\nIncognitoModeAvailability\npolicy is set to forced\n[iOS] Fix the Policy of\nSmartScreenAllowListDomains\nnot work as expected\n[iOS] Fix the Policy of\nBlockSignIn\nnot work as expected"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[iOS] Support to view SSL/TLS certificate information from the\nPageInfo\npanel (Under Experiment)\n[iOS] Improve the user experience under incognito mode\n[iOS] Improve the user experience of AAD Copilot\n[iOS] Improve the user experience of Copilot New Tab Card\n[iOS] Improve the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
+        }
+      ]
+    },
+    {
+      "version": "146.0.3856.102",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "April 7, 2026",
+      "sections": []
+    },
+    {
+      "version": "146.0.3856.97",
+      "platforms": [
+        "Android"
+      ],
+      "date": "April 7, 2026",
+      "sections": []
+    },
+    {
+      "version": "146.0.3856.85",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "March 30, 2026",
+      "sections": []
+    },
+    {
+      "version": "146.0.3856.77",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "March 24, 2026",
+      "sections": []
+    },
+    {
+      "version": "146.0.3856.71",
+      "platforms": [
+        "Android"
+      ],
+      "date": "March 23, 2026",
+      "sections": []
+    },
+    {
+      "version": "146.0.3856.62",
+      "platforms": [
+        "Android"
+      ],
+      "date": "March 19, 2026",
+      "sections": [
+        {
+          "heading": "General Updates",
+          "body": "[Android]\nUpgrade OneAuth SDK to version\n9.1.0"
+        },
+        {
+          "heading": "Bug Fixes",
+          "body": "[Android]\nFix issue where policy IncognitoModeAvailability did not work as expected.\n[Android]\nFix issue where file uploads to OneDrive failed under Intune MAM."
+        },
+        {
+          "heading": "New Enhancements",
+          "body": "[Android]\nImprove user experience during Google enterprise enrollment.\n[Android]\nImprove user experience under Shared Device Mode."
+        }
+      ]
+    },
+    {
+      "version": "146.0.3856.59",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "March 18, 2026",
+      "sections": [
+        {
+          "heading": "General Updates",
+          "body": "[iOS]\nUpgrade Intune MAM SDK to version\n21.5.0\n[iOS]\nUpgrade Tunnel SDK to version\n1.7.0\n[iOS]\nUpgrade OneAuth SDK to version\n9.1.0"
+        },
+        {
+          "heading": "New Policies",
+          "body": "[iOS]\nSupport new policy\nAllowSurfGame\nto configure whether users can play the Surf game.   Policy documentation:\nMicrosoft Edge Browser Policy Documentation â AllowSurfGame\n[iOS]\nSupport new policy\nAntiParallelOnStartUpEnabled\nto configure prevention of parallel page loading from restored tabs and external-link tabs on startup."
+        },
+        {
+          "heading": "Bug Fixes",
+          "body": "[iOS]\nResolve data leak issue allowing unmanaged files to open under InPrivate mode.\n[iOS]\nResolve data leak issue related to protected file opening in InPrivate mode under Intune MAM.\n[iOS]\nFix issue where opening downloaded PDF files was blocked when Allowed URLs is enabled in Intune App Configuration."
+        },
+        {
+          "heading": "New Enhancements",
+          "body": "[iOS]\nImprove user experience for policies NewTabPage.BrandLogo and NewTabPage.BrandColor."
+        }
+      ]
+    },
+    {
+      "version": "145.0.3800.99",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "March 9, 2026",
+      "sections": []
+    },
+    {
+      "version": "145.0.3800.92",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "March 5, 2026",
+      "sections": []
+    },
+    {
+      "version": "145.0.3800.85",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "March 2, 2026",
+      "sections": [
+        {
+          "heading": "General updates",
+          "body": "[iOS & Android]\nSupport Copilot Mode FRE New UI for MSA users\n[iOS & Android]\nSupport Copilot Prompt Card in NTP for AAD users\n[iOS & Android]\nSupport Copilot Summary Notification in Address bar for AAD users\n[iOS]\nUpgrade Intune MAM SDK to version 21.4.0\n[iOS & Android]\nUpgrade OneAuth SDK to version 8.2.1"
+        },
+        {
+          "heading": "New policies",
+          "body": "[iOS]\nSupport New Policy of ManagedTopSites for configure managed top sites on New Tab Page\n(Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of ReadAloudEnabled for enable Read Aloud feature\n(Policy document\nMicrosoft Edge Browser Policy Documentation ReadAloudEnabled | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of EdgeEDropEnabled for enable Drop feature\n(Policy document\nMicrosoft Edge Browser Policy Documentation EdgeEDropEnabled | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of ManagedNtpShortcuts for configure managed shortcuts on the New Tab Page\n(Policy document\nMicrosoft Edge Browser Policy Documentation ManagedNtpShortcuts | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy about Copilot Mode for AAD users (Policy document\nManage Microsoft Edge on iOS and Android With Intune - Microsoft Intune | Microsoft Learn\n)"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[iOS]\nResolve the Data leak issue about protected file opening in InPrivate mode\n[iOS]\nResolve the Data leak issue caused by identity switch not being able to handle External Files correctly\n[iOS]\nFix the issue where attempting to open OneDrive downloaded files was failing\n[iOS]\nFix brand information fetch failure for some case under BrandLogo and BrandColor policy configure\n[Android]\nFix crash issue when Intune blocks print action"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[iOS]\nImprove the user experience of PacProxy\n[Android]\nImprove the user experience of Share Device Mode"
+        }
+      ]
+    },
+    {
+      "version": "144.0.3719.115",
+      "platforms": [
+        "Android"
+      ],
+      "date": "February 12, 2026",
+      "sections": []
+    },
+    {
+      "version": "144.0.3719.115",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "February 9, 2026",
+      "sections": []
+    },
+    {
+      "version": "144.0.3719.103",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "February 2, 2026",
+      "sections": []
+    }
+  ]
+}

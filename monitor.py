@@ -24,6 +24,8 @@ import datetime
 from pathlib import Path
 from io import BytesIO
 
+import re
+import difflib
 import yaml
 import requests
 from PIL import Image
@@ -31,6 +33,15 @@ import imagehash
 from deepdiff import DeepDiff
 from jinja2 import Template
 from dotenv import load_dotenv
+from bs4 import BeautifulSoup
+
+# Wspólny user-agent dla scrapingu — bez tego App Store / niektóre serwery zwracają pusto
+HTTP_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
+                  "AppleWebKit/605.1.15 (KHTML, like Gecko) "
+                  "Version/17.0 Safari/605.1.15",
+    "Accept-Language": "en-US,en;q=0.9",
+}
 
 # Załaduj zmienne środowiskowe z pliku .env (lokalnie) lub z GitHub Secrets (w Actions)
 load_dotenv()
@@ -53,7 +64,8 @@ OUTPUT_DIR.mkdir(exist_ok=True)
 # ============================================================
 
 def fetch_ios_metadata(bundle_id: str, country: str = "us") -> dict:
-    """Pobiera metadane apki z iTunes Lookup API (Apple)."""
+    """Pobiera metadane apki z iTunes Lookup API (Apple) + In-App Events i screenshoty
+    scrapowane ze strony apps.apple.com (lookup API ich nie zwraca dla wielu apek)."""
     url = f"https://itunes.apple.com/lookup?bundleId={bundle_id}&country={country}"
     response = requests.get(url, timeout=30)
     response.raise_for_status()
@@ -63,8 +75,11 @@ def fetch_ios_metadata(bundle_id: str, country: str = "us") -> dict:
         raise ValueError(f"Nie znaleziono apki o bundle_id={bundle_id} w kraju {country}")
 
     app = data["results"][0]
+    track_view_url = app.get("trackViewUrl")
 
-    # Wybieramy tylko interesujące pola — żeby snapshot był czytelny
+    # iTunes lookup czasami zwraca puste screenshotUrls (np. dla Edge). Doczepiamy ze scrapingu.
+    scraped = _fetch_ios_storefront_extras(track_view_url) if track_view_url else {}
+
     return {
         "platform": "ios",
         "country": country,
@@ -82,10 +97,142 @@ def fetch_ios_metadata(bundle_id: str, country: str = "us") -> dict:
         "size_bytes": int(app.get("fileSizeBytes", 0)),
         "images": {
             "icon": [app.get("artworkUrl512")] if app.get("artworkUrl512") else [],
-            "screenshots_iphone": app.get("screenshotUrls", []),
-            "screenshots_ipad": app.get("ipadScreenshotUrls", []),
+            "screenshots_iphone": app.get("screenshotUrls", []) or scraped.get("screenshots_iphone", []),
+            "screenshots_ipad": app.get("ipadScreenshotUrls", []) or scraped.get("screenshots_ipad", []),
         },
-        "store_url": app.get("trackViewUrl"),
+        "in_app_events": scraped.get("in_app_events", []),
+        "store_url": track_view_url,
+    }
+
+
+def _fetch_ios_storefront_extras(track_view_url: str) -> dict:
+    """Scrapuje stronę apps.apple.com — wyciąga In-App Events i fallback screenshoty.
+
+    Zwraca dict z kluczami: in_app_events (list), screenshots_iphone, screenshots_ipad.
+    Wszystko opcjonalne — przy błędzie zwraca puste listy.
+    """
+    try:
+        r = requests.get(track_view_url, headers=HTTP_HEADERS, timeout=30)
+        r.raise_for_status()
+        html = r.text
+    except Exception as e:
+        print(f"[WARN] Scraping apps.apple.com padł: {e}")
+        return {}
+
+    out = {"in_app_events": [], "screenshots_iphone": [], "screenshots_ipad": []}
+
+    # Apple embeduje wszystkie dane w jednym JSON: <script type="application/json">
+    m = re.search(r'<script type="application/json"[^>]*>(.*?)</script>', html, re.DOTALL)
+    if not m:
+        return out
+    try:
+        page_data = json.loads(m.group(1))
+    except json.JSONDecodeError:
+        return out
+
+    try:
+        item = page_data["data"][0]["data"]
+    except (KeyError, IndexError, TypeError):
+        return out
+
+    # --- In-App Events ---
+    events_shelf = (item.get("shelfMapping") or {}).get("appEvents") or {}
+    for evt_item in events_shelf.get("items", []):
+        page = (evt_item.get("clickAction") or {}).get("pageData") or {}
+        ev = page.get("appEvent") or {}
+        if not ev:
+            continue
+        out["in_app_events"].append({
+            "id": ev.get("appEventId"),
+            "title": ev.get("title"),
+            "subtitle": ev.get("subtitle"),
+            "detail": ev.get("detail"),
+            "start_date": ev.get("startDate"),
+            "end_date": ev.get("endDate"),
+            "badge": ev.get("appEventBadgeKind"),
+        })
+
+    # --- Screenshots fallback ---
+    # Apple trzyma URL-template w shelfMapping.product_media_phone_/_pad_.items[].screenshot.template
+    # Template ma placeholdery {w}x{h}{c}.{f} — podstawiamy oryginalne wymiary i format jpeg.
+    for shelf_key, out_key in (
+        ("product_media_phone_", "screenshots_iphone"),
+        ("product_media_pad_", "screenshots_ipad"),
+    ):
+        shelf = (item.get("shelfMapping") or {}).get(shelf_key) or {}
+        urls = []
+        for sh_item in shelf.get("items", []):
+            art = sh_item.get("screenshot") or {}
+            tpl = art.get("template")
+            w = art.get("width")
+            h = art.get("height")
+            crop = art.get("crop") or "bb"
+            fmt = "jpg"
+            if tpl and w and h:
+                urls.append(tpl.format(w=w, h=h, c=crop, f=fmt))
+        if urls:
+            out[out_key] = urls
+
+    return out
+
+
+def fetch_microsoft_release_notes(channel: str = "stable") -> dict:
+    """Scrapuje oficjalny changelog Edge mobile z learn.microsoft.com.
+
+    channel: 'stable' lub 'beta'. Zwraca dict z listą wersji (każda: wersja, data, sekcje).
+    """
+    url = f"https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-{channel}-channel"
+    try:
+        r = requests.get(url, headers=HTTP_HEADERS, timeout=30)
+        r.raise_for_status()
+    except Exception as e:
+        print(f"[WARN] Microsoft release notes fetch padł: {e}")
+        return {"channel": channel, "url": url, "versions": [], "error": str(e)}
+
+    soup = BeautifulSoup(r.text, "lxml")
+    main = soup.find("main") or soup
+
+    versions = []
+    current = None
+    # Iterujemy po nagłówkach w kolejności DOM — h2 = wersja, h3 = sekcja (np. "Bug fixes")
+    for tag in main.find_all(["h2", "h3"]):
+        text = tag.get_text(strip=True)
+        if not text or text.lower() == "in this article":
+            continue
+
+        # Wersja: "Version 148.0.3967.55 (Android and iOS): May 11, 2026"
+        ver_match = re.match(r"Version\s+([\d.]+)\s*\(([^)]+)\)[:\s]*(.+)", text)
+        if tag.name == "h2" and ver_match:
+            if current:
+                versions.append(current)
+            current = {
+                "version": ver_match.group(1),
+                "platforms": [p.strip() for p in ver_match.group(2).split("and")],
+                "date": ver_match.group(3).strip(),
+                "sections": [],
+            }
+            continue
+
+        if tag.name == "h3" and current is not None:
+            # Zbieramy treść do następnego nagłówka
+            body_parts = []
+            for sib in tag.find_next_siblings():
+                if sib.name in ("h2", "h3"):
+                    break
+                body_parts.append(sib.get_text("\n", strip=True))
+            current["sections"].append({
+                "heading": text,
+                "body": "\n".join(p for p in body_parts if p).strip(),
+            })
+
+    if current:
+        versions.append(current)
+
+    return {
+        "channel": channel,
+        "url": url,
+        "fetched_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        "versions": versions[:20],  # ograniczamy żeby snapshot nie puchł
     }
 
 
@@ -173,18 +320,91 @@ def save_image(data: bytes, path: Path) -> None:
 # ============================================================
 
 def detect_text_changes(current: dict, previous: dict) -> dict:
-    """Wykrywa zmiany w polach tekstowych. Zwraca dict {pole: (stara, nowa)}."""
+    """Wykrywa zmiany w polach tekstowych. Zwraca dict {pole: {old, new, diff?}}.
+
+    Dla długich pól (description, release_notes) dodaje też 'diff' — listę linii
+    z oznaczeniem czy są dodane / usunięte / kontekst, do ładnego renderu w dashboardzie.
+    """
     changes = {}
     fields = ["name", "version", "release_notes", "description",
               "rating_average", "rating_count", "price", "category"]
+    diffable = {"description", "release_notes"}
 
     for field in fields:
         old_val = previous.get(field)
         new_val = current.get(field)
         if old_val != new_val:
-            changes[field] = {"old": old_val, "new": new_val}
+            entry = {"old": old_val, "new": new_val}
+            if field in diffable and isinstance(old_val, str) and isinstance(new_val, str):
+                entry["diff"] = text_line_diff(old_val, new_val)
+            changes[field] = entry
 
     return changes
+
+
+def text_line_diff(old: str, new: str) -> list[dict]:
+    """Line-by-line diff dwóch tekstów. Zwraca listę {'op': 'add'|'remove'|'context', 'text': str}.
+
+    Używane do ładnego renderu w dashboardzie (kolorowanie dodanych/usuniętych linii).
+    """
+    old_lines = (old or "").splitlines() or [""]
+    new_lines = (new or "").splitlines() or [""]
+    sm = difflib.SequenceMatcher(None, old_lines, new_lines)
+    result = []
+    for tag, i1, i2, j1, j2 in sm.get_opcodes():
+        if tag == "equal":
+            for line in old_lines[i1:i2]:
+                result.append({"op": "context", "text": line})
+        elif tag in ("replace", "delete"):
+            for line in old_lines[i1:i2]:
+                result.append({"op": "remove", "text": line})
+            if tag == "replace":
+                for line in new_lines[j1:j2]:
+                    result.append({"op": "add", "text": line})
+        elif tag == "insert":
+            for line in new_lines[j1:j2]:
+                result.append({"op": "add", "text": line})
+    return result
+
+
+def detect_iae_changes(current: list[dict], previous: list[dict]) -> list[dict]:
+    """Wykrywa zmiany w In-App Events: dodane, usunięte, zmodyfikowane.
+
+    Klucz: appEventId. Zwraca listę {'change_type': 'added'|'removed'|'modified', 'event': ...}.
+    """
+    current = current or []
+    previous = previous or []
+    cur_by_id = {e["id"]: e for e in current if e.get("id")}
+    prev_by_id = {e["id"]: e for e in previous if e.get("id")}
+
+    changes = []
+    for eid, ev in cur_by_id.items():
+        if eid not in prev_by_id:
+            changes.append({"change_type": "added", "event": ev})
+        else:
+            old = prev_by_id[eid]
+            if any(old.get(k) != ev.get(k) for k in ("title", "subtitle", "detail", "start_date", "end_date", "badge")):
+                changes.append({"change_type": "modified", "event": ev, "previous": old})
+    for eid, ev in prev_by_id.items():
+        if eid not in cur_by_id:
+            changes.append({"change_type": "removed", "event": ev})
+    return changes
+
+
+def detect_microsoft_release_changes(current: dict, previous: dict | None) -> dict | None:
+    """Porównuje snapshoty release notes z learn.microsoft.com.
+
+    Zwraca dict z listą NOWYCH wersji (te których nie było w poprzednim snapshocie),
+    lub None gdy brak zmian.
+    """
+    if previous is None:
+        return None
+    cur_versions = current.get("versions", []) or []
+    prev_versions = {v["version"] for v in (previous.get("versions") or [])}
+    new_entries = [v for v in cur_versions if v.get("version") not in prev_versions]
+    if not new_entries:
+        return None
+    return {"channel": current.get("channel"), "new_versions": new_entries}
 
 
 def detect_visual_changes(
@@ -410,14 +630,26 @@ def _copy_to_output_assets(src_rel_path: str) -> str | None:
     return src_rel_path  # ścieżka relatywna od output/ jest taka sama
 
 
-def generate_html_dashboard(all_changes: list[dict]) -> Path:
-    """Generuje plik output/dashboard.html ze wszystkimi wykrytymi zmianami.
+def generate_html_dashboard(
+    all_changes: list[dict],
+    all_current_states: list[dict] | None = None,
+    ms_release_snapshots: list[dict] | None = None,
+    ms_release_alerts: list[dict] | None = None,
+) -> Path:
+    """Generuje plik output/dashboard.html.
 
-    Kopiuje też obrazki side-by-side / before / after do output/assets/, żeby
-    GitHub Pages (publikujący tylko folder output/) mógł je serwować.
+    Sekcje:
+      - Top: alerty (jeśli są zmiany)
+      - Current State per app: ikonka, screenshoty, IAE, opis, wersja
+      - Microsoft release notes: najnowsze wpisy z learn.microsoft.com
+
+    Kopiuje obrazki referencjonowane w HTML do output/assets/.
     """
-    # Przepisujemy ścieżki obrazków na takie, które będą działać po deployu Pages.
-    # Modyfikujemy in-place w dictach — to OK, bo all_changes nie jest dalej używane.
+    all_current_states = all_current_states or []
+    ms_release_snapshots = ms_release_snapshots or []
+    ms_release_alerts = ms_release_alerts or []
+
+    # 1) Kopiuj obrazki diffów do output/assets/
     for app_change in all_changes:
         for vc in app_change.get("visual_changes", []):
             for key in ("side_by_side_path", "before_path", "after_path", "new_path"):
@@ -427,11 +659,26 @@ def generate_html_dashboard(all_changes: list[dict]) -> Path:
                     if copied:
                         vc[key] = copied
 
+    # 2) Kopiuj obrazki current state (ikona + screenshoty) do output/assets/
+    for state in all_current_states:
+        if state.get("icon_path"):
+            copied = _copy_to_output_assets(state["icon_path"])
+            if copied:
+                state["icon_path"] = copied
+        new_screenshots = []
+        for p in state.get("screenshots", []):
+            copied = _copy_to_output_assets(p)
+            new_screenshots.append(copied or p)
+        state["screenshots"] = new_screenshots
+
     with open(DASHBOARD_TEMPLATE_PATH, "r", encoding="utf-8") as f:
         template = Template(f.read())
 
     html = template.render(
         all_changes=all_changes,
+        all_current_states=all_current_states,
+        ms_release_snapshots=ms_release_snapshots,
+        ms_release_alerts=ms_release_alerts,
         generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
 
@@ -449,14 +696,20 @@ def generate_html_dashboard(all_changes: list[dict]) -> Path:
 # SEKCJA 7: Alerty (Google Chat i email)
 # ============================================================
 
-def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict]) -> None:
+def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict],
+                            iae_changes: list[dict] | None = None,
+                            is_new_release: bool = False) -> None:
     """Wysyła wiadomość do Google Chat Space przez incoming webhook."""
     webhook_url = os.getenv("GOOGLE_CHAT_WEBHOOK_URL")
     if not webhook_url:
         print("[INFO] GOOGLE_CHAT_WEBHOOK_URL nie ustawiony, pomijam alert na Google Chat")
         return
 
-    text_lines = [f"*{app_name} ({platform.upper()})* — wykryto zmiany"]
+    header = f"*{app_name} ({platform.upper()})*"
+    if is_new_release:
+        new_v = (text_changes.get("version") or {}).get("new", "?")
+        header = f"🚀 *NEW RELEASE* — {app_name} ({platform.upper()}) v{new_v}"
+    text_lines = [f"{header} — wykryto zmiany"]
 
     if text_changes:
         text_lines.append("\n*Tekst:*")
@@ -471,6 +724,12 @@ def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, vis
                 text_lines.append(f"• {vc['image_type']} #{vc['index']}: {desc}")
             elif vc["change_type"] == "added":
                 text_lines.append(f"• {vc['image_type']} #{vc['index']}: DODANY")
+
+    if iae_changes:
+        text_lines.append("\n*In-App Events:*")
+        for ic in iae_changes:
+            ev = ic.get("event", {})
+            text_lines.append(f"• [{ic['change_type'].upper()}] {ev.get('title','(brak tytułu)')}")
 
     message = {"text": "\n".join(text_lines)}
 
@@ -496,7 +755,9 @@ def _escape_telegram_md(text: str) -> str:
     return "".join(out)
 
 
-def send_telegram_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict]) -> None:
+def send_telegram_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict],
+                          iae_changes: list[dict] | None = None,
+                          is_new_release: bool = False) -> None:
     """
     Wysyła wiadomość na Telegram przez Bot API.
     Wymaga TELEGRAM_BOT_TOKEN i TELEGRAM_CHAT_ID w env.
@@ -515,7 +776,12 @@ def send_telegram_alert(app_name: str, platform: str, text_changes: dict, visual
         return
 
     # Header wiadomości
-    lines = [f"*{_escape_telegram_md(app_name)} \\({platform.upper()}\\)* — wykryto zmiany"]
+    if is_new_release:
+        new_v = (text_changes.get("version") or {}).get("new", "?")
+        header = f"🚀 *NEW RELEASE* \\- {_escape_telegram_md(app_name)} \\({platform.upper()}\\) v{_escape_telegram_md(new_v)}"
+    else:
+        header = f"*{_escape_telegram_md(app_name)} \\({platform.upper()}\\)* — wykryto zmiany"
+    lines = [header]
 
     if text_changes:
         lines.append("")
@@ -535,6 +801,13 @@ def send_telegram_alert(app_name: str, platform: str, text_changes: dict, visual
                 lines.append(f"• {_escape_telegram_md(label)}: DODANY")
             else:
                 lines.append(f"• {_escape_telegram_md(label)}: {_escape_telegram_md(vc['change_type'])}")
+
+    if iae_changes:
+        lines.append("")
+        lines.append("*In\\-App Events:*")
+        for ic in iae_changes:
+            ev = ic.get("event", {})
+            lines.append(f"• \\[{_escape_telegram_md(ic['change_type'].upper())}\\] {_escape_telegram_md(ev.get('title','(brak tytułu)'))}")
 
     text = "\n".join(lines)
 
@@ -584,7 +857,9 @@ def send_telegram_alert(app_name: str, platform: str, text_changes: dict, visual
 
 
 def send_email_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict],
-                      recipients: list[str]) -> None:
+                      recipients: list[str],
+                      iae_changes: list[dict] | None = None,
+                      is_new_release: bool = False) -> None:
     """Wysyła email przez Resend API."""
     api_key = os.getenv("RESEND_API_KEY")
     if not api_key:
@@ -595,7 +870,14 @@ def send_email_alert(app_name: str, platform: str, text_changes: dict, visual_ch
         return
 
     # Prosty HTML body
-    html_body = f"<h2>{app_name} ({platform.upper()}) — wykryto zmiany</h2>"
+    if is_new_release:
+        new_v = (text_changes.get("version") or {}).get("new", "?")
+        html_body = f"<h2>🚀 NEW RELEASE — {app_name} ({platform.upper()}) v{new_v}</h2>"
+        subject_prefix = f"🚀 NEW RELEASE v{new_v} — "
+    else:
+        html_body = f"<h2>{app_name} ({platform.upper()}) — wykryto zmiany</h2>"
+        subject_prefix = ""
+
     if text_changes:
         html_body += "<h3>Tekst:</h3><ul>"
         for field, change in text_changes.items():
@@ -607,11 +889,17 @@ def send_email_alert(app_name: str, platform: str, text_changes: dict, visual_ch
             desc = vc.get("ai_description", "")
             html_body += f"<li><b>{vc['image_type']} #{vc['index']}</b>: {vc['change_type']} — {desc}</li>"
         html_body += "</ul>"
+    if iae_changes:
+        html_body += "<h3>In-App Events:</h3><ul>"
+        for ic in iae_changes:
+            ev = ic.get("event", {})
+            html_body += f"<li><b>[{ic['change_type'].upper()}]</b> {ev.get('title','(brak tytułu)')} — {ev.get('detail','')}</li>"
+        html_body += "</ul>"
 
     payload = {
         "from": "Edge Monitor <onboarding@resend.dev>",
         "to": recipients,
-        "subject": f"[{app_name}/{platform}] Zmiany w listingu",
+        "subject": f"{subject_prefix}[{app_name}/{platform}] Zmiany w listingu",
         "html": html_body,
     }
 
@@ -632,8 +920,61 @@ def send_email_alert(app_name: str, platform: str, text_changes: dict, visual_ch
 # SEKCJA 8: Main — uruchomienie całości
 # ============================================================
 
-def process_app_platform(app_config: dict, platform: str, settings: dict) -> dict | None:
-    """Przetwarza jedną apkę na jednej platformie. Zwraca dict ze zmianami lub None."""
+def _download_all_current_images(app_slug: str, platform: str, current: dict) -> dict:
+    """Pobiera i zapisuje wszystkie aktualne obrazki listingu. Zwraca mapping
+    image_type → lista lokalnych ścieżek (relative do ROOT) — do użycia w dashboardzie.
+    """
+    local_paths: dict[str, list[str]] = {}
+    for image_type, urls in (current.get("images") or {}).items():
+        if image_type == "video":
+            continue
+        local_paths[image_type] = []
+        for i, url in enumerate(urls):
+            if not url:
+                continue
+            path = asset_path(app_slug, platform, image_type, i)
+            if not path.exists():
+                try:
+                    data = download_image(url)
+                    save_image(data, path)
+                except Exception as e:
+                    print(f"[WARN] Nie udało się pobrać {url}: {e}")
+                    continue
+            local_paths[image_type].append(str(path.relative_to(ROOT)))
+    return local_paths
+
+
+def _build_current_state(app_name: str, app_slug: str, platform: str,
+                          current: dict, local_image_paths: dict) -> dict:
+    """Buduje 'kartę' apki na dashboard — to co aktualnie jest w sklepie."""
+    return {
+        "app_name": app_name,
+        "app_slug": app_slug,
+        "platform": platform,
+        "store_url": current.get("store_url"),
+        "version": current.get("version"),
+        "release_date": current.get("release_date"),
+        "description": current.get("description", ""),
+        "release_notes": current.get("release_notes", ""),
+        "rating_average": current.get("rating_average"),
+        "rating_count": current.get("rating_count"),
+        "in_app_events": current.get("in_app_events", []),
+        "icon_path": (local_image_paths.get("icon") or [None])[0],
+        "screenshots": [
+            p for key, paths in local_image_paths.items()
+            if key.startswith("screenshots") or key == "feature_graphic"
+            for p in paths
+        ],
+    }
+
+
+def process_app_platform(app_config: dict, platform: str, settings: dict) -> dict:
+    """Przetwarza jedną apkę na jednej platformie.
+
+    Zwraca dict z:
+      - current_state: zawsze (do wyświetlenia w sekcji 'Current State' dashboardu)
+      - changes: None jeśli brak zmian, w przeciwnym razie szczegóły
+    """
     app_slug = app_config["slug"]
     app_name = app_config["name"]
 
@@ -652,31 +993,23 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
                 app_config["android"].get("country", "us"),
             )
         else:
-            return None
+            return {"current_state": None, "changes": None}
     except Exception as e:
         print(f"[ERR] Fetch failed: {e}")
-        return None
+        return {"current_state": None, "changes": None}
 
     # Previous snapshot
     previous = load_previous_snapshot(app_slug, platform)
 
     if previous is None:
-        # Pierwszy run — baseline, bez alertu
+        # Pierwszy run — baseline, bez alertu, ale wciąż pokazujemy aktualny stan
         print("[INFO] Pierwszy run — zapisuję baseline bez alertów")
         save_snapshot(app_slug, platform, current)
-        # Pobierz i zapisz wszystkie aktualne obrazki
-        for image_type, urls in current.get("images", {}).items():
-            if image_type == "video":
-                continue
-            for i, url in enumerate(urls):
-                if not url:
-                    continue
-                try:
-                    data = download_image(url)
-                    save_image(data, asset_path(app_slug, platform, image_type, i))
-                except Exception as e:
-                    print(f"[WARN] Nie udało się pobrać {url}: {e}")
-        return None
+        local_paths = _download_all_current_images(app_slug, platform, current)
+        return {
+            "current_state": _build_current_state(app_name, app_slug, platform, current, local_paths),
+            "changes": None,
+        }
 
     # Detekcja zmian
     text_changes = detect_text_changes(current, previous)
@@ -684,10 +1017,20 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
         current, previous, app_slug, platform,
         phash_threshold=settings.get("phash_threshold", 5),
     )
+    iae_changes = detect_iae_changes(current.get("in_app_events", []),
+                                      previous.get("in_app_events", []))
 
-    if not text_changes and not visual_changes:
+    # Czy to nowy release? (wersja się zmieniła)
+    is_new_release = "version" in text_changes
+
+    # Upewniamy się że mamy też wszystkie aktualne obrazki na dysku (do dashboardu)
+    local_paths = _download_all_current_images(app_slug, platform, current)
+
+    current_state = _build_current_state(app_name, app_slug, platform, current, local_paths)
+
+    if not text_changes and not visual_changes and not iae_changes:
         print("[OK] Brak zmian")
-        return None
+        return {"current_state": current_state, "changes": None}
 
     # Wzbogacamy o AI
     visual_changes = enrich_with_ai_descriptions(
@@ -701,26 +1044,71 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
     # Alerty
     alerts_cfg = settings.get("alerts", {})
     if alerts_cfg.get("google_chat", {}).get("enabled"):
-        send_google_chat_alert(app_name, platform, text_changes, visual_changes)
+        send_google_chat_alert(app_name, platform, text_changes, visual_changes,
+                                iae_changes=iae_changes, is_new_release=is_new_release)
     if alerts_cfg.get("telegram", {}).get("enabled"):
-        send_telegram_alert(app_name, platform, text_changes, visual_changes)
+        send_telegram_alert(app_name, platform, text_changes, visual_changes,
+                             iae_changes=iae_changes, is_new_release=is_new_release)
     if alerts_cfg.get("email", {}).get("enabled"):
         send_email_alert(
             app_name, platform, text_changes, visual_changes,
             recipients=alerts_cfg["email"].get("recipients", []),
+            iae_changes=iae_changes, is_new_release=is_new_release,
         )
 
-    print(f"[OK] Wykryto {len(text_changes)} zmian tekstowych i {len(visual_changes)} wizualnych")
+    summary_parts = []
+    if is_new_release:
+        summary_parts.append("🚀 NEW RELEASE")
+    summary_parts.append(f"{len(text_changes)} tekst, {len(visual_changes)} wizualnych, {len(iae_changes)} IAE")
+    print(f"[OK] Wykryto zmiany: {' | '.join(summary_parts)}")
 
     return {
-        "app_name": app_name,
-        "app_slug": app_slug,
-        "platform": platform,
-        "store_url": current.get("store_url"),
-        "text_changes": text_changes,
-        "visual_changes": visual_changes,
-        "detected_at": datetime.datetime.now().isoformat(),
+        "current_state": current_state,
+        "changes": {
+            "app_name": app_name,
+            "app_slug": app_slug,
+            "platform": platform,
+            "store_url": current.get("store_url"),
+            "is_new_release": is_new_release,
+            "new_version": current.get("version") if is_new_release else None,
+            "old_version": previous.get("version") if is_new_release else None,
+            "text_changes": text_changes,
+            "visual_changes": visual_changes,
+            "iae_changes": iae_changes,
+            "detected_at": datetime.datetime.now().isoformat(),
+        },
     }
+
+
+MS_RELEASE_SNAPSHOT = SNAPSHOTS_DIR / "microsoft_release_notes_{channel}.json"
+
+
+def process_microsoft_release_notes(channels: list[str]) -> tuple[list[dict], list[dict]]:
+    """Pobiera release notes dla każdego kanału, wykrywa nowe wersje.
+
+    Zwraca (current_snapshots, change_alerts) — pierwsze do dashboardu, drugie do alertów.
+    """
+    current_snapshots = []
+    change_alerts = []
+    for channel in channels:
+        print(f"\n=== Microsoft release notes / {channel} ===")
+        current = fetch_microsoft_release_notes(channel)
+        snap_path = Path(str(MS_RELEASE_SNAPSHOT).format(channel=channel))
+        previous = None
+        if snap_path.exists():
+            previous = json.loads(snap_path.read_text(encoding="utf-8"))
+        change = detect_microsoft_release_changes(current, previous)
+        with open(snap_path, "w", encoding="utf-8") as f:
+            json.dump(current, f, indent=2, ensure_ascii=False)
+        current_snapshots.append(current)
+        if change:
+            print(f"[OK] Nowe wersje na learn.microsoft.com: {[v['version'] for v in change['new_versions']]}")
+            change_alerts.append(change)
+        elif previous is None:
+            print("[INFO] Pierwszy run dla MS release notes — baseline")
+        else:
+            print("[OK] Brak nowych wersji")
+    return current_snapshots, change_alerts
 
 
 def main():
@@ -730,9 +1118,11 @@ def main():
 
     apps = config.get("apps", [])
     settings = config.get("settings", {})
+    ms_channels = settings.get("microsoft_release_channels", ["stable"])
 
     print(f"Monitoruję {len(apps)} aplikacji...")
 
+    all_current_states = []
     all_changes = []
 
     for app in apps:
@@ -740,15 +1130,26 @@ def main():
             if platform not in app:
                 continue
             result = process_app_platform(app, platform, settings)
-            if result:
-                all_changes.append(result)
+            if result.get("current_state"):
+                all_current_states.append(result["current_state"])
+            if result.get("changes"):
+                all_changes.append(result["changes"])
+
+    # Microsoft official release notes
+    ms_snapshots, ms_release_alerts = process_microsoft_release_notes(ms_channels)
 
     # Generuj HTML dashboard
     if settings.get("generate_html_dashboard", True):
-        dashboard_path = generate_html_dashboard(all_changes)
+        dashboard_path = generate_html_dashboard(
+            all_changes=all_changes,
+            all_current_states=all_current_states,
+            ms_release_snapshots=ms_snapshots,
+            ms_release_alerts=ms_release_alerts,
+        )
         print(f"\n[OK] Dashboard: {dashboard_path}")
 
-    print(f"\nGotowe. Wykryto zmiany w {len(all_changes)} listingach.")
+    print(f"\nGotowe. Wykryto zmiany w {len(all_changes)} listingach, "
+          f"{len(ms_release_alerts)} nowych wpisów MS release notes.")
 
 
 if __name__ == "__main__":

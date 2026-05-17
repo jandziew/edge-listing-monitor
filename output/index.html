@@ -8,86 +8,57 @@
         body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
         .change-card { transition: transform 0.15s; }
         .change-card:hover { transform: translateY(-2px); }
+        .diff-line { display: block; white-space: pre-wrap; word-wrap: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; padding: 1px 6px; }
+        .diff-add { background: #e6ffec; color: #0a3622; }
+        .diff-add::before { content: "+ "; color: #1a7f37; font-weight: 700; }
+        .diff-remove { background: #ffebe9; color: #82071e; text-decoration: line-through; opacity: 0.85; }
+        .diff-remove::before { content: "− "; color: #cf222e; font-weight: 700; text-decoration: none; }
+        .diff-context { color: #57606a; }
+        .ss-thumb { transition: transform 0.2s; cursor: zoom-in; }
+        .ss-thumb:hover { transform: scale(1.05); }
+        details > summary { cursor: pointer; user-select: none; }
+        details > summary::-webkit-details-marker { display: none; }
+        .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.03em; }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-    <div class="max-w-6xl mx-auto p-8">
-        <header class="mb-8">
-            <h1 class="text-4xl font-bold text-gray-900">📱 Edge Listing Monitor</h1>
-            <p class="text-gray-500 mt-2">Ostatnia aktualizacja: 2026-05-17 23:32:43</p>
+    <div class="max-w-6xl mx-auto p-6 md:p-8">
+        <header class="mb-8 flex items-baseline justify-between flex-wrap gap-2">
+            <div>
+                <h1 class="text-4xl font-bold text-gray-900">Edge Listing Monitor</h1>
+                <p class="text-gray-500 mt-1">Ostatnia aktualizacja: <span class="font-mono">2026-05-18 01:56:16</span></p>
+            </div>
+            <nav class="text-sm text-gray-600 flex gap-4">
+                <a href="#alerts" class="hover:text-blue-600">Alerty</a>
+                <a href="#current" class="hover:text-blue-600">Current State</a>
+                <a href="#ms-relnotes" class="hover:text-blue-600">MS release notes</a>
+            </nav>
         </header>
 
         
-            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
-                <p class="text-blue-800">
-                    <strong>2</strong> listingów ze zmianami od ostatniego runu.
-                </p>
-            </div>
+        
+        
+        <section id="alerts" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Alerty — co się zmieniło</h2>
 
             
-                <section class="change-card mb-8 bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-semibold text-gray-900">
-                            Microsoft Edge
-                            <span class="text-sm font-normal px-2 py-1 rounded
-                                bg-gray-200 text-gray-800
-                                ">
-                                IOS
-                            </span>
-                        </h2>
-                        
-                            <a href="https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4" target="_blank"
-                               class="text-blue-600 hover:underline text-sm">
-                                Zobacz w sklepie →
-                            </a>
-                        
-                    </div>
 
-                    
-                        <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-700 mb-3">✏️ Zmiany tekstowe</h3>
-                            <div class="space-y-3">
-                                
-                                    <div class="border-l-4 border-yellow-400 pl-4">
-                                        <div class="font-medium text-gray-800">rating_average</div>
-                                        <div class="text-sm text-gray-500 mt-1">
-                                            <div class="line-through opacity-60">
-                                                4.70909
-                                            </div>
-                                            <div class="text-green-700 mt-1">
-                                                4.70904
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="border-l-4 border-yellow-400 pl-4">
-                                        <div class="font-medium text-gray-800">rating_count</div>
-                                        <div class="text-sm text-gray-500 mt-1">
-                                            <div class="line-through opacity-60">
-                                                508196
-                                            </div>
-                                            <div class="text-green-700 mt-1">
-                                                508382
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                            </div>
-                        </div>
-                    
-
-                    
-                </section>
             
-                <section class="change-card mb-8 bg-white rounded-lg shadow p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-2xl font-semibold text-gray-900">
+            
+
+            
+                <section class="change-card mb-6 bg-white rounded-lg shadow p-6
+                    ">
+                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                        <h3 class="text-xl font-semibold text-gray-900">
+                            
                             Microsoft Edge
-                            <span class="text-sm font-normal px-2 py-1 rounded
+                            <span class="badge ml-2
                                 bg-green-100 text-green-800">
                                 ANDROID
                             </span>
-                        </h2>
+                            
+                        </h3>
                         
                             <a href="https://play.google.com/store/apps/details?id=com.microsoft.emmx&hl=en&gl=us" target="_blank"
                                class="text-blue-600 hover:underline text-sm">
@@ -98,19 +69,17 @@
 
                     
                         <div class="mb-6">
-                            <h3 class="text-lg font-semibold text-gray-700 mb-3">✏️ Zmiany tekstowe</h3>
+                            <h4 class="text-base font-semibold text-gray-700 mb-3">Zmiany tekstowe</h4>
                             <div class="space-y-3">
                                 
                                     <div class="border-l-4 border-yellow-400 pl-4">
                                         <div class="font-medium text-gray-800">rating_count</div>
-                                        <div class="text-sm text-gray-500 mt-1">
-                                            <div class="line-through opacity-60">
-                                                1535901
+                                        
+                                            <div class="text-sm mt-1">
+                                                <div class="text-red-700 line-through opacity-60">1535899</div>
+                                                <div class="text-green-700 mt-1">1535900</div>
                                             </div>
-                                            <div class="text-green-700 mt-1">
-                                                1535890
-                                            </div>
-                                        </div>
+                                        
                                     </div>
                                 
                             </div>
@@ -118,12 +87,447 @@
                     
 
                     
+
+                    
                 </section>
             
+        </section>
+
+        
+        
+        
+        <section id="current" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Current State — co jest teraz w sklepach</h2>
+            
+                <div class="change-card mb-6 bg-white rounded-lg shadow p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        
+                            <img src="assets/microsoft-edge/ios/icon_0.png" alt="icon" class="w-20 h-20 rounded-2xl border border-gray-200 flex-shrink-0">
+                        
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <h3 class="text-xl font-semibold text-gray-900">
+                                    Microsoft Edge
+                                    <span class="badge ml-2
+                                        bg-gray-200 text-gray-800
+                                        ">
+                                        IOS
+                                    </span>
+                                </h3>
+                                
+                                    <a href="https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4" target="_blank" class="text-sm text-blue-600 hover:underline">Zobacz w sklepie →</a>
+                                
+                            </div>
+                            <div class="text-sm text-gray-600 mt-1 space-x-3">
+                                <span><strong>Wersja:</strong> 148.3967.55</span>
+                                <span>· 2026-05-11T01:47:11Z</span>
+                                <span>· 4.71★ (508196)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                        <div class="mb-4 p-3 bg-pink-50 rounded border border-pink-100">
+                            <h4 class="text-sm font-semibold text-pink-900 mb-2">In-App Events (1)</h4>
+                            
+                                <div class="mb-2 last:mb-0">
+                                    <div class="font-medium text-gray-800">Meet Copilot in Edge</div>
+                                    <div class="text-sm text-gray-600">What starts here, gets done here!</div>
+                                    <div class="text-sm text-gray-700 mt-1">Copilot in Edge helps you get clear answers, make confident decisions, and get more done without leaving the page.</div>
+                                    
+                                        <div class="text-xs text-gray-500 mt-1">
+                                            2026-05-12T07:00:00.000Z → 2026-06-12T07:00:00.000Z
+                                        </div>
+                                    
+                                </div>
+                            
+                        </div>
+                    
+
+                    
+                        <details class="mb-3">
+                            <summary class="text-sm font-semibold text-gray-700">Release notes (aktualna wersja)</summary>
+                            <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded border border-gray-200">Welcome to Microsoft Edge! Here's what's new in this release:
+• Redesigned New Tab Page: Experience a fresh, Copilot-powered New Tab Page with a smarter search box that understands whether you want to search the web or chat with Copilot — just type naturally.
+• Journeys: Edge now understands what you're working on. Based on your browsing activity, Journeys suggests helpful next steps — like comparing products you've been researching — right on your New Tab Page.
+• Copilot in Edge Preview: Join the Copilot in Edge Preview program to unlock the full AI experience in Edge. Get early access to the latest Copilot features and help shape what comes next.
+Upgrade now to enjoy a smarter, faster and more productive Microsoft Edge.</pre>
+                        </details>
+                    
+
+                    
+                        <details class="mb-3">
+                            <summary class="text-sm font-semibold text-gray-700">Opis aplikacji</summary>
+                            <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded border border-gray-200">Browse with Microsoft Edge, your everyday web browser with built-in Copilot. From finding information to making sense of it, Copilot works alongside you to streamline everyday browsing, so you can turn ideas into action and get it done faster. 
+
+Copilot in Edge helps you search, browse, and explore, so you can make decisions faster with more confidence, all in one place.  Summarize lengthy articles and videos, get answers about what you are browsing, and turn ideas into drafts or images – without breaking your flow.  Whether you need a quick answer or deeper help, Copilot in Edge adapts to support how you work, right when you need it. 
+
+Stay safer with built-in security tools like tracking prevention, AdBlock Plus and Microsoft Defender Smartscreen. When you want extra privacy, switch to InPrivate mode to keep your browsing history protected.  
+
+Do more with less effort.  With Microsoft Edge, everyday browsing is faster, more intuitive, and focused. 
+
+Explore the web effortlessly with Copilot built-in 
+• The Copilot-inspired new tab page brings together Copilot with browsing. Now your queries will get routed to search, chat or web automatically – all in one place. 
+• Copilot understands context across your open tabs, helping you compare information, summarize, brainstorm and connect ideas across pages, so you can move faster and make decisions with confidence without switching tabs. 
+• Get help from what’s on your screen. With Vision, Copilot can scan, analyze, and brainstorm with you on the content you’re browsing. 
+• Quickly summarize the content of the webpage, PDF or video you are viewing 
+• Get the right level of help for the moment—quick answers when you’re moving fast, deeper insights when you need it. 
+
+Make the most of your time online 
+• Microsoft Edge is a fast, reliable web browser designed to help you stay focused and get things done. 
+• Listen to articles and pages with Read Aloud while multitasking, using natural sounding voices in your preferred language. 
+• Group tabs by topic with one click to keep browsing organized and clutter free. 
+• Customize your experience with extensions for shopping, blocking distractions, and more. 
+• View webpages your way with page translation as you browse. 
+• Earn Microsoft Rewards points faster by browsing in Microsoft Edge. 
+
+Stay safer online 
+• Tracking Prevention helps protect your personal data. 
+• InPrivate mode keeps your activity private. 
+• Password monitoring alerts you if saved credentials are found on the dark web. 
+• AdBlock Plus blocks unwanted ads and distractions. 
+• Microsoft Defender SmartScreen helps protect you from phishing and malware. 
+
+Some screens are simulated, subject to change.</pre>
+                        </details>
+                    
+
+                    
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Screenshoty (17)</h4>
+                            <div class="flex gap-2 overflow-x-auto pb-2">
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_0.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_0.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_1.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_1.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_2.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_2.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_3.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_3.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_4.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_4.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_5.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_5.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_6.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_6.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_7.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_7.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_8.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_8.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_iphone_9.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_9.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_0.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_0.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_1.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_1.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_2.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_2.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_3.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_3.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_4.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_4.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_5.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_5.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/ios/screenshots_ipad_6.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/ios/screenshots_ipad_6.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                </div>
+            
+                <div class="change-card mb-6 bg-white rounded-lg shadow p-6">
+                    <div class="flex items-start gap-4 mb-4">
+                        
+                            <img src="assets/microsoft-edge/android/icon_0.png" alt="icon" class="w-20 h-20 rounded-2xl border border-gray-200 flex-shrink-0">
+                        
+                        <div class="flex-grow">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <h3 class="text-xl font-semibold text-gray-900">
+                                    Microsoft Edge
+                                    <span class="badge ml-2
+                                        bg-green-100 text-green-800">
+                                        ANDROID
+                                    </span>
+                                </h3>
+                                
+                                    <a href="https://play.google.com/store/apps/details?id=com.microsoft.emmx&hl=en&gl=us" target="_blank" class="text-sm text-blue-600 hover:underline">Zobacz w sklepie →</a>
+                                
+                            </div>
+                            <div class="text-sm text-gray-600 mt-1 space-x-3">
+                                <span><strong>Wersja:</strong> 148.0.3967.55</span>
+                                <span>· 1778463374</span>
+                                <span>· 4.68★ (1535900)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                    
+
+                    
+                        <details class="mb-3">
+                            <summary class="text-sm font-semibold text-gray-700">Opis aplikacji</summary>
+                            <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded border border-gray-200">Browse with Microsoft Edge, your everyday web browser with built-in Copilot. From finding information to making sense of it, Copilot works alongside you to streamline everyday browsing, so you can turn ideas into action and get it done faster. 
+
+Copilot in Edge helps you search, browse, and explore, so you can make decisions faster with more confidence, all in one place.  Summarize lengthy articles and videos, get answers about what you are browsing, and turn ideas into drafts or images – without breaking your flow.  Whether you need a quick answer or deeper help, Copilot in Edge adapts to support how you work, right when you need it. 
+
+Stay safer with built-in security tools like tracking prevention, AdBlock Plus and Microsoft Defender Smartscreen. When you want extra privacy, switch to InPrivate mode to keep your browsing history protected.  
+
+Do more with less effort.  With Microsoft Edge, everyday browsing is faster, more intuitive, and focused. 
+
+Explore the web effortlessly with Copilot built-in 
+• The Copilot-inspired new tab page brings together Copilot with browsing. Now your queries will get routed to search, chat or web automatically – all in one place. 
+• Copilot understands context across your open tabs, helping you compare information, summarize, brainstorm and connect ideas across pages, so you can move faster and make decisions with confidence without switching tabs. 
+• Get help from what’s on your screen. With Vision, Copilot can scan, analyze, and brainstorm with you on the content you’re browsing. 
+• Quickly summarize the content of the webpage, PDF or video you are viewing 
+• Get the right level of help for the moment—quick answers when you’re moving fast, deeper insights when you need it. 
+
+Make the most of your time online 
+• Microsoft Edge is a fast, reliable web browser designed to help you stay focused and get things done. 
+• Listen to articles and pages with Read Aloud while multitasking, using natural sounding voices in your preferred language. 
+• Group tabs by topic with one click to keep browsing organized and clutter free. 
+• Customize your experience with extensions for shopping, blocking distractions, and more. 
+• View webpages your way with page translation as you browse. 
+• Earn Microsoft Rewards points faster by browsing in Microsoft Edge. 
+
+Stay safer online 
+• Tracking Prevention helps protect your personal data. 
+• InPrivate mode keeps your activity private. 
+• Password monitoring alerts you if saved credentials are found on the dark web. 
+• AdBlock Plus blocks unwanted ads and distractions. 
+• Microsoft Defender SmartScreen helps protect you from phishing and malware. 
+
+Some screens are simulated, subject to change.</pre>
+                        </details>
+                    
+
+                    
+                        <div>
+                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Screenshoty (23)</h4>
+                            <div class="flex gap-2 overflow-x-auto pb-2">
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_0.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_0.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_1.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_1.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_2.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_2.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_3.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_3.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_4.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_4.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_5.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_5.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_6.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_6.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_7.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_7.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_8.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_8.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_9.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_9.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_10.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_10.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_11.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_11.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_12.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_12.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_13.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_13.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_14.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_14.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_15.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_15.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_16.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_16.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_17.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_17.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_18.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_18.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_19.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_19.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_20.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_20.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/screenshots_21.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/screenshots_21.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                                    <a href="assets/microsoft-edge/android/feature_graphic_0.png" target="_blank" class="flex-shrink-0">
+                                        <img src="assets/microsoft-edge/android/feature_graphic_0.png" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
+                                    </a>
+                                
+                            </div>
+                        </div>
+                    
+                </div>
+            
+        </section>
+
+        
+        
+        
+        
+        <section id="ms-relnotes" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Microsoft official changelog (learn.microsoft.com)</h2>
+            
+                <div class="mb-6 bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-3">
+                        Kanał: stable
+                        <a href="https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel" target="_blank" class="text-sm font-normal text-blue-600 hover:underline ml-2">źródło →</a>
+                    </h3>
+                    <div class="space-y-3">
+                        
+                            <details open class="border-l-2 border-gray-200 pl-3">
+                                <summary class="font-medium text-gray-800">
+                                    v148.0.3967.55 <span class="text-xs text-gray-500">(Android, iOS) — May 11, 2026</span>
+                                </summary>
+                                
+                                    <div class="mt-2 ml-2">
+                                        <div class="text-sm font-semibold text-gray-700">General updates</div>
+                                        <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1">[iOS] Upgrade Tunnel SDK to version 2.0.0
+[iOS & Android] Upgrade OneAuth SDK to version 9.3.3</pre>
+                                    </div>
+                                
+                                    <div class="mt-2 ml-2">
+                                        <div class="text-sm font-semibold text-gray-700">New Policies</div>
+                                        <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1">[iOS & Android] Added support for the
+CopilotNewTabPageEnabled
+policy to configure the availability of the Copilot new tab page
+Microsoft Edge Browser Policy Documentation â CopilotNewTabPageEnabled | Microsoft Learn</pre>
+                                    </div>
+                                
+                                    <div class="mt-2 ml-2">
+                                        <div class="text-sm font-semibold text-gray-700">Bug fixes</div>
+                                        <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1">[iOS] Fix the issue about data leak under
+IncognitoModeAvailability
+policy
+[Android] Fix the issue where the Policies of Brand Info does not work under some environment</pre>
+                                    </div>
+                                
+                                    <div class="mt-2 ml-2">
+                                        <div class="text-sm font-semibold text-gray-700">New enhancements</div>
+                                        <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1">[iOS] Improve the user experience of Copilot New Tab Card
+[iOS & Android] Improve the user experience of Copilot Multi Tab Summary feature
+[iOS & Android] Improve the user experience of Copilot Video Summary feature
+[iOS & Android] Improve the user experience of Web single sign on</pre>
+                                    </div>
+                                
+                            </details>
+                        
+                            <details  class="border-l-2 border-gray-200 pl-3">
+                                <summary class="font-medium text-gray-800">
+                                    v147.0.3912.87 <span class="text-xs text-gray-500">(Android, iOS) — April 27, 2026</span>
+                                </summary>
+                                
+                            </details>
+                        
+                            <details  class="border-l-2 border-gray-200 pl-3">
+                                <summary class="font-medium text-gray-800">
+                                    v147.0.3912.77 <span class="text-xs text-gray-500">(Android) — April 21, 2026</span>
+                                </summary>
+                                
+                            </details>
+                        
+                            <details  class="border-l-2 border-gray-200 pl-3">
+                                <summary class="font-medium text-gray-800">
+                                    v147.0.3912.75 <span class="text-xs text-gray-500">(iOS) — April 20, 2026</span>
+                                </summary>
+                                
+                            </details>
+                        
+                            <details  class="border-l-2 border-gray-200 pl-3">
+                                <summary class="font-medium text-gray-800">
+                                    v147.0.3912.71 <span class="text-xs text-gray-500">(iOS) — April 16, 2026</span>
+                                </summary>
+                                
+                            </details>
+                        
+                    </div>
+                </div>
+            
+        </section>
         
 
         <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-            <p>Edge Listing Monitor — wygenerowane lokalnie przez monitor.py</p>
+            <p>Edge Listing Monitor — wygenerowane przez monitor.py</p>
         </footer>
     </div>
 </body>
