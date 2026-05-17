@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <title>Edge Listing Monitor — Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+        .change-card { transition: transform 0.15s; }
+        .change-card:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="max-w-6xl mx-auto p-8">
+        <header class="mb-8">
+            <h1 class="text-4xl font-bold text-gray-900">📱 Edge Listing Monitor</h1>
+            <p class="text-gray-500 mt-2">Ostatnia aktualizacja: {{ generated_at }}</p>
+        </header>
+
+        {% if all_changes %}
+            <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded">
+                <p class="text-blue-800">
+                    <strong>{{ all_changes|length }}</strong> listingów ze zmianami od ostatniego runu.
+                </p>
+            </div>
+
+            {% for app_change in all_changes %}
+                <section class="change-card mb-8 bg-white rounded-lg shadow p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-2xl font-semibold text-gray-900">
+                            {{ app_change.app_name }}
+                            <span class="text-sm font-normal px-2 py-1 rounded
+                                {% if app_change.platform == 'ios' %}bg-gray-200 text-gray-800
+                                {% else %}bg-green-100 text-green-800{% endif %}">
+                                {{ app_change.platform|upper }}
+                            </span>
+                        </h2>
+                        {% if app_change.store_url %}
+                            <a href="{{ app_change.store_url }}" target="_blank"
+                               class="text-blue-600 hover:underline text-sm">
+                                Zobacz w sklepie →
+                            </a>
+                        {% endif %}
+                    </div>
+
+                    {% if app_change.text_changes %}
+                        <div class="mb-6">
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3">✏️ Zmiany tekstowe</h3>
+                            <div class="space-y-3">
+                                {% for field, change in app_change.text_changes.items() %}
+                                    <div class="border-l-4 border-yellow-400 pl-4">
+                                        <div class="font-medium text-gray-800">{{ field }}</div>
+                                        <div class="text-sm text-gray-500 mt-1">
+                                            <div class="line-through opacity-60">
+                                                {{ change.old|string|truncate(200) }}
+                                            </div>
+                                            <div class="text-green-700 mt-1">
+                                                {{ change.new|string|truncate(200) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if app_change.visual_changes %}
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-700 mb-3">🖼️ Zmiany wizualne</h3>
+                            <div class="space-y-6">
+                                {% for vc in app_change.visual_changes %}
+                                    <div class="border-l-4 border-purple-400 pl-4">
+                                        <div class="font-medium text-gray-800">
+                                            {{ vc.image_type }} #{{ vc.index }}
+                                            <span class="text-xs font-normal px-2 py-1 rounded ml-2
+                                                {% if vc.change_type == 'added' %}bg-green-100 text-green-800
+                                                {% elif vc.change_type == 'changed' %}bg-yellow-100 text-yellow-800
+                                                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                                                {{ vc.change_type }}
+                                            </span>
+                                        </div>
+                                        {% if vc.ai_description %}
+                                            <div class="mt-2 p-3 bg-purple-50 rounded text-sm text-gray-700">
+                                                💬 <strong>AI:</strong> {{ vc.ai_description }}
+                                            </div>
+                                        {% endif %}
+                                        {% if vc.side_by_side_path %}
+                                            <div class="mt-3">
+                                                <img src="{{ vc.side_by_side_path }}"
+                                                     alt="Side by side"
+                                                     class="max-w-full rounded border border-gray-200">
+                                                <p class="text-xs text-gray-500 mt-1">
+                                                    Lewa: stara wersja | Prawa: nowa wersja
+                                                </p>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </section>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-16">
+                <div class="text-6xl mb-4">✅</div>
+                <p class="text-xl text-gray-700">Brak zmian od ostatniego runu</p>
+                <p class="text-gray-500 mt-2">Wszystkie monitorowane apki bez aktualizacji.</p>
+            </div>
+        {% endif %}
+
+        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
+            <p>Edge Listing Monitor — wygenerowane lokalnie przez monitor.py</p>
+        </footer>
+    </div>
+</body>
+</html>

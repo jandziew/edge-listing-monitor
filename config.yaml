@@ -1,0 +1,49 @@
+# Lista monitorowanych aplikacji
+# Aby dodać nową apkę: dopisz blok poniżej i commituj do repo.
+# Skrypt automatycznie zacznie ją monitorować w następnym runie.
+
+apps:
+  - name: "Microsoft Edge"
+    slug: "microsoft-edge"  # używany jako nazwa folderów (bez spacji, bez polskich znaków)
+    ios:
+      bundle_id: "com.microsoft.msedge"
+      country: "us"  # kod kraju ISO, np. us, pl, gb, de
+    android:
+      package_name: "com.microsoft.emmx"
+      country: "us"
+
+  # Przykład rozszerzenia (odkomentuj żeby aktywować):
+  # - name: "Google Chrome"
+  #   slug: "google-chrome"
+  #   ios:
+  #     bundle_id: "com.google.chrome.ios"
+  #     country: "us"
+  #   android:
+  #     package_name: "com.android.chrome"
+  #     country: "us"
+
+# Ustawienia globalne
+settings:
+  # Próg dla perceptual hash (im niższa wartość, tym czulszy detector)
+  # 0-5 = bardzo czuły, łapie nawet drobne zmiany
+  # 5-10 = standard, ignoruje rekompresję i drobne korekty
+  # 10+ = tylko duże zmiany
+  phash_threshold: 5
+
+  # Czy używać Gemini do opisu zmian wizualnych?
+  # Wymaga GEMINI_API_KEY w środowisku (.env lub GitHub Secret)
+  use_gemini_vision: true
+
+  # Czy generować lokalny HTML dashboard?
+  generate_html_dashboard: true
+
+  # Kanały alertów (włącz/wyłącz)
+  alerts:
+    google_chat:
+      enabled: false  # zmień na true gdy ustawisz GOOGLE_CHAT_WEBHOOK_URL
+    telegram:
+      enabled: false  # zmień na true gdy ustawisz TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
+    email:
+      enabled: false  # zmień na true gdy ustawisz RESEND_API_KEY i recipients
+      recipients:
+        - "twoj-email@example.com"
