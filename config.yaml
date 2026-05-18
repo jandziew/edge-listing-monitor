@@ -40,7 +40,7 @@ settings:
   # Kanały alertów (włącz/wyłącz)
   alerts:
     google_chat:
-      enabled: false  # zmień na true gdy ustawisz GOOGLE_CHAT_WEBHOOK_URL
+      enabled: true  # zmień na true gdy ustawisz GOOGLE_CHAT_WEBHOOK_URL
     telegram:
       enabled: false  # zmień na true gdy ustawisz TELEGRAM_BOT_TOKEN + TELEGRAM_CHAT_ID
     email:
