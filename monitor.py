@@ -356,10 +356,14 @@ def detect_text_changes(current: dict, previous: dict) -> dict:
 
     Dla długich pól (description, release_notes) dodaje też 'diff' — listę linii
     z oznaczeniem czy są dodane / usunięte / kontekst, do ładnego renderu w dashboardzie.
+
+    Świadomie POMIJAMY: rating_average, rating_count — tickają cały czas (każda nowa
+    ocena = zmiana), generowałyby tylko szum w alertach. Jeśli ktoś chce monitorować
+    ocenę — dodaj sobie do listy `fields` poniżej.
     """
     changes = {}
     fields = ["name", "version", "release_notes", "description",
-              "rating_average", "rating_count", "price", "category"]
+              "price", "category"]
     diffable = {"description", "release_notes"}
 
     for field in fields:
@@ -732,20 +736,31 @@ def generate_html_dashboard(
 
 DASHBOARD_BASE_URL = os.getenv("DASHBOARD_BASE_URL", "https://jandziew.github.io/edge-listing-monitor")
 
+# Image URLs muszą być DOSTĘPNE w momencie wysłania karty. GitHub Pages buduje się
+# 15-30s po commit/push, więc gdyby karta linkowała do *.github.io/..., obrazek byłby
+# 404 na pierwszym Cards V2 send (Google Chat cache'uje 404).
+# raw.githubusercontent.com serwuje pliki w sekundach od pusha — niezawodne.
+IMAGE_BASE_URL = os.getenv(
+    "IMAGE_BASE_URL",
+    "https://raw.githubusercontent.com/jandziew/edge-listing-monitor/main",
+)
+
 
 def _abs_url(rel_path: str | None) -> str | None:
-    """Konwertuje relatywną ścieżkę (assets/...) na publiczny URL pod GitHub Pages.
-    Google Chat Cards wymagają publicznych URL-i obrazków, lokalne pliki nie działają.
+    """Konwertuje relatywną ścieżkę (assets/...) na publiczny URL obrazka.
+    Używamy raw.githubusercontent.com (instant po push), nie GitHub Pages
+    (cold build 15-30s, race condition z momentem wysłania karty).
     """
     if not rel_path:
         return None
-    return f"{DASHBOARD_BASE_URL.rstrip('/')}/{rel_path.lstrip('/')}"
+    return f"{IMAGE_BASE_URL.rstrip('/')}/{rel_path.lstrip('/')}"
 
 
 def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict],
                             iae_changes: list[dict] | None = None,
                             is_new_release: bool = False,
-                            store_url: str | None = None) -> None:
+                            store_url: str | None = None,
+                            app_icon_url: str | None = None) -> None:
     """Wysyła kartę Cards V2 do Google Chat Space przez incoming webhook.
 
     Format Cards V2 (zamiast plain text):
@@ -870,18 +885,6 @@ def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, vis
     if not sections:
         sections.append({"widgets": [{"textParagraph": {"text": "<i>Change detected but no details available.</i>"}}]})
 
-    # === Footer z przyciskami ===
-    buttons = []
-    if store_url:
-        buttons.append({
-            "text": "View in store",
-            "onClick": {"openLink": {"url": store_url}},
-        })
-    buttons.append({
-        "text": "Open dashboard",
-        "onClick": {"openLink": {"url": DASHBOARD_BASE_URL}},
-    })
-
     # === Header karty ===
     subtitle = f"{platform.upper()}"
     if is_new_release:
@@ -893,20 +896,35 @@ def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, vis
         if iae_changes: change_summary.append(f"{len(iae_changes)} IAE")
         subtitle = f"{platform.upper()} · {' · '.join(change_summary)}"
 
+    header = {
+        "title": app_name,
+        "subtitle": subtitle,
+    }
+    if app_icon_url:
+        header["imageUrl"] = app_icon_url
+        header["imageType"] = "SQUARE"  # ikony apek są kwadratowe (lub CIRCLE)
+
+    # === Przyciski jako buttonList na końcu (pewniejsze niż fixedFooter
+    #     który nie zawsze renderuje się w webhookach) ===
+    buttons = []
+    if store_url:
+        buttons.append({
+            "text": "View in store",
+            "onClick": {"openLink": {"url": store_url}},
+            "color": {"red": 0.1, "green": 0.46, "blue": 0.82},
+        })
+    buttons.append({
+        "text": "Open dashboard",
+        "onClick": {"openLink": {"url": DASHBOARD_BASE_URL}},
+    })
+    sections.append({
+        "widgets": [{"buttonList": {"buttons": buttons}}],
+    })
+
     card = {
-        "header": {
-            "title": app_name,
-            "subtitle": subtitle,
-        },
+        "header": header,
         "sections": sections,
     }
-
-    if buttons:
-        card["fixedFooter"] = {
-            "primaryButton": buttons[0],
-        }
-        if len(buttons) > 1:
-            card["fixedFooter"]["secondaryButton"] = buttons[1]
 
     message = {
         "cardsV2": [{
@@ -1241,9 +1259,11 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
     # Alerty
     alerts_cfg = settings.get("alerts", {})
     if alerts_cfg.get("google_chat", {}).get("enabled"):
+        icon_url = (current.get("images") or {}).get("icon", [None])[0]
         send_google_chat_alert(app_name, platform, text_changes, visual_changes,
                                 iae_changes=iae_changes, is_new_release=is_new_release,
-                                store_url=current.get("store_url"))
+                                store_url=current.get("store_url"),
+                                app_icon_url=icon_url)
     if alerts_cfg.get("telegram", {}).get("enabled"):
         send_telegram_alert(app_name, platform, text_changes, visual_changes,
                              iae_changes=iae_changes, is_new_release=is_new_release)
