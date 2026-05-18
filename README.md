@@ -1,52 +1,54 @@
 # Edge Listing Monitor
 
-Skrypt który monitoruje strony aplikacji w App Store i Google Play, wykrywa zmiany (tekst i grafika), opisuje je przez AI i alertuje.
+Script that monitors app pages on the App Store and Google Play, detects changes (text and visuals), describes them with AI, and sends alerts.
 
-**Domyślnie monitoruje:** Microsoft Edge (iOS + Android).
-**Łatwo dodać kolejne apki:** edytuj `config.yaml`.
+**Default target:** Microsoft Edge (iOS + Android).
+**Easy to add more apps:** edit `config.yaml`.
+
+> 📘 **New here?** Read [`CLIENT_GUIDE.md`](./CLIENT_GUIDE.md) — a step-by-step guide on how to build something like this yourself in Antigravity (for non-technical users). [`PROMPTS_COPY_PASTE.md`](./PROMPTS_COPY_PASTE.md) holds the prompt library.
 
 ---
 
-## Szybki start (lokalnie, 5 minut)
+## Quick start (locally, 5 minutes)
 
-### 1. Zainstaluj Pythona 3.11+
+### 1. Install Python 3.11+
 - macOS: `brew install python@3.11`
-- Windows: pobierz z [python.org](https://python.org)
+- Windows: download from [python.org](https://python.org)
 
-### 2. Sklonuj/skopiuj ten folder, wejdź do niego
+### 2. Clone/copy this folder, enter it
 ```bash
 cd edge-listing-monitor
 ```
 
-### 3. (Opcjonalnie ale rekomendowane) Stwórz wirtualne środowisko
+### 3. (Optional but recommended) Create a virtual environment
 ```bash
 python -m venv venv
 source venv/bin/activate     # macOS/Linux
 # venv\Scripts\activate      # Windows
 ```
 
-### 4. Zainstaluj zależności
+### 4. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Skonfiguruj klucze API (opcjonalne na start)
+### 5. Configure API keys (optional to start)
 ```bash
 cp .env.example .env
-# Otwórz .env w edytorze i wklej GEMINI_API_KEY (darmowy: https://aistudio.google.com/app/apikey)
+# Open .env in an editor and paste GEMINI_API_KEY (free: https://aistudio.google.com/app/apikey)
 ```
 
-Jeśli pominiesz ten krok, skrypt zadziała ale bez AI opisu zmian — tylko tekst i obrazki.
+If you skip this step, the script will work but without AI descriptions of changes — just text and images.
 
-### 6. Uruchom
+### 6. Run
 ```bash
 python monitor.py
 ```
 
-**Pierwszy run** ściągnie wszystkie aktualne metadane i obrazki jako "baseline" — żadnych alertów.
-**Drugie i kolejne runy** będą porównywać z baseline i raportować zmiany.
+**First run** downloads all current metadata and images as a "baseline" — no alerts.
+**Second and subsequent runs** compare with the baseline and report changes.
 
-### 7. Zobacz dashboard
+### 7. View the dashboard
 ```bash
 open output/dashboard.html      # macOS
 start output/dashboard.html     # Windows
@@ -54,30 +56,32 @@ start output/dashboard.html     # Windows
 
 ---
 
-## Struktura folderów
+## Folder structure
 
 ```
 edge-listing-monitor/
-├── config.yaml              # lista monitorowanych apek + ustawienia
-├── monitor.py               # główny skrypt
-├── requirements.txt         # biblioteki Pythona
-├── .env                     # klucze API (NIE commituj!)
-├── .env.example             # szablon
+├── config.yaml              # list of monitored apps + settings
+├── monitor.py               # main script
+├── requirements.txt         # Python libraries
+├── .env                     # API keys (DO NOT commit!)
+├── .env.example             # template
 ├── templates/
-│   └── dashboard.html       # template HTML dashboard
-├── snapshots/               # zapisane snapshoty JSON (auto)
-├── assets/                  # pobrane obrazki (auto)
+│   └── dashboard.html       # HTML dashboard template (Tailwind + Alpine.js)
+├── snapshots/               # saved JSON snapshots (auto)
+├── assets/                  # downloaded images (auto)
+├── history/
+│   └── alerts.jsonl         # append-only alert log (auto)
 ├── output/
-│   └── dashboard.html       # wygenerowany dashboard (auto)
+│   └── dashboard.html       # generated dashboard (auto)
 └── .github/workflows/
-    └── monitor.yml          # konfiguracja GitHub Actions (cron)
+    └── monitor.yml          # GitHub Actions config (cron)
 ```
 
 ---
 
-## Dodawanie nowych aplikacji
+## Adding new apps
 
-Otwórz `config.yaml` i dopisz blok:
+Open `config.yaml` and append a block:
 
 ```yaml
 apps:
@@ -90,7 +94,7 @@ apps:
       package_name: "com.microsoft.emmx"
       country: "us"
 
-  # NOWA APKA:
+  # NEW APP:
   - name: "Google Chrome"
     slug: "google-chrome"
     ios:
@@ -101,93 +105,108 @@ apps:
       country: "us"
 ```
 
-**Jak znaleźć bundle_id (iOS):**
-1. Otwórz stronę apki na https://apps.apple.com w przeglądarce
-2. Skopiuj numer ID z URL (np. `id1288723196`)
-3. Wejdź na `https://itunes.apple.com/lookup?id=1288723196` i znajdź pole `bundleId`
+**How to find bundle_id (iOS):**
+1. Open the app page on https://apps.apple.com in a browser
+2. Copy the ID number from the URL (e.g. `id1288723196`)
+3. Visit `https://itunes.apple.com/lookup?id=1288723196` and find the `bundleId` field
 
-**Jak znaleźć package_name (Android):**
-- URL strony apki na Google Play kończy się np. `?id=com.android.chrome` — to jest package_name.
+**How to find package_name (Android):**
+- The Google Play app page URL ends with e.g. `?id=com.android.chrome` — that's the package_name.
 
 ---
 
-## Uruchomienie w chmurze (GitHub Actions, darmowe)
+## Running in the cloud (GitHub Actions, free)
 
-### 1. Wrzuć projekt na GitHub
+### 1. Push the project to GitHub
 ```bash
 git init
 git add .
 git commit -m "Initial commit"
-gh repo create edge-listing-monitor --private --source=. --push
+gh repo create edge-listing-monitor --public --source=. --push
 ```
 
-### 2. Dodaj sekrety w GitHub
-W repo: **Settings → Secrets and variables → Actions → New repository secret**
+### 2. Add secrets in GitHub
+In the repo: **Settings → Secrets and variables → Actions → New repository secret**
 
-Dodaj:
-- `GEMINI_API_KEY` — klucz Gemini
-- `GOOGLE_CHAT_WEBHOOK_URL` — (opcjonalnie) URL webhooka Google Chat Space
-- `RESEND_API_KEY` — (opcjonalnie) klucz Resend do emaila
-- `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — (opcjonalnie) alerty na Telegram
+Add:
+- `GEMINI_API_KEY` — Gemini key
+- `GOOGLE_CHAT_WEBHOOK_URL` — (optional) Google Chat Space webhook URL
+- `RESEND_API_KEY` — (optional) Resend key for email
+- `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID` — (optional) Telegram alerts
 
-### 3. Włącz workflow
-Workflow `.github/workflows/monitor.yml` uruchomi się automatycznie co 6h.
+### 3. Enable the workflow
+The workflow `.github/workflows/monitor.yml` runs automatically every 6h.
 
-Możesz też uruchomić ręcznie: **Actions → Monitor App Listings → Run workflow**.
+You can also trigger it manually: **Actions → Monitor App Listings → Run workflow**.
 
-### 4. Włącz GitHub Pages (żeby dashboard był publicznie dostępny)
-W repo: **Settings → Pages → Source: gh-pages branch**.
+### 4. Enable GitHub Pages (so the dashboard is publicly available)
+In the repo: **Settings → Pages → Source: `gh-pages` branch**.
 
-Po pierwszym runie dashboard będzie pod: `https://twoj-username.github.io/edge-listing-monitor/dashboard.html`.
+After the first run, the dashboard will live at: `https://your-username.github.io/edge-listing-monitor/`.
+
+**Note:** GitHub Pages on a private repo requires a paid GitHub plan ($4/mo). For corporate clients who can't go public, see [`CLIENT_GUIDE.md`](./CLIENT_GUIDE.md) section 9 for **Cloudflare Pages + Access** (free, with email-OTP gating) or section 10 for the **Google-only stack** (Apps Script Web App with @company.com restriction).
 
 ---
 
-## Alerty
+## Alerts
 
 ### Google Chat
-1. W Google Chat: otwórz Space → strzałka obok nazwy → **Apps & integrations → Add webhooks**.
-2. Skopiuj URL webhooka.
-3. Wklej do `.env` jako `GOOGLE_CHAT_WEBHOOK_URL`.
-4. W `config.yaml` zmień `alerts.google_chat.enabled` na `true`.
+1. In Google Chat: open a Space → arrow next to the name → **Apps & integrations → Add webhooks**.
+2. Copy the webhook URL.
+3. Paste into `.env` as `GOOGLE_CHAT_WEBHOOK_URL`.
+4. In `config.yaml` change `alerts.google_chat.enabled` to `true`.
 
-### Email (przez Resend)
-1. Załóż konto na [resend.com](https://resend.com) (3000 maili/mies za darmo).
-2. Wygeneruj API key.
-3. Wklej do `.env` jako `RESEND_API_KEY`.
-4. W `config.yaml`:
+**Requires Google Workspace** — free Gmail accounts don't have Spaces with webhooks.
+
+### Email (via Resend)
+1. Sign up at [resend.com](https://resend.com) (3000 emails/mo free).
+2. Generate an API key.
+3. Paste into `.env` as `RESEND_API_KEY`.
+4. In `config.yaml`:
    ```yaml
    alerts:
      email:
        enabled: true
        recipients:
-         - "twoj-email@example.com"
+         - "your-email@example.com"
    ```
 
-### Telegram (najprostszy fallback, nie wymaga Workspace)
-1. W Telegramie wyszukaj **@BotFather**, kliknij Start, wyślij `/newbot`. Podaj nazwę bota (np. "Edge Listing Bot") i unikalny username kończący się na `bot` (np. `edge_listing_bot`). BotFather odpowie tokenem postaci `123456:ABC-DEF...`.
-2. Skopiuj token do `.env` jako `TELEGRAM_BOT_TOKEN`.
-3. Otwórz w Telegramie czat ze swoim nowym botem i wyślij mu **dowolną wiadomość** (np. "cześć"). To inicjalizuje kanał.
-4. W przeglądarce wejdź na: `https://api.telegram.org/bot<TWOJ_TOKEN>/getUpdates`
-   Znajdź w odpowiedzi `"chat":{"id":...}` — ta liczba to **TELEGRAM_CHAT_ID** (dla rozmów 1-na-1 dodatnia, dla grup ujemna). Wklej do `.env`.
-5. W `config.yaml` zmień `alerts.telegram.enabled` na `true`.
+### Telegram (simplest fallback, no Workspace needed)
+1. In Telegram search for **@BotFather**, hit Start, send `/newbot`. Give the bot a name (e.g. "Edge Listing Bot") and a unique username ending in `bot` (e.g. `edge_listing_bot`). BotFather replies with a token like `123456:ABC-DEF...`.
+2. Copy the token into `.env` as `TELEGRAM_BOT_TOKEN`.
+3. Open the chat with your new bot in Telegram and send it **any message** (e.g. "hi"). This initializes the channel.
+4. In a browser go to: `https://api.telegram.org/bot<YOUR_TOKEN>/getUpdates`
+   Find `"chat":{"id":...}` in the response — that number is the **TELEGRAM_CHAT_ID** (positive for 1-on-1 chats, negative for groups). Paste into `.env`.
+5. In `config.yaml` change `alerts.telegram.enabled` to `true`.
 
-Alert na Telegramie zawiera streszczenie zmian + dla każdej zmiany wizualnej osobny obrazek side-by-side.
+Telegram alerts include a summary of changes + a separate side-by-side image for each visual change.
 
 ---
 
-## Częste problemy
+## Common problems
 
 **"ModuleNotFoundError: No module named 'X'"**
-→ Nie zainstalowałeś wymagań. Uruchom: `pip install -r requirements.txt`
+→ You didn't install requirements. Run: `pip install -r requirements.txt`
 
-**"Nie znaleziono apki o bundle_id=..."**
-→ Sprawdź bundle_id w `config.yaml`. Apka może nie być dostępna w wybranym kraju (`country`).
+**"Nie znaleziono apki o bundle_id=..." (App not found)**
+→ Check `bundle_id` in `config.yaml`. The app may not be available in the chosen `country`.
 
-**"Gemini Vision nie zadziałał"**
-→ Sprawdź czy `GEMINI_API_KEY` jest poprawny. Bez niego skrypt działa, ale bez opisów AI.
+**"Gemini Vision failed"**
+→ Check that `GEMINI_API_KEY` is correct. Without it the script works but without AI descriptions.
 
-**Google Play scraper rzuca błąd**
-→ Google Play czasami zmienia layout — biblioteka się psuje. Spróbuj `pip install --upgrade google-play-scraper`.
+**Google Play scraper throws an error**
+→ Google Play sometimes changes layout — the library breaks. Try `pip install --upgrade google-play-scraper`.
 
-**Pierwszy run nie pokazuje nic na dashboardzie**
-→ To normalne — pierwszy run to baseline. Uruchom drugi raz po np. dniu, żeby zobaczyć diff.
+**First run shows nothing on the dashboard**
+→ That's normal — first run is a baseline. Run again after e.g. a day to see a diff.
+
+---
+
+## Documentation
+
+| File | What's in it |
+|------|--------------|
+| [`CLIENT_GUIDE.md`](./CLIENT_GUIDE.md) | How a non-technical user can build this in Antigravity, step by step. Flow: Stitch → Gemini → Antigravity → Cloudflare/Google-only deploy. Security, databases, video tutorial outline. |
+| [`PROMPTS_COPY_PASTE.md`](./PROMPTS_COPY_PASTE.md) | Library of ready-to-use prompts for Stitch, Gemini, Antigravity, Apps Script. Organized into sections (G: Stitch, A: Gemini, B: Antigravity build, C: maintenance, D: debug, E: interventions, F: metaprompts, H: Google-only stack). |
+| [`PRD_Edge_Listing_Monitor.md`](./PRD_Edge_Listing_Monitor.md) | Original Product Requirements Document used to build this project. Reference example of what a good PRD looks like. (Polish — translation pending.) |
+| `PODRECZNIK_JD.md` | Internal handbook for the workshop facilitator (Polish, not for client use). |
