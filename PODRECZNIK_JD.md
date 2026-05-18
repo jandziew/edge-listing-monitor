@@ -295,26 +295,38 @@ Workflow chodzi sam co 6h, klient dostaje alerty, dashboard żyje pod własnym U
 - **Najważniejszy moment** kiedy klient nauczy się jednej rzeczy: **„rozmowa z Gemini PRZED Antigravity oszczędza 80% frustracji"**
 - Pokaż na slajdzie jak wygląda dobry PRD vs zły prompt typu „zbuduj mi appkę"
 
-**0:20 – 0:30 Live: Gemini chat — od pomysłu do PRD**
+**0:20 – 0:25 Live: Stitch — od opisu do wireframe (etap 0)**
+- Otwieram [stitch.withgoogle.com](https://stitch.withgoogle.com) na live
+- Wklejam prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja G1 (przykład dashboardu)
+- Stitch generuje wireframe w 30 sek — klient widzi mockup
+- Robię 1 iterację („zmień kolor", „dodaj sekcję") żeby klient zobaczył responsywność
+- Eksportuję screenshot — „to zaraz wkleję do Antigravity razem z PRD"
+- **Pointa:** wireframe = jedno zdjęcie warte 500 słów promptu. Agent ma wizualną kotwicę.
+
+**0:25 – 0:30 Live: Gemini chat — od pomysłu do PRD**
 - Otwieram `gemini.google.com` na live
 - Wymyślam fikcyjny przykład (NIE Edge — żeby klient widział że flow nie jest specyficzny dla naszego projektu)
   - Np: „chcę co rano dostawać podsumowanie nowych przetargów w mojej branży z gov.pl"
   - Albo coś bliskiego biznesowi klienta
 - Pokazuję prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja A1
 - Gemini pyta, ja odpowiadam (klient widzi że to nie magia)
-- Po 3-4 wymianach skracam: „normalnie tu by była rozmowa 15 min, ale w skrócie..." → wklejam A4 → generuję PRD na ekranie
+- Po 2-3 wymianach skracam: „normalnie tu by była rozmowa 15 min, ale w skrócie..." → wklejam A4 → generuję PRD na ekranie
 
 **0:30 – 0:45 Live: Antigravity — od PRD do pierwszego skeletonu**
 - Otwieram Antigravity, tworzę nowy projekt
-- Wklejam pierwszy prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja B1 z dopisanym PRD
+- Wklejam pierwszy prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja B1 z dopisanym PRD **i załączam screenshot wireframe'a ze Stitcha**
 - Agent pokazuje plan działania
 - Akceptuję plan (B3), agent zaczyna pierwszy krok
 - Pokazuję **turning point**: agent generuje plik, ja **otwieram go i pokazuję klientowi** co tam jest — „nie akceptuję ślepo, czytam co dostałem"
 - Krótko o `.env`, `.gitignore`, GitHub Secrets (przekierowanie do sekcji 6 KLIENT_GUIDE'a)
 
-**0:45 – 0:55 Deploy + bezpieczeństwo (talking-head, nie hands-on)**
-- Slajd / diagram: Cloudflare Pages + Access (rekomendacja) vs GitHub Pages (tylko jeśli public)
-- Czemu Cloudflare a nie Vercel/Netlify: free tier ma password gate przez email OTP (live demo z incognito jeśli wystarczy czasu)
+**0:45 – 0:55 Deploy + bezpieczeństwo + stack decision (talking-head, nie hands-on)**
+- Slajd / diagram trzech opcji deploy:
+  - **Cloudflare Pages + Access** — general default (free, email OTP, działa wszędzie)
+  - **Google-only stack** (Apps Script Web App + Sheets jako DB + Apps Script triggers) — gdy korpo wymusza pełen Google, klient widzi dane w Sheets
+  - **Hybrid** (Cloud Run + Apps Script frontend) — gdy scrape ciężki ale frontend ma być w Workspace
+- Mówię klientowi: „masz decision tree w KLIENT_GUIDE sekcja 9 cheat sheet — zdecyduj po callu z IT firmy"
+- Quick demo Stitch → wireframe → Cloudflare deploy: pokaz że wszystko trzy razy szybsze gdy masz wireframe od start
 - 60-sekundowy revoke wycieklego klucza API (pokaż w AI Studio)
 - Lista „kiedy zatrzymać i poprosić developera" z KLIENT_GUIDE sekcja 8
 
@@ -359,18 +371,33 @@ Jeśli klient po kilku tygodniach mówi „to powinno być nagranie żebym móg�
 
 ### Format slajdów do callu (jeśli chcesz przygotować dzień wcześniej)
 
-Jeden plik PPT/Google Slides, max 8 slajdów:
+Jeden plik PPT/Google Slides, max 10 slajdów:
 
 1. **Tytuł** — „Buduj mikro-narzędzia w Antigravity — flow który działa"
-2. **Co dziś pokażę** — 1) flow Gemini→Antigravity→Deploy 2) live demo 3) dokumenty na wynos
+2. **Co dziś pokażę** — 1) flow Stitch→Gemini→Antigravity→Deploy 2) live demo 3) dokumenty na wynos
 3. **Demo finalnego produktu** — screenshot dashboardu, link
 4. **Filozofia** — 3 zasady (3 ikonki + 1 zdanie każda)
-5. **Flow** — diagram Gemini → PRD → Antigravity → Cloudflare
-6. **Etap kluczowy: PRD** — przykład złego promptu vs dobrego PRD (side-by-side)
-7. **Bezpieczeństwo** — checklist 6 punktów (sekcja 6 KLIENT_GUIDE'a)
-8. **Co dalej** — 3 dokumenty + zaproszenie do debug session
+5. **Flow** — diagram Stitch (wireframe) → Gemini (PRD) → Antigravity (build) → Deploy
+6. **Etap 0: Stitch** — wireframe jako kotwica wizualna, oszczędność iteracji (screen Stitcha)
+7. **Etap kluczowy: PRD** — przykład złego promptu vs dobrego PRD (side-by-side)
+8. **Stack decision tree** — Cloudflare default / Google-only (Apps Script + Sheets) / Hybrid (Cloud Run + Apps Script frontend)
+9. **Bezpieczeństwo** — checklist 6 punktów (sekcja 6 KLIENT_GUIDE'a)
+10. **Co dalej** — 3 dokumenty + zaproszenie do debug session
 
 Każdy slajd = jedno zdanie + jedna grafika/screen. Klient zapamięta ramę, szczegóły dostanie w dokumentach.
+
+### Stack decision — co rekomendować klientowi w jego konkretnej sytuacji
+
+Po callu (lub w trakcie Q&A) musisz pomóc klientowi zdecydować który stack wybrać. Krótka ściąga:
+
+| Sytuacja klienta | Rekomendacja |
+|------------------|--------------|
+| Workspace, IT raczej puści SaaS-y zewnętrzne, projekt może rosnąć | **Cloudflare Pages + Access + GitHub Actions** (default, najbardziej elastyczne) |
+| Workspace, IT bardzo restrykcyjne („tylko Google"), klient sam chce widzieć dane w Sheets, projekt mały (1-5 apek) | **Google-only stack** (Apps Script + Sheets + Stitch). Limit 6 min runtime nie problem |
+| Scrape ciężki / Python potrzebny / projekt już rośnie, ale frontend ma być w domenie firmy | **Hybrid** (Cloud Run scraper + Apps Script frontend + Sheets/Firestore) |
+| Projekt edukacyjny, dane publiczne, klient chce się uczyć | **GitHub Pages publiczne** (najprostsze, zerowy koszt nauki) |
+
+W razie wątpliwości u klienta — domyślnie rekomenduj **Cloudflare Pages + Access** jako most universal. Google-only tylko gdy klient świadomie tego chce.
 
 ---
 

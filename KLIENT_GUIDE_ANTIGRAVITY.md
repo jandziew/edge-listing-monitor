@@ -9,11 +9,13 @@
 Po przerobieniu tego przewodnika będziesz wiedział:
 
 1. **Jak myśleć** o agentowych narzędziach (Gemini, Antigravity, Claude Code) tak, żeby Ci pomagały zamiast Cię frustrować
-2. **Jak rozmawiać z Gemini** żeby z mglistego pomysłu wyciągnąć użyteczną specyfikację
-3. **Jak prowadzić Antigravity** krok po kroku przez budowę aplikacji — gdzie zaufać, gdzie zatrzymać
-4. **Jak bezpiecznie** trzymać klucze API, co nigdy nie commitować, jak nie spalić swojego budżetu na API
-5. **Gdzie wystawić gotowe narzędzie** żeby było dostępne dla Ciebie i Twojego zespołu, ale niedostępne dla świata
-6. **Co dalej** — jak rozwijać narzędzie iteracyjnie, kiedy poprosić o pomoc człowieka
+2. **Jak zaprojektować UI** przez Google Stitch zanim zaczniesz kodować (etap 0, oszczędza 1-2h iteracji)
+3. **Jak rozmawiać z Gemini** żeby z mglistego pomysłu wyciągnąć użyteczną specyfikację (PRD)
+4. **Jak prowadzić Antigravity** krok po kroku przez budowę aplikacji — gdzie zaufać, gdzie zatrzymać
+5. **Jak bezpiecznie** trzymać klucze API, co nigdy nie commitować, jak nie spalić swojego budżetu na API
+6. **Gdzie wystawić gotowe narzędzie** — Cloudflare Pages, Apps Script Web App (Google-only), Cloud Run (hybrid)
+7. **Jaką wybrać bazę danych** — kiedy wystarczą pliki JSON, kiedy Sheets, kiedy Firestore
+8. **Co dalej** — jak rozwijać narzędzie iteracyjnie, kiedy poprosić o pomoc człowieka
 
 ---
 
@@ -54,34 +56,79 @@ Jeśli zapytasz „czy ta apka jest popularna?", agent odpowie zgadując. Jeśli
 ## 2. Flow który będziemy realizować
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  Etap 1: Gemini (chat)         Etap 2: Antigravity         │
-│  ─────────────────────         ───────────────────         │
-│  • opisuję pomysł              • wklejam PRD jako prompt   │
-│  • Gemini stawia pytania       • agent buduje strukturę    │
-│  • finalna spec (PRD.md)       • iteruję, weryfikuję       │
-│                                • commituję do GitHub       │
-│                                                            │
-│  Etap 3: Test lokalnie         Etap 4: Deploy             │
-│  ─────────────────────         ──────────────              │
-│  • odpalam, sprawdzam          • Cloudflare Pages          │
-│  • zmieniam, znów odpalam      • Cloudflare Access (auth)  │
-│  • gdy działa → push           • Cron w GitHub Actions     │
-└─────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│  Etap 0: Stitch (UI)           Etap 1: Gemini (chat)            │
+│  ─────────────────────         ─────────────────────             │
+│  • opisuję jak ma wyglądać     • opisuję funkcjonalność          │
+│  • generuję wireframe          • Gemini stawia pytania           │
+│  • screenshot → do PRD         • finalna spec (PRD.md)           │
+│                                                                  │
+│  Etap 2: Antigravity           Etap 3: Test lokalnie            │
+│  ─────────────────────         ─────────────────────             │
+│  • wklejam PRD + wireframe     • odpalam, sprawdzam              │
+│  • agent buduje strukturę      • zmieniam, znów odpalam          │
+│  • iteruję, weryfikuję         • gdy działa → push               │
+│                                                                  │
+│  Etap 4: Deploy                                                  │
+│  ──────────────                                                  │
+│  • Cloudflare Pages + Access (general default)                   │
+│  • LUB Apps Script Web App (Google-only stack — sekcja 7b)       │
+│  • cron — GitHub Actions LUB Apps Script triggers                │
+└──────────────────────────────────────────────────────────────────┘
 ```
 
-Każdy etap = osobna sekcja niżej.
+Każdy etap = osobna sekcja niżej. Etap 0 (Stitch) jest opcjonalny ale bardzo polecany — wireframe oszczędza 1-2h iteracji w Antigravity bo agent dostaje wizualną kotwicę zamiast tylko opis słowny.
 
 ### Co Ci potrzebne na start
 
 Przed pierwszym etapem załóż konta (wszystkie darmowe):
 
-- **Konto Google** (do Gemini i Google AI Studio) — pewnie już masz
+- **Konto Google** (do Gemini, AI Studio, Stitch) — pewnie już masz
+- **Stitch** — wejdź na [stitch.withgoogle.com](https://stitch.withgoogle.com) i zaloguj kontem Google (350 generacji wireframów / m-c za darmo)
 - **Konto GitHub** ([github.com/signup](https://github.com/signup)) — do trzymania kodu
 - **Antigravity** — ściągnij z [antigravity.google.com](https://antigravity.google.com) lub miejsca które wskaże Ci osoba prowadząca
-- **Konto Cloudflare** ([cloudflare.com/sign-up](https://cloudflare.com/sign-up)) — do deployu
+- **Konto Cloudflare** ([cloudflare.com/sign-up](https://cloudflare.com/sign-up)) — do deployu (lub pomijasz jeśli wybierzesz Google-only stack — sekcja 7b)
 
 Karta kredytowa nie jest potrzebna do żadnego z tych setupów (przy małych projektach mieszczących się w free tier).
+
+---
+
+## 2b. Etap 0 — Stitch: od wyobrażenia do wireframe (opcjonalne, polecane)
+
+### Po co najpierw rysować
+
+Najczęstszy błąd: przychodzisz do Gemini / Antigravity z opisem słownym („dashboard z alertami i historią") i dostajesz coś co _agent_ uważa za dashboard z alertami. Ty miałeś w głowie obraz X, agent zbudował obraz Y, marnujesz godziny na „nie, nie tak miało być, przesuń tu, zmień kolor, dodaj sekcję".
+
+**Wireframe = jeden obrazek wart 500 słów promptu.**
+
+Wklejasz później screenshot wireframe'a do Gemini przy generowaniu PRD i do Antigravity przy pierwszym prompcie — agent ma natychmiast jasność co do układu, czego brakuje, gdzie co ma być.
+
+### Jak używać Stitcha (5-10 min)
+
+1. Otwórz [stitch.withgoogle.com](https://stitch.withgoogle.com), zaloguj kontem Google
+2. **New design** → wpisz opis tekstem, np:
+
+   > „Dashboard webowy dla monitorowania aplikacji w sklepach (App Store, Google Play). Trzy sekcje pod sobą: (1) Alerty — kolorowe karty z ostatnimi zmianami, każda z datą wykrycia i datą wydania, (2) Historia alertów — tabela z timestampami i typem alertu, (3) Current State per aplikacja — karty z ikoną apki, wersją, galerią screenshotów. Górą sticky header z nazwą i datą ostatniej aktualizacji. Po prawej sidebar nawigacyjny z listą monitorowanych aplikacji. Styl: clean, Material Design, lekko niebieskie akcenty, light mode."
+
+3. Stitch wygeneruje wireframe w 30 sekund. Wygląda jak prawdziwa strona, klikalna.
+4. Iteruj: „dodaj filtr po dacie nad sekcją Alerty", „zmień kolor accentów na zielony", „dodaj dark mode toggle w prawym górnym rogu"
+5. Gdy zadowolony — **Export** → zrób **screenshot całej strony** (Cmd+Shift+4 na Mac, Win+Shift+S na Windows) lub użyj wbudowanego eksportu
+
+### Co potem
+
+Masz teraz dwa artefakty:
+- **Opis tekstowy** (Twój prompt do Stitcha) — wklejasz do Gemini przy generowaniu PRD jako „tak ma wyglądać UI"
+- **Screenshot wireframe** — wklejasz do Antigravity jako pierwszy załącznik z promptem („zbuduj dashboard wyglądający tak, oto wireframe")
+
+### Alternatywy do Stitcha (jeśli z jakiegoś powodu nie chcesz)
+
+| Tool | Plus | Minus |
+|------|------|-------|
+| **Figma** (free tier) | Standard branżowy, ogromna biblioteka templates | Krzywa uczenia, nie-AI, sam musisz rysować |
+| **Excalidraw** | Bardzo proste, hand-drawn vibe (świetne na PRD) | Brak AI, brak realnego UI feel |
+| **Pomijam etap 0** | Szybciej zacznę kodować | Agent kombinuje na ślepo, więcej iteracji |
+
+Dla nietechnicznego: **Stitch** jest najprostszy. Tekst → wireframe w 30 sek.
 
 ---
 
@@ -171,22 +218,27 @@ Po 10-15 minutach rozmowy poproś:
 3. Wybierz folder na dysku gdzie ma żyć kod (np. `~/Projects/edge-listing-monitor`)
 4. **Ważne:** jeśli Antigravity pyta o preferowany model, wybierz najnowszy Gemini Pro do planowania, Flash do prostych zadań
 
-### Pierwszy prompt — wbij PRD
+### Pierwszy prompt — wbij PRD + wireframe
 
-Otwórz panel agenta. Wklej dosłownie cały PRD który dostałeś od Gemini, a na początek dopisz krótką ramę:
+Otwórz panel agenta. Wklej cały PRD który dostałeś od Gemini, **załącz screenshot wireframe'a ze Stitcha** (przeciągnij do okna agenta lub użyj przycisku załącz), a na początek dopisz krótką ramę:
 
 > **Pierwszy prompt do Antigravity:**
 > ```
 > Cześć. Jestem nietechnicznym użytkownikiem (marketing). Chcę zbudować z Twoją pomocą
-> mały tool według poniższego PRD. Twoja rola:
+> mały tool według poniższego PRD i wireframe'a.
 >
-> 1. Najpierw przeczytaj PRD i powiedz mi po polsku co dokładnie zamierzasz zrobić,
->    w jakich krokach (lista 5-10 punktów). NIE PISZ jeszcze kodu.
+> Twoja rola:
+> 1. Najpierw przeczytaj PRD, obejrzyj wireframe i powiedz mi po polsku co dokładnie
+>    zamierzasz zrobić, w jakich krokach (lista 5-10 punktów). NIE PISZ jeszcze kodu.
 > 2. Gdy ja zaakceptuję plan, zaczniesz od pierwszego kroku.
 > 3. Po każdym ukończonym kroku zatrzymaj się, pokaż mi co zrobiłeś, poczekaj na moją
 >    akceptację zanim ruszysz dalej.
 > 4. Pisz komentarze w kodzie po polsku — chcę móc kiedyś sam to czytać.
 > 5. Jeśli czegoś nie jesteś pewien — pytaj zamiast zgadywać.
+> 6. Trzymaj się tego co jest w PRD i wireframe. Jeśli chcesz dodać coś co tam nie jest —
+>    najpierw zapytaj.
+>
+> Załącznik: wireframe.png (ze Stitcha)
 >
 > Oto PRD:
 >
@@ -196,6 +248,8 @@ Otwórz panel agenta. Wklej dosłownie cały PRD który dostałeś od Gemini, a 
 > ```
 
 Agent powinien odpowiedzieć **planem działania, nie kodem**. Jeśli od razu zaczął kodować — przerwij i powtórz: „zatrzymaj się, najpierw pokaż plan".
+
+**Bonus:** gdy generujesz dashboard HTML, w jednym z kolejnych promptów napisz „dashboard ma wyglądać tak jak na załączonym wireframie — odtwórz układ jak najwierniej, ale możesz uprościć grafiki." Agent zacznie generować HTML/CSS celowanie pod ten layout.
 
 ### Iteracja krok po kroku — turning points
 
@@ -428,6 +482,133 @@ Realistycznie: **najpierw spróbuj Cloudflare**. Apps Script tylko jeśli korpo 
 
 ---
 
+## 7b. Bonus: pełny Google-only stack (gdy korpo woli wszystko w Workspace)
+
+Niektóre firmy mają politykę „tylko ekosystem Google" — admin nie zgodzi się na Cloudflare, GitHub itp. Wtedy istnieje ścieżka która **całość zamyka w Google Workspace klienta**, zero zewnętrznych usług, dostęp ograniczony do domeny `@firma.com` natywnie.
+
+### Architektura Google-only
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Cała aplikacja zamknięta w Google Workspace klienta            │
+│                                                                 │
+│  Stitch (UI)  →  Antigravity (kod)  →  GitHub (repo)           │
+│       ↓                                       ↓                 │
+│  wireframe                            (publikujesz kod, ale     │
+│                                        nic z niego nie odpala   │
+│                                        się w GitHubie)          │
+│                                                                 │
+│  Apps Script  ←  pobiera kod z GitHuba ręcznie (lub bezpośrednio│
+│       ↓           pisany w Apps Script Editor)                  │
+│                                                                 │
+│       ├──→ Time trigger (cron — 1h / 6h / dzień, free, w UI)   │
+│       ├──→ UrlFetchApp (scrapuje sklepy, API)                  │
+│       ├──→ Google Sheets (jako baza danych — historia alertów) │
+│       ├──→ Properties Service (klucze API — chowane bezpiecznie)│
+│       └──→ HTML Service Web App (dashboard z DOMAIN restriction)│
+│                                  ↓                              │
+│                          Klient otwiera URL                     │
+│                          (Google SSO @firma.com)                │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+Jeden tool (Apps Script) pokrywa: cron + scraper + bazę + secrets + hosting + auth. Wszystko klikalne w przeglądarce, klient widzi dane bezpośrednio w Google Sheets, dashboard pod URLem `*.script.google.com`.
+
+### Plusy
+
+- **Zero kont płatnych, zero kart kredytowych** — wszystko free, nawet bardzo aktywne projekty (~1000 wywołań/dobę) mieszczą się w darmowym limicie
+- **Natywne SSO przez Workspace** — `Execute as: me, Access: Anyone in firma.com` = jeden checkbox, koniec konfiguracji auth
+- **Klient sam widzi dane w Sheets** — możliwość edytowania, filtrowania, robienia własnych pivotów bez programisty
+- **IT firmy nie blokuje** — to ich własny ekosystem
+- **Brak dependency hell** — Apps Script ma Sheets/Drive/Gmail/Calendar API wbudowane, nie instalujesz bibliotek
+
+### Minusy / ograniczenia
+
+| Ograniczenie | Co to znaczy w praktyce |
+|--------------|-------------------------|
+| **Runtime max 6 min** (30 min na Workspace) | Twój scraper musi się mieścić — jeśli scrapujesz 100 apek po 10 sek każda, nie wyrobisz |
+| **Tylko JavaScript** | Python out, biblioteki Pythona out. Większość scrape można zrobić w JS, ale nie wszystko |
+| **Brak Playwright/headless browser** | Strony renderowane przez JS (np. SPA) — trudne. Zwykłe HTML / REST API — OK |
+| **Cold start ~2-5 sek** | Pierwsza wizyta na dashboardzie po przerwie chwilkę chodzi |
+| **Brak version control natywnego** | Edytor Apps Script ma „History" ale to nie git. Workaround: kod też trzymasz w GitHub repo (manual sync) |
+| **Brak dev/prod environments** | Edytujesz produkcję bezpośrednio. Workaround: zrób kopię projektu jako „dev" |
+
+### Kiedy wybrać Google-only zamiast Cloudflare
+
+**Google-only:** gdy klient mówi „IT mi powie nie na rejestrację w Cloudflare", gdy klient ma marginalne wymagania (1-5 apek, prosty dashboard, mały scraper), gdy zależy na tym żeby klient widział dane w Sheets samodzielnie.
+
+**Cloudflare:** gdy potrzebujesz Pythona (np. parsowanie skomplikowanego HTML, biblioteki ML), gdy scrape przekroczy 6 min, gdy chcesz mieć pełny CI/CD i proper code review (GitHub Actions), gdy budujesz coś co później może rosnąć.
+
+### Hybrid (najlepsze z dwóch światów)
+
+Jeśli scrape jest ciężki (Python, długi runtime), ale chcesz zostawić frontend w Google:
+
+```
+GitHub repo (kod Python)  →  Cloud Run + Python container  →  Cloud Scheduler (cron)
+                                       ↓
+                              Firestore lub Google Sheets (baza)
+                                       ↓
+                              Apps Script Web App (frontend, DOMAIN-restricted)
+```
+
+Backend ciężki = Cloud Run (Pythonowy kontener, automatycznie deployowany z GitHuba przez `gcloud run deploy --source .`, Antigravity Ci to skonfiguruje). Frontend lekki = Apps Script (klient widzi przez SSO). Baza wspólna = Sheets (klient klika) albo Firestore (jeśli dane skomplikowane). Koszt: zwykle $0/mies (Cloud Run ma hojny free tier).
+
+### Kiedy w ogóle nie iść w Google-only
+
+Jeśli projekt:
+- ma być sprzedawany jako produkt zewnętrzny (kupują klienci spoza firmy) → standardowy stack (Vercel/Cloudflare) jest bardziej elastyczny
+- używa nietypowych technologii (np. real-time WebSockets, video streaming) → Apps Script nie da rady
+- ma kluczowe SLA dla biznesu → Apps Script ma znane ograniczenia uptime'u, nie nadaje się do critical infra
+
+---
+
+## 7c. Baza danych — kiedy potrzebna i jaką wybrać
+
+Większość mikro-narzędzi nie potrzebuje pełnej bazy danych — wystarczą pliki JSON w repo (jak nasz monitor). Ale czasem chcesz coś więcej: historia z możliwością wyszukiwania, dane z których robisz wykresy, dane które klient sam edytuje.
+
+### Decision tree
+
+```
+Czy klient chce sam EDYTOWAĆ dane (filtrować, dodawać własne notatki)?
+   ├── TAK   → Google Sheets jako DB (Apps Script Sheets API)
+   └── NIE   → idź dalej
+
+Czy dane to skomplikowany JSON z zagnieżdżeniami (np. snapshoty z wieloma poziomami)?
+   ├── TAK   → Firestore (NoSQL, free tier 50k reads/dobę)
+   └── NIE   → idź dalej
+
+Czy dane to proste rekordy z relacjami (klienci → zamówienia → produkty)?
+   ├── TAK   → Cloud SQL (Postgres, ale to już $10+/mies)
+   └── NIE   → JSON pliki w repo wystarczą
+```
+
+### Google Sheets jako DB — kiedy świetna
+
+- **<10 000 wierszy** (potem zaczyna wolno działać)
+- **Mało zapisów** (max kilka/min) — Sheets nie znosi setek zapisów na sekundę
+- **Klient chce widzieć dane bezpośrednio** — wchodzi w arkusz, sortuje, filtruje, robi pivot table
+- **Płaska struktura** — kolumny i wiersze. JSON-y zagnieżdżone trzeba flattenować
+
+W naszym przypadku (Edge monitor) — historię alertów (dziś `history/alerts.jsonl`) **mogłaby być w Sheets** zamiast pliku JSONL. Klient by widział tabelę, sortował po dacie, filtrował per apka. Plus na drugim arkuszu w tym samym pliku — lista apek do monitorowania (zamiast `config.yaml`).
+
+### Firestore — kiedy ma sens
+
+- Dane to **JSON z poziomami** (np. nasz `snapshots/microsoft-edge_ios.json` z zagnieżdżonymi obrazami i IAE)
+- Robisz **wyszukiwanie** po konkretnych polach (np. „pokaż wszystkie alerty z marca")
+- Spodziewasz się **wielu czytelników/zapisów** jednocześnie
+- Free tier (50k reads / 20k writes / dobę) wystarczy dla projektów ~100 zmian/dobę
+
+### Kiedy NIE używać żadnej bazy
+
+Jeśli:
+- Dane to po prostu „snapshot stanu" (jak nasze JSON-y)
+- Nie potrzebujesz wyszukiwania / filtrowania (tylko ostatni stan + historia commitów w git)
+- Nie chcesz wprowadzać kolejnej warstwy do nauczenia
+
+Wtedy **pliki JSON w repo + git history** to KISS-owe rozwiązanie (Keep It Simple Stupid). Robocze i zrozumiałe.
+
+---
+
 ## 8. Co dalej — iteracje i serie filmików
 
 ### Jak iterować z agentem po pierwszym MVP
@@ -508,9 +689,10 @@ Razem: ~60 minut materiału, podzielonego na strawne kawałki.
 - Mały krok → sprawdź → kolejny krok
 - Opisuj _co_ i _jak poznasz że się udało_, nie _jak_
 - Agent nie wie czego nie wie
+- Wireframe = jeden obrazek wart 500 słów promptu
 
 **Flow:**
-- Gemini chat → PRD → Antigravity → test lokalnie → push do GitHub → Cloudflare Pages + Access → cron w GitHub Actions
+- Stitch (wireframe) → Gemini chat (PRD) → Antigravity (build) → test lokalnie → push do GitHub → deploy
 
 **Bezpieczeństwo:**
 - `.env` w `.gitignore` — zawsze
@@ -523,9 +705,22 @@ Razem: ~60 minut materiału, podzielonego na strawne kawałki.
 - Jeśli agent zaczyna kombinować — „chcę najprostsze, MVP nie produkcja"
 - Jeśli nie rozumiesz — „wytłumacz po polsku jakbyś tłumaczył dziecku"
 
-**Deploy dla korpo:**
-- Cloudflare Pages + Access (email OTP) — rekomendacja
-- Fallback: Google Apps Script (wszystko w Workspace firmy)
+**Deploy — decision tree:**
+- **Cloudflare Pages + Access** (email OTP) — general default, działa wszędzie
+- **Apps Script Web App** (Google-only stack) — gdy korpo nie puści Cloudflare, klient ma Workspace
+- **Cloud Run + IAM** (hybrid) — gdy potrzebny Python, dłuższy runtime, ale dashboard ma być w Workspace
+- **GitHub Pages** — tylko jeśli repo publiczne i klient OK z tym
+
+**Baza danych — decision tree:**
+- **Brak (JSON w repo)** — gdy dane to snapshot stanu, nie potrzebujesz search
+- **Google Sheets** — gdy klient chce edytować/filtrować, <10k wierszy, mało zapisów
+- **Firestore** — gdy JSON skomplikowany, dużo zapisów, free tier hojny
+- **Cloud SQL / Postgres** — gdy relacyjne dane z prawdziwą złożonością ($10+/mies)
+
+**Cron:**
+- **GitHub Actions** — gdy kod w GitHub, scrape może trwać do 6h, 2000 min free/mies
+- **Apps Script time triggers** — gdy logika w Apps Script, max 6 min run, w UI 3 kliknięcia
+- **Cloud Scheduler** — gdy backend na Cloud Run, $0.10/job/m-c (3 free)
 
 **Kiedy zatrzymać i zawołać developera:**
 - Prawdziwe dane klientów firmy

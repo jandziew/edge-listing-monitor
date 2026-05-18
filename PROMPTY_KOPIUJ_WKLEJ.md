@@ -6,6 +6,76 @@
 
 ---
 
+## G. GOOGLE STITCH — wireframe zanim zaczniesz kodować
+
+> Stitch ([stitch.withgoogle.com](https://stitch.withgoogle.com)) generuje wireframe całej strony z opisu tekstowego. Free tier: 350 generacji/m-c. Output: klikalny mockup, eksportowalny screenshot. Wireframe potem wklejasz do Gemini (przy PRD) i do Antigravity (przy budowie) — agent ma wizualną kotwicę.
+
+### G1. Pierwszy prompt do Stitcha — od pomysłu do wireframe
+
+```
+[OPISZ APLIKACJĘ JEDNYM ZDANIEM, np: "Dashboard webowy do monitorowania zmian
+w listingach aplikacji w App Store i Google Play"]
+
+Layout strony (od góry do dołu):
+1. Sticky header: logo + nazwa aplikacji po lewej, data ostatniej aktualizacji
+   i toggle dark/light po prawej
+2. Sidebar po lewej (sticky, ~250px szerokości): lista monitorowanych aplikacji,
+   przy każdej liczba aktywnych alertów (kropka kolorowa)
+3. Main content (reszta szerokości), trzy sekcje pod sobą:
+   a) "Alerty" — kolorowe karty z najnowszymi zmianami, każda z datą wykrycia,
+      datą wydania (jeśli inna), badge'em typu (NEW RELEASE / VISUAL / TEXT / IAE)
+   b) "Historia alertów" — tabela: kolumny [Data wykrycia | Data wydania | Źródło |
+      Co się zmieniło], sortowalna
+   c) "Current State per aplikacja" — karta z ikoną apki, wersją, oceną,
+      poziomą galerią screenshotów, zwijaną sekcją "release notes"
+4. Footer: małe linki "Repo na GitHubie" i "Co to za narzędzie"
+
+Styl: clean, Material Design 3, jasne tło, niebieskie akcenty (#1a73e8),
+font Inter, dużo whitespace. Inspiracja: dashboardy Linear, Notion, Stripe.
+
+Wygeneruj wireframe całej strony (desktop, ~1440px szeroki).
+```
+
+### G2. Iteracja — zmiana fragmentu wireframe'a
+
+```
+W obecnym wireframie zmień:
+- [KONKRETNA ZMIANA, np: "kolor akcentów na zielony (#10b981) zamiast niebieskiego"]
+- [DRUGA ZMIANA, np: "dodaj filtry nad tabelą Historia: dropdown 'Wszystkie / Tylko nowe
+   wydania / Tylko zmiany wizualne' + range picker dat"]
+- [TRZECIA ZMIANA, np: "kafelki w sekcji Alerty mają być węższe — 3 na rząd zamiast 1"]
+
+Zostaw resztę bez zmian.
+```
+
+### G3. Mobile version — generacja wersji mobile
+
+```
+Wygeneruj wersję mobile (390px szerokości) tego samego dashboardu. Reguły:
+- Sidebar staje się sticky bottom navigation z 4 ikonami (Alerty, Historia, Aplikacje,
+  Settings)
+- Karty alertów rozciągają się na pełną szerokość, jedna pod drugą
+- Tabela Historia → karty (każdy wiersz jako osobna karta), bo tabela się nie zmieści
+- Galeria screenshotów → carousel z dot indicators
+
+Zachowaj kolory, font, styl identyczny jak desktop.
+```
+
+### G4. Export wireframe'a do dalszej pracy
+
+```
+OK, ten wireframe mi odpowiada. Wygeneruj mi:
+1. Lista wszystkich komponentów UI które są na stronie (każdy z nazwą i krótkim opisem,
+   max 1 zdanie) — przekażę to do Antigravity jako kontekst
+2. Lista wszystkich kolorów użytych (HEX) + użyte fonty
+3. Krótki opis interakcji (co się dzieje gdy klikam X, najadę myszką na Y) — jeśli
+   wireframe nie pokazuje, zaproponuj sensowne defaults
+
+Wszystko po polsku, w formacie Markdown żebym mógł wkleić jako załącznik do PRD.
+```
+
+---
+
 ## A. GEMINI — sesja od pomysłu do PRD
 
 ### A1. Start sesji z Gemini (zawsze pierwszy)
@@ -459,6 +529,180 @@ ich podstawie zaproponuj mi gotowy prompt który mogę użyć w naszej rozmowie.
 Przy okazji zrobienia tego co cię proszę, naucz mnie po polsku co to znaczy
 [KONCEPT — np. "co to są dependencies w Pythonie", "co to jest cron", "co to jest API"].
 Krótko, 3-5 zdań, jakbyś tłumaczył nietechnicznemu.
+```
+
+---
+
+---
+
+## H. GOOGLE-ONLY STACK — Apps Script + Sheets + Stitch
+
+> Gdy korpo nie puszcza Cloudflare/GitHuba i wszystko musi być w Google Workspace. Apps Script pokrywa: scraper, cron, baza (Sheets), secrets (Properties Service), hosting (Web App z DOMAIN restriction).
+
+### H1. Decyzja: czy mój projekt zmieści się w Apps Script?
+
+```
+Mam pomysł na narzędzie: [OPIS, 2-3 zdania].
+
+Sprawdź czy zmieści się w Apps Script biorąc pod uwagę ograniczenia:
+- max 6 min runtime (30 min na Workspace) per uruchomienie
+- tylko JavaScript (Python out)
+- brak Playwright / headless browser (działa tylko regular HTML/REST API)
+- bazą może być Google Sheets (~10k wierszy max sensownie)
+- frontend = HTML wygenerowany w Apps Script (jeden plik HTML, statyczny lub generowany)
+
+Powiedz mi:
+1. Czy MOŻNA to zrobić w Apps Script tak/nie + uzasadnienie 1-2 zdania
+2. Jeśli nie — jakie jest minimum tech które musi być poza Apps Script (np. "scraper musi
+   być na Cloud Run bo trwa >6 min")
+3. Hybrid stack który zaproponowałbyś (np. "Cloud Run dla scrapera + Apps Script dla
+   dashboardu i bazy")
+```
+
+### H2. Setup nowego projektu Apps Script
+
+```
+Stwórz mi w Apps Script projekt o nazwie [NAZWA, np: "Edge Listing Monitor"].
+Wytłumacz krok po kroku (po polsku, jakbyś tłumaczył pierwszy raz w życiu):
+
+1. Jak wejść do Apps Script Editor (script.google.com vs przez konkretny Sheet)
+2. Jaką strukturę plików utworzyć (typowo: Code.gs, Scraper.gs, Dashboard.gs, index.html,
+   Properties.gs)
+3. Jak nazwać te pliki konsystentnie
+
+Nie pisz jeszcze treści — najpierw chcę zrozumieć strukturę.
+```
+
+### H3. Scraper w Apps Script (zamiast Pythona)
+
+```
+Napisz w Apps Script scraper który:
+1. Pobiera [URL, np: "https://itunes.apple.com/lookup?bundleId=com.microsoft.msedge"]
+   używając UrlFetchApp
+2. Parsuje response (JSON lub HTML — wybierz odpowiedni parser)
+3. Wyciąga pola: [LISTA PÓL, np: "version, description, screenshotUrls"]
+4. Zwraca obiekt JS
+
+Ważne:
+- Komentarze po polsku
+- Obsłuż błąd gdy fetch padnie (zwróć null + zalogowa przez Logger)
+- Jeśli używasz parsera HTML — użyj XmlService (wbudowany) lub regex (prościej dla
+  prostych przypadków)
+
+Pokaż mi też jak uruchomić tę funkcję ręcznie w edytorze (przycisk "Run").
+```
+
+### H4. Google Sheets jako baza — write/read
+
+```
+Chcę używać Google Sheets jako bazy danych w tym projekcie. Setup:
+- Spreadsheet ID: [TWÓJ ID — wyciągasz z URL arkusza]
+- Arkusz "alerts" — kolumny [Timestamp, App, Platform, Type, Old Value, New Value, Detected By]
+- Arkusz "apps" — lista monitorowanych: [Name, Slug, iOS Bundle ID, Android Package, Enabled]
+
+Napisz funkcje (po polsku komentarze):
+1. appendAlert(alertObj) — dopisuje nowy alert na końcu arkusza "alerts"
+2. getAllApps() — czyta arkusz "apps" gdzie Enabled=TRUE, zwraca listę obiektów
+3. loadSnapshot(appSlug, platform) — czyta ostatni snapshot dla apki z dedykowanego
+   arkusza "snapshots_[appSlug]_[platform]" (jeden arkusz per apka × platforma)
+4. saveSnapshot(appSlug, platform, snapshotObj) — zapisuje (overwrite cały arkusz)
+
+Zaprojektuj pod założenie że klient otworzy ten Sheet ręcznie żeby przejrzeć dane —
+więc dane mają być czytelne, kolumny szerokie, daty w formacie YYYY-MM-DD HH:MM.
+```
+
+### H5. Secrets (Properties Service)
+
+```
+Nie chcę trzymać klucza API w kodzie. Pokaż mi:
+1. Jak ustawić właściwość projektu (Script Property) o nazwie GEMINI_API_KEY z wartością
+   "AIzaSy..." — krok po kroku w UI Apps Script (gdzie kliknąć, co wpisać)
+2. Jak czytać tę właściwość w kodzie (`PropertiesService.getScriptProperties().getProperty(...)`)
+3. Jak zrobić to bezpiecznie — czy te properties są szyfrowane, kto ma do nich dostęp,
+   czy commitują się do projektu jeśli udostępnię go komuś innemu
+
+Wytłumacz po polsku, jakbym był pierwszy raz z tym narzędziem.
+```
+
+### H6. Time-driven trigger (cron co X godzin)
+
+```
+Chcę żeby funkcja `runMonitor()` uruchamiała się co [CZĘSTOTLIWOŚĆ, np: 6 godzin]
+automatycznie. Pokaż mi:
+
+1. Jak ustawić time-driven trigger w UI Apps Script (gdzie kliknąć: Triggers → Add trigger,
+   jakie opcje wybrać dla "hour timer" vs "day timer")
+2. Czy lepiej zrobić to programowo (przez `ScriptApp.newTrigger(...)`) czy w UI — porównaj
+   plusy/minusy
+3. Jak sprawdzić logi z poprzednich uruchomień (Executions tab)
+4. Co zrobić gdy trigger przekroczy 6 min limit — czy mam dostać alert na mail
+```
+
+### H7. Dashboard jako HTML Service Web App z DOMAIN restriction
+
+```
+Chcę wystawić dashboard jako Apps Script Web App dostępny tylko dla mojej firmy
+(domena @firma.com). Wymagania:
+
+1. Plik index.html — wygeneruj statyczny HTML (Tailwind przez CDN) renderujący dane
+   z arkusza "alerts" (czytane przez Sheets API w `doGet()`)
+2. Funkcja `doGet()` w Code.gs — czyta dane, renderuje HTML z `HtmlService.createTemplateFromFile('index')`
+3. Deploy: pokaż mi krok po kroku jak zrobić Deploy → New Deployment → Web App:
+   - Description: "Production v1"
+   - Execute as: "Me"
+   - Who has access: "Anyone in [firma.com]"
+4. Dostanę URL typu `https://script.google.com/macros/s/.../exec` — czy ten URL można
+   zmienić na ładniejszy?
+5. Jak klienci się logują (Google SSO automatyczne, czy muszą coś zatwierdzać przy
+   pierwszym wejściu)
+
+Wytłumacz wszystko po polsku, krok po kroku.
+```
+
+### H8. Hybrid: Cloud Run scraper + Apps Script frontend
+
+```
+Mój scraper jest za ciężki na Apps Script (Python, długi runtime). Hybrid stack:
+- Backend (scraper + cron): Cloud Run z Pythonem
+- Baza: Google Sheets (klient sam widzi)
+- Frontend: Apps Script Web App z DOMAIN restriction
+
+Zaprojektuj architekturę:
+1. Cloud Run service deployowany z `gcloud run deploy --source .` z folderu Python
+2. Cloud Scheduler trigger co 6h → POST na Cloud Run service URL
+3. Cloud Run service: scrapuje, zapisuje wynik do Google Sheets (przez Sheets API
+   z service account)
+4. Apps Script Web App: czyta z Sheets, renderuje HTML
+
+Sekrety:
+- W Cloud Run: zmienne środowiskowe (przez `gcloud run deploy --set-env-vars`)
+  lub Secret Manager
+- W Apps Script: Properties Service
+
+Powiedz mi:
+1. Jak skonfigurować service account dla Cloud Run żeby miał write access do Sheets
+2. Czy Cloud Scheduler jest free dla naszego case'a (1 job, 4x dziennie)
+3. Jak debugować gdy coś padnie (gdzie sprawdzić logi — Cloud Run Logs, Sheets edit
+   history, Apps Script Executions)
+
+Nie generuj jeszcze kodu — najpierw chcę zrozumieć całą architekturę i co gdzie żyje.
+```
+
+### H9. Migracja istniejącego Python-projektu na Apps Script
+
+```
+Mam projekt w Pythonie który chciałbym przepisać na Apps Script (gdzie się da).
+Repo: [link do GitHub repo lub wklej najważniejsze pliki].
+
+Twoja robota:
+1. Przeanalizuj projekt — wymień wszystkie zewnętrzne biblioteki Pythona które używam
+2. Dla każdej powiedz: czy ma natywny odpowiednik w Apps Script (np. `requests` → `UrlFetchApp`),
+   da się obejść (np. `PIL` → przesłać do Vision API), czy NIE da się sensownie zrobić
+   (np. `playwright` → zostaw scraper na Cloud Run)
+3. Zaproponuj minimalną wersję projektu na Apps Script (co odpada, co zostaje)
+4. Oszacuj effort migracji (godziny pracy z agentem)
+
+Nie zaczynaj migrować — najpierw chcę zrozumieć skalę i czy w ogóle warto.
 ```
 
 ---
