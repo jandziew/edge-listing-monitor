@@ -296,12 +296,38 @@ def save_snapshot(app_slug: str, platform: str, snapshot: dict) -> None:
         json.dump(snapshot, f, indent=2, ensure_ascii=False)
 
 
+# Pola które tickają same z siebie (każdy nowy review / każda nowa ocena = zmiana).
+# Nie sygnalizują działania Microsoftu / Google'a, tylko ruch userów. Filtrujemy.
+NOISE_TEXT_FIELDS = {"rating_count", "rating_average"}
+
+
+def _is_noise_only(alert: dict) -> bool:
+    """True jeśli alert nie ma żadnego realnego sygnału — tylko rating tickował.
+    Defensive — `detect_text_changes` już te pola pomija, ale jakby ktoś kiedyś
+    dorzucił je z powrotem, ten guard chroni historię przed zaśmieceniem.
+    """
+    if alert.get("is_new_release"):
+        return False
+    if alert.get("n_visual_changes") or alert.get("n_iae_changes") or alert.get("n_sections"):
+        return False
+    fields = set(alert.get("changed_fields") or [])
+    if not fields:
+        return False  # może to MS release note bez fieldów — nie noise
+    return fields.issubset(NOISE_TEXT_FIELDS)
+
+
 def append_alert_to_history(alert: dict) -> None:
     """Dopisuje wpis do history/alerts.jsonl (JSON Lines — jedna linijka = jeden alert).
 
     Format append-only — git pamięta pełną historię, plik rośnie liniowo ale wolno
     (kilka KB / alert). Czytane wstecz przez load_alert_history().
+
+    Pure noise (tylko ticking rating) skipujemy z guardrailem żeby historia była
+    czysta i pokazywała tylko realne zmiany w aplikacji.
     """
+    if _is_noise_only(alert):
+        print(f"[INFO] Skipping noise-only alert (changed_fields={alert.get('changed_fields')})")
+        return
     with open(ALERTS_HISTORY_PATH, "a", encoding="utf-8") as f:
         f.write(json.dumps(alert, ensure_ascii=False) + "\n")
 
