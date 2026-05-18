@@ -1,295 +1,535 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en" x-data="dashboard()" x-cloak :class="{ 'dark': darkMode }">
 <head>
     <meta charset="UTF-8">
-    <title>Edge Listing Monitor — Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Edge Listing Monitor</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
-        .change-card { transition: transform 0.15s; }
-        .change-card:hover { transform: translateY(-2px); }
-        .diff-line { display: block; white-space: pre-wrap; word-wrap: break-word; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; padding: 1px 6px; }
-        .diff-add { background: #e6ffec; color: #0a3622; }
-        .diff-add::before { content: "+ "; color: #1a7f37; font-weight: 700; }
-        .diff-remove { background: #ffebe9; color: #82071e; text-decoration: line-through; opacity: 0.85; }
-        .diff-remove::before { content: "− "; color: #cf222e; font-weight: 700; text-decoration: none; }
-        .diff-context { color: #57606a; }
-        .ss-thumb { transition: transform 0.2s; cursor: zoom-in; }
-        .ss-thumb:hover { transform: scale(1.05); }
-        details > summary { cursor: pointer; user-select: none; }
+        [x-cloak] { display: none !important; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgb(203 213 225); border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: rgb(51 65 85); }
+
+        .diff-line { display: block; white-space: pre-wrap; word-wrap: break-word; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 2px 8px; line-height: 1.5; }
+        .diff-add { background: rgba(34, 197, 94, 0.12); color: rgb(20, 83, 45); }
+        .dark .diff-add { background: rgba(34, 197, 94, 0.15); color: rgb(187, 247, 208); }
+        .diff-add::before { content: "+ "; font-weight: 700; opacity: 0.6; }
+        .diff-remove { background: rgba(239, 68, 68, 0.12); color: rgb(127, 29, 29); }
+        .dark .diff-remove { background: rgba(239, 68, 68, 0.15); color: rgb(254, 202, 202); }
+        .diff-remove::before { content: "− "; font-weight: 700; opacity: 0.6; }
+        .diff-context { color: rgb(100, 116, 139); }
+        .dark .diff-context { color: rgb(148, 163, 184); }
+
+        .nav-item { transition: background-color 0.12s; }
+        .ss-thumb { transition: transform 0.18s, box-shadow 0.18s; cursor: zoom-in; }
+        .ss-thumb:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(0,0,0,0.12); }
+
+        details > summary { cursor: pointer; user-select: none; list-style: none; }
         details > summary::-webkit-details-marker { display: none; }
-        .badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; text-transform: uppercase; letter-spacing: 0.03em; }
+        details[open] > summary .chevron { transform: rotate(90deg); }
+        .chevron { transition: transform 0.15s; }
+
+        /* Lightbox */
+        .lightbox-overlay { background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <div class="max-w-6xl mx-auto p-6 md:p-8">
-        <header class="mb-8 flex items-baseline justify-between flex-wrap gap-2">
-            <div>
-                <h1 class="text-4xl font-bold text-gray-900">Edge Listing Monitor</h1>
-                <p class="text-gray-500 mt-1">Ostatnia aktualizacja: <span class="font-mono">{{ generated_at }}</span></p>
-            </div>
-            <nav class="text-sm text-gray-600 flex gap-4 flex-wrap">
-                <a href="#alerts" class="hover:text-blue-600">Alerty</a>
-                <a href="#history" class="hover:text-blue-600">Historia</a>
-                <a href="#current" class="hover:text-blue-600">Current State</a>
-                <a href="#ms-relnotes" class="hover:text-blue-600">MS release notes</a>
-            </nav>
-        </header>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen antialiased">
 
-        {# ============================================================ #}
-        {# SEKCJA 1: Alerty (zmiany od ostatniego runu)                  #}
-        {# ============================================================ #}
-        <section id="alerts" class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Alerty — co się zmieniło</h2>
-
-            {% if not all_changes and not ms_release_alerts %}
-                <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
-                    Brak zmian od ostatniego runu.
+<!-- ============================================================ -->
+<!-- HEADER                                                       -->
+<!-- ============================================================ -->
+<header class="sticky top-0 z-30 bg-white/80 dark:bg-slate-900/80 backdrop-blur border-b border-slate-200 dark:border-slate-800">
+    <div class="px-4 md:px-6 h-14 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <button @click="sidebarOpen = !sidebarOpen" class="lg:hidden p-2 -ml-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800">
+                <!-- menu icon -->
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">E</div>
+                <div>
+                    <h1 class="text-sm font-semibold leading-tight">Edge Listing Monitor</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">{{ generated_at }}</span></p>
                 </div>
-            {% endif %}
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="https://github.com/jandziew/edge-listing-monitor" target="_blank"
+               class="hidden sm:flex items-center gap-1.5 text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-3 py-1.5 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800">
+                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.56 0-.28-.01-1.02-.02-2-3.2.7-3.87-1.54-3.87-1.54-.52-1.32-1.28-1.68-1.28-1.68-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.7 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.47.11-3.07 0 0 .97-.31 3.18 1.18a11.04 11.04 0 0 1 5.78 0c2.21-1.49 3.18-1.18 3.18-1.18.63 1.6.23 2.78.11 3.07.74.81 1.19 1.84 1.19 3.1 0 4.43-2.69 5.41-5.25 5.69.41.35.78 1.05.78 2.12 0 1.53-.01 2.76-.01 3.14 0 .31.21.67.8.56C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5Z"/></svg>
+                Repo
+            </a>
+            <button @click="darkMode = !darkMode" class="p-2 rounded-md hover:bg-slate-100 dark:hover:bg-slate-800" :title="darkMode ? 'Light mode' : 'Dark mode'">
+                <svg x-show="!darkMode" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+                <svg x-show="darkMode" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" x-cloak><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+            </button>
+        </div>
+    </div>
+</header>
 
-            {# Microsoft official release alerts pierwsze — najważniejsze #}
+<div class="flex">
+
+    <!-- ============================================================ -->
+    <!-- SIDEBAR                                                      -->
+    <!-- ============================================================ -->
+    <aside
+        :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'"
+        class="fixed lg:sticky top-14 left-0 z-20 w-64 h-[calc(100vh-3.5rem)] bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-transform overflow-y-auto">
+        <nav class="p-3 space-y-1">
+            <button @click="view='overview'; sidebarOpen=false"
+                :class="view==='overview' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+                Overview
+            </button>
+
+            <div class="pt-3 pb-1 px-3">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">Apps</p>
+            </div>
+            {% set apps_grouped = {} %}
+            {% for s in all_current_states %}
+                {% if apps_grouped.update({s.app_slug: apps_grouped.get(s.app_slug, []) + [s]}) %}{% endif %}
+            {% endfor %}
+            {% for slug, states in apps_grouped.items() %}
+                {% set app_alert_count = namespace(n=0) %}
+                {% for c in all_changes %}{% if c.app_slug == slug %}{% set app_alert_count.n = app_alert_count.n + 1 %}{% endif %}{% endfor %}
+                <button @click="view='app-{{ slug }}'; sidebarOpen=false"
+                    :class="view==='app-{{ slug }}' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                    class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-left">
+                    <span class="flex items-center gap-2.5">
+                        {% if states[0].icon_path %}
+                            <img src="{{ states[0].icon_path }}" alt="" class="w-5 h-5 rounded">
+                        {% else %}
+                            <div class="w-5 h-5 rounded bg-slate-200 dark:bg-slate-700"></div>
+                        {% endif %}
+                        {{ states[0].app_name }}
+                    </span>
+                    {% if app_alert_count.n > 0 %}
+                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">{{ app_alert_count.n }}</span>
+                    {% endif %}
+                </button>
+            {% endfor %}
+
+            <div class="pt-3 pb-1 px-3">
+                <p class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider">More</p>
+            </div>
+            <button @click="view='history'; sidebarOpen=false"
+                :class="view==='history' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Alert history
+                {% if alert_history %}<span class="ml-auto text-xs text-slate-500">{{ alert_history|length }}</span>{% endif %}
+            </button>
+            <button @click="view='changelog'; sidebarOpen=false"
+                :class="view==='changelog' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                MS official changelog
+            </button>
+        </nav>
+
+        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+            <p>Cron runs every 6h via GitHub Actions.</p>
+            <p class="mt-1">Last run: <span class="font-mono">{{ generated_at }}</span></p>
+        </div>
+    </aside>
+
+    <!-- Sidebar overlay (mobile) -->
+    <div x-show="sidebarOpen" @click="sidebarOpen=false" class="fixed inset-0 z-10 bg-black/40 lg:hidden" x-cloak></div>
+
+    <!-- ============================================================ -->
+    <!-- MAIN CONTENT                                                 -->
+    <!-- ============================================================ -->
+    <main class="flex-1 min-w-0 px-4 md:px-8 py-6 max-w-6xl mx-auto lg:mx-0">
+
+        {# ============================================================ #}
+        {# VIEW: OVERVIEW                                                #}
+        {# ============================================================ #}
+        <div x-show="view==='overview'">
+            <h2 class="text-2xl font-bold mb-1">Overview</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Everything in one glance — current state of monitored app listings.</p>
+
+            {# Metric cards #}
+            {% set ns = namespace(new_releases=0, total_visual=0, total_iae=0) %}
+            {% for c in all_changes %}
+                {% if c.is_new_release %}{% set ns.new_releases = ns.new_releases + 1 %}{% endif %}
+                {% set ns.total_visual = ns.total_visual + (c.visual_changes|length) %}
+                {% set ns.total_iae = ns.total_iae + (c.iae_changes|length) %}
+            {% endfor %}
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active alerts</p>
+                    <p class="mt-2 text-3xl font-bold {% if all_changes %}text-amber-600 dark:text-amber-400{% else %}text-slate-400{% endif %}">{{ all_changes|length }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">New releases</p>
+                    <p class="mt-2 text-3xl font-bold {% if ns.new_releases %}text-emerald-600 dark:text-emerald-400{% else %}text-slate-400{% endif %}">{{ ns.new_releases }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Apps monitored</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">{{ apps_grouped|length }}</p>
+                </div>
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
+                    <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alerts logged</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">{{ alert_history|length }}</p>
+                </div>
+            </div>
+
+            {# Microsoft official release alerts #}
             {% for ms_change in ms_release_alerts %}
-                <div class="mb-6 bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
-                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-                        <h3 class="text-xl font-semibold text-gray-900">
-                            Microsoft official release notes — kanał {{ ms_change.channel }}
-                        </h3>
-                        <span class="badge bg-blue-100 text-blue-800">NEW VERSION</span>
-                    </div>
-                    <div class="text-xs text-gray-500 mb-3">
-                        Wykryte: <span class="font-mono">{{ generated_at }}</span>
-                    </div>
-                    {% for v in ms_change.new_versions %}
-                        <div class="mt-3 pl-4 border-l-2 border-blue-200">
-                            <div class="text-gray-900 font-semibold">
-                                v{{ v.version }}
-                                <span class="text-sm font-normal text-gray-600">({{ v.platforms|join(", ") }})</span>
-                                <span class="text-sm font-normal text-emerald-700 ml-1" title="data publikacji przez Microsoft">— wydane {{ v.date }}</span>
-                            </div>
-                            {% for s in v.sections %}
-                                <details class="mt-2">
-                                    <summary class="text-sm text-gray-700 font-medium">{{ s.heading }}</summary>
-                                    <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1 ml-2">{{ s.body }}</pre>
-                                </details>
-                            {% endfor %}
+                <div class="mb-4 bg-white dark:bg-slate-900 rounded-xl border border-blue-200 dark:border-blue-900 overflow-hidden">
+                    <div class="px-5 py-3 bg-blue-50 dark:bg-blue-950/50 border-b border-blue-200 dark:border-blue-900 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                            <h3 class="font-semibold text-blue-900 dark:text-blue-200">Microsoft official release notes — {{ ms_change.channel }} channel</h3>
                         </div>
-                    {% endfor %}
+                        <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-blue-600 text-white">NEW</span>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        {% for v in ms_change.new_versions %}
+                            <div>
+                                <p class="font-semibold">v{{ v.version }} <span class="text-sm font-normal text-slate-500 dark:text-slate-400">({{ v.platforms|join(", ") }}) — published {{ v.date }}</span></p>
+                                {% for s in v.sections %}
+                                    <details class="mt-2 group">
+                                        <summary class="flex items-center gap-1 text-sm font-medium text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                            {{ s.heading }}
+                                        </summary>
+                                        <pre class="mt-2 ml-4 text-xs text-slate-600 dark:text-slate-400 whitespace-pre-wrap font-sans">{{ s.body }}</pre>
+                                    </details>
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
                 </div>
             {% endfor %}
 
+            {# Recent app alerts #}
+            <h3 class="text-lg font-semibold mb-3 mt-8">Recent alerts</h3>
+            {% if not all_changes %}
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300 font-medium">All clear</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">No changes detected since the last run.</p>
+                </div>
+            {% endif %}
             {% for app_change in all_changes %}
-                <section class="change-card mb-6 bg-white rounded-lg shadow p-6
-                    {% if app_change.is_new_release %}border-l-4 border-emerald-500{% endif %}">
-                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
-                        <h3 class="text-xl font-semibold text-gray-900">
+                <article class="mb-4 bg-white dark:bg-slate-900 rounded-xl border {% if app_change.is_new_release %}border-emerald-300 dark:border-emerald-800{% else %}border-slate-200 dark:border-slate-800{% endif %} overflow-hidden">
+                    <div class="px-5 py-3 flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
                             {% if app_change.is_new_release %}
-                                <span class="badge bg-emerald-100 text-emerald-800 mr-2">NEW RELEASE</span>
+                                <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500 text-white">NEW RELEASE</span>
                             {% endif %}
-                            {{ app_change.app_name }}
-                            <span class="badge ml-2
-                                {% if app_change.platform == 'ios' %}bg-gray-200 text-gray-800
-                                {% else %}bg-green-100 text-green-800{% endif %}">
+                            <h4 class="font-semibold">{{ app_change.app_name }}</h4>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded {% if app_change.platform == 'ios' %}bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300{% else %}bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300{% endif %}">
                                 {{ app_change.platform|upper }}
                             </span>
                             {% if app_change.is_new_release %}
-                                <span class="text-sm font-normal text-gray-500 ml-2">
-                                    v{{ app_change.old_version }} → <strong class="text-emerald-700">v{{ app_change.new_version }}</strong>
-                                </span>
+                                <span class="text-sm text-slate-500 dark:text-slate-400">v{{ app_change.old_version }} → <strong class="text-emerald-700 dark:text-emerald-400">v{{ app_change.new_version }}</strong></span>
                             {% endif %}
-                        </h3>
+                        </div>
                         {% if app_change.store_url %}
-                            <a href="{{ app_change.store_url }}" target="_blank"
-                               class="text-blue-600 hover:underline text-sm">
-                                Zobacz w sklepie →
-                            </a>
+                            <a href="{{ app_change.store_url }}" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
                         {% endif %}
                     </div>
-                    <div class="text-xs text-gray-500 mb-4 flex gap-4 flex-wrap">
-                        <span title="kiedy nasz cron to złapał">
-                            Wykryte: <span class="font-mono">{{ app_change.detected_at|string|truncate(19,true,"") }}</span>
-                        </span>
+
+                    <div class="px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex gap-4 text-xs">
+                        <span class="text-slate-500 dark:text-slate-400">Detected <span class="font-mono text-slate-700 dark:text-slate-300">{{ app_change.detected_at|string|truncate(19,true,"") }}</span></span>
                         {% if app_change.store_release_date %}
-                            <span class="text-emerald-700" title="data wydania wg sklepu">
-                                Wydane: <span class="font-mono">{{ app_change.store_release_date|string|truncate(19,true,"") }}</span>
-                            </span>
+                            <span class="text-emerald-700 dark:text-emerald-400">Released <span class="font-mono">{{ app_change.store_release_date|string|truncate(19,true,"") }}</span></span>
                         {% endif %}
                     </div>
 
-                    {# Cross-link: jeśli wersja matchuje MS official changelog, pokazujemy go inline #}
-                    {% if app_change.ms_release_notes_match %}
-                        {% set ms = app_change.ms_release_notes_match %}
-                        <div class="mb-4 p-3 rounded border border-blue-200 bg-blue-50">
-                            <div class="text-sm font-semibold text-blue-900">
-                                Oficjalny changelog Microsoftu dla v{{ ms.version }}
-                                <span class="text-xs font-normal text-blue-700 ml-1">({{ ms.platforms|join(", ") }} — {{ ms.date }}, kanał {{ ms.channel }})</span>
-                            </div>
-                            {% for s in ms.sections %}
-                                <details class="mt-2">
-                                    <summary class="text-sm text-blue-800 font-medium">{{ s.heading }}</summary>
-                                    <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-1 ml-2">{{ s.body }}</pre>
-                                </details>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if app_change.text_changes %}
-                        <div class="mb-6">
-                            <h4 class="text-base font-semibold text-gray-700 mb-3">Zmiany tekstowe</h4>
-                            <div class="space-y-3">
-                                {% for field, change in app_change.text_changes.items() %}
-                                    <div class="border-l-4 border-yellow-400 pl-4">
-                                        <div class="font-medium text-gray-800">{{ field }}</div>
-                                        {% if change.diff %}
-                                            <div class="mt-2 rounded border border-gray-200 bg-gray-50 overflow-hidden">
-                                                {% for ln in change.diff %}
-                                                    <span class="diff-line diff-{{ ln.op }}">{{ ln.text }}</span>
-                                                {% endfor %}
-                                            </div>
-                                        {% else %}
-                                            <div class="text-sm mt-1">
-                                                <div class="text-red-700 line-through opacity-60">{{ change.old|string|truncate(200) }}</div>
-                                                <div class="text-green-700 mt-1">{{ change.new|string|truncate(200) }}</div>
-                                            </div>
-                                        {% endif %}
-                                    </div>
+                    <div class="p-5 space-y-5">
+                        {% if app_change.ms_release_notes_match %}
+                            {% set ms = app_change.ms_release_notes_match %}
+                            <div class="rounded-lg border border-blue-200 dark:border-blue-900 bg-blue-50/50 dark:bg-blue-950/30 p-4">
+                                <p class="text-sm font-semibold text-blue-900 dark:text-blue-200">Microsoft official changelog for v{{ ms.version }}</p>
+                                <p class="text-xs text-blue-700 dark:text-blue-400 mt-0.5">{{ ms.platforms|join(", ") }} — {{ ms.date }}, {{ ms.channel }} channel</p>
+                                {% for s in ms.sections %}
+                                    <details class="mt-2">
+                                        <summary class="flex items-center gap-1 text-sm font-medium text-blue-800 dark:text-blue-300">
+                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                            {{ s.heading }}
+                                        </summary>
+                                        <pre class="mt-1.5 ml-4 text-xs text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">{{ s.body }}</pre>
+                                    </details>
                                 {% endfor %}
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
 
-                    {% if app_change.visual_changes %}
-                        <div class="mb-6">
-                            <h4 class="text-base font-semibold text-gray-700 mb-3">Zmiany wizualne</h4>
-                            <div class="space-y-6">
-                                {% for vc in app_change.visual_changes %}
-                                    <div class="border-l-4 border-purple-400 pl-4">
-                                        <div class="font-medium text-gray-800 mb-2">
-                                            {{ vc.image_type }} #{{ vc.index }}
-                                            <span class="badge ml-2
-                                                {% if vc.change_type == 'added' %}bg-green-100 text-green-800
-                                                {% elif vc.change_type == 'changed' %}bg-yellow-100 text-yellow-800
-                                                {% else %}bg-gray-100 text-gray-700{% endif %}">
-                                                {{ vc.change_type }}
-                                            </span>
-                                        </div>
-                                        {% if vc.ai_description %}
-                                            <div class="mt-2 p-3 bg-purple-50 rounded text-sm text-gray-700">
-                                                <strong>AI:</strong> {{ vc.ai_description }}
-                                            </div>
-                                        {% endif %}
-                                        {% if vc.before_path and vc.after_path %}
-                                            <div class="mt-3 grid grid-cols-2 gap-3">
-                                                <div>
-                                                    <p class="text-xs text-gray-500 mb-1 font-semibold uppercase">Przed</p>
-                                                    <img src="{{ vc.before_path }}" alt="before" class="w-full rounded border border-gray-200">
+                        {% if app_change.text_changes %}
+                            <div>
+                                <h5 class="text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Text changes</h5>
+                                <div class="space-y-3">
+                                    {% for field, change in app_change.text_changes.items() %}
+                                        <div>
+                                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">{{ field }}</p>
+                                            {% if change.diff %}
+                                                <div class="rounded border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 overflow-hidden">
+                                                    {% for ln in change.diff %}
+                                                        <span class="diff-line diff-{{ ln.op }}">{{ ln.text }}</span>
+                                                    {% endfor %}
                                                 </div>
-                                                <div>
-                                                    <p class="text-xs text-gray-500 mb-1 font-semibold uppercase">Po</p>
-                                                    <img src="{{ vc.after_path }}" alt="after" class="w-full rounded border border-gray-200">
+                                            {% else %}
+                                                <div class="text-sm">
+                                                    <div class="text-red-700 dark:text-red-400 line-through opacity-70">{{ change.old|string|truncate(200) }}</div>
+                                                    <div class="text-emerald-700 dark:text-emerald-400 mt-1">{{ change.new|string|truncate(200) }}</div>
                                                 </div>
-                                            </div>
-                                            {% if vc.side_by_side_path %}
-                                                <details class="mt-3">
-                                                    <summary class="text-xs text-gray-500 hover:text-gray-700">Pokaż wersję side-by-side</summary>
-                                                    <img src="{{ vc.side_by_side_path }}" alt="side by side"
-                                                         class="mt-2 max-w-full rounded border border-gray-200">
-                                                </details>
                                             {% endif %}
-                                        {% elif vc.new_path %}
-                                            <div class="mt-3">
-                                                <img src="{{ vc.new_path }}" alt="new" class="max-w-xs rounded border border-gray-200">
-                                            </div>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-
-                    {% if app_change.iae_changes %}
-                        <div>
-                            <h4 class="text-base font-semibold text-gray-700 mb-3">In-App Events</h4>
-                            <div class="space-y-3">
-                                {% for ic in app_change.iae_changes %}
-                                    <div class="border-l-4 border-pink-400 pl-4">
-                                        <div class="font-medium text-gray-800">
-                                            {{ ic.event.title or "(brak tytułu)" }}
-                                            <span class="badge ml-2
-                                                {% if ic.change_type == 'added' %}bg-green-100 text-green-800
-                                                {% elif ic.change_type == 'removed' %}bg-red-100 text-red-800
-                                                {% else %}bg-yellow-100 text-yellow-800{% endif %}">
-                                                {{ ic.change_type }}
-                                            </span>
                                         </div>
-                                        {% if ic.event.subtitle %}<p class="text-sm text-gray-600 mt-1">{{ ic.event.subtitle }}</p>{% endif %}
-                                        {% if ic.event.detail %}<p class="text-sm text-gray-700 mt-1">{{ ic.event.detail }}</p>{% endif %}
-                                        {% if ic.event.start_date or ic.event.end_date %}
-                                            <p class="text-xs text-gray-500 mt-1">
-                                                {{ ic.event.start_date }} → {{ ic.event.end_date }}
-                                            </p>
-                                        {% endif %}
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
-                        </div>
-                    {% endif %}
-                </section>
+                        {% endif %}
+
+                        {% if app_change.visual_changes %}
+                            <div>
+                                <h5 class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Visual changes</h5>
+                                <div class="space-y-5">
+                                    {% for vc in app_change.visual_changes %}
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">{{ vc.image_type }} #{{ vc.index }}</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    {% if vc.change_type == 'added' %}bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300
+                                                    {% elif vc.change_type == 'changed' %}bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    {% else %}bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300{% endif %}">{{ vc.change_type }}</span>
+                                            </div>
+                                            {% if vc.ai_description %}
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> {{ vc.ai_description }}
+                                                </div>
+                                            {% endif %}
+                                            {% if vc.before_path and vc.after_path %}
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="{{ vc.before_path }}" alt="before" @click="openLightbox('{{ vc.before_path }}')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="{{ vc.after_path }}" alt="after" @click="openLightbox('{{ vc.after_path }}')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                {% if vc.side_by_side_path %}
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="{{ vc.side_by_side_path }}" @click="openLightbox('{{ vc.side_by_side_path }}')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                {% endif %}
+                                            {% elif vc.new_path %}
+                                                <img src="{{ vc.new_path }}" @click="openLightbox('{{ vc.new_path }}')" class="ss-thumb max-w-xs rounded border border-slate-200 dark:border-slate-700">
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        {% if app_change.iae_changes %}
+                            <div>
+                                <h5 class="text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">In-App Events</h5>
+                                <div class="space-y-2">
+                                    {% for ic in app_change.iae_changes %}
+                                        <div class="border-l-4 border-pink-400 dark:border-pink-600 pl-3 py-1">
+                                            <div class="flex items-center gap-2">
+                                                <p class="font-medium text-sm">{{ ic.event.title or "(no title)" }}</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    {% if ic.change_type == 'added' %}bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300
+                                                    {% elif ic.change_type == 'removed' %}bg-red-100 dark:bg-red-900/50 text-red-800 dark:text-red-300
+                                                    {% else %}bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300{% endif %}">{{ ic.change_type }}</span>
+                                            </div>
+                                            {% if ic.event.subtitle %}<p class="text-sm text-slate-600 dark:text-slate-400">{{ ic.event.subtitle }}</p>{% endif %}
+                                            {% if ic.event.detail %}<p class="text-sm text-slate-700 dark:text-slate-300 mt-1">{{ ic.event.detail }}</p>{% endif %}
+                                            {% if ic.event.start_date or ic.event.end_date %}
+                                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">{{ ic.event.start_date }} → {{ ic.event.end_date }}</p>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </article>
             {% endfor %}
-        </section>
+        </div>
 
         {# ============================================================ #}
-        {# SEKCJA 1.5: Historia alertów — wszystkie alerty kiedykolwiek  #}
+        {# VIEW: PER APP (Current State)                                 #}
         {# ============================================================ #}
-        <section id="history" class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Historia alertów</h2>
+        {% for slug, states in apps_grouped.items() %}
+            <div x-show="view==='app-{{ slug }}'" x-cloak>
+                <div class="flex items-center gap-3 mb-1">
+                    {% if states[0].icon_path %}<img src="{{ states[0].icon_path }}" class="w-10 h-10 rounded-xl">{% endif %}
+                    <div>
+                        <h2 class="text-2xl font-bold">{{ states[0].app_name }}</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Current state across platforms.</p>
+                    </div>
+                </div>
+
+                {# Platform tabs #}
+                <div x-data="{ platform: '{{ states[0].platform }}' }" class="mt-6">
+                    <div class="border-b border-slate-200 dark:border-slate-800 flex gap-1">
+                        {% for state in states %}
+                            <button @click="platform='{{ state.platform }}'"
+                                :class="platform==='{{ state.platform }}' ? 'border-blue-600 text-blue-600 dark:text-blue-400' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+                                class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors">
+                                {{ state.platform|upper }}
+                            </button>
+                        {% endfor %}
+                    </div>
+
+                    {% for state in states %}
+                        <div x-show="platform==='{{ state.platform }}'" class="pt-5 space-y-4" x-cloak>
+
+                            {# Metadata strip #}
+                            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Version</p>
+                                        <p class="mt-1 font-mono font-semibold">{{ state.version or "—" }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Released</p>
+                                        <p class="mt-1 font-mono text-sm">{{ state.release_date|string|truncate(19,true,"") if state.release_date else "—" }}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
+                                        <p class="mt-1 font-semibold">{% if state.rating_average %}{{ "%.2f"|format(state.rating_average) }} ★{% else %}—{% endif %} <span class="text-xs font-normal text-slate-500">({{ state.rating_count or 0 }})</span></p>
+                                    </div>
+                                    <div>
+                                        {% if state.store_url %}
+                                            <a href="{{ state.store_url }}" target="_blank" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {% if state.in_app_events %}
+                                <div class="bg-white dark:bg-slate-900 border border-pink-200 dark:border-pink-900 rounded-xl overflow-hidden">
+                                    <div class="px-5 py-3 bg-pink-50 dark:bg-pink-950/40 border-b border-pink-200 dark:border-pink-900">
+                                        <h3 class="font-semibold text-pink-900 dark:text-pink-200">In-App Events ({{ state.in_app_events|length }})</h3>
+                                    </div>
+                                    <div class="p-5 space-y-4">
+                                        {% for ev in state.in_app_events %}
+                                            <div>
+                                                <p class="font-semibold">{{ ev.title }}</p>
+                                                {% if ev.subtitle %}<p class="text-sm text-slate-600 dark:text-slate-400 mt-0.5">{{ ev.subtitle }}</p>{% endif %}
+                                                {% if ev.detail %}<p class="text-sm text-slate-700 dark:text-slate-300 mt-1.5">{{ ev.detail }}</p>{% endif %}
+                                                {% if ev.start_date or ev.end_date %}
+                                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">{{ ev.start_date }} → {{ ev.end_date }}</p>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {% if state.release_notes %}
+                                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                    <summary class="px-5 py-3 flex items-center gap-2 font-medium">
+                                        <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                        Release notes (current version)
+                                    </summary>
+                                    <pre class="px-5 pb-5 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">{{ state.release_notes }}</pre>
+                                </details>
+                            {% endif %}
+
+                            {% if state.description %}
+                                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                    <summary class="px-5 py-3 flex items-center gap-2 font-medium">
+                                        <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                        App description
+                                    </summary>
+                                    <pre class="px-5 pb-5 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">{{ state.description }}</pre>
+                                </details>
+                            {% endif %}
+
+                            {% if state.screenshots %}
+                                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                    <h3 class="font-semibold mb-3">Screenshots ({{ state.screenshots|length }})</h3>
+                                    <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+                                        {% for ss in state.screenshots %}
+                                            <img src="{{ ss }}" alt="screenshot" @click="openLightbox('{{ ss }}')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        {% endfor %}
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Click to enlarge.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+
+        {# ============================================================ #}
+        {# VIEW: HISTORY                                                 #}
+        {# ============================================================ #}
+        <div x-show="view==='history'" x-cloak>
+            <h2 class="text-2xl font-bold mb-1">Alert history</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Chronological log of every detected change. Full data: <code class="text-xs">history/alerts.jsonl</code> in repo.</p>
+
             {% if not alert_history %}
-                <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
-                    Brak alertów w historii — pojawią się tu po pierwszej wykrytej zmianie.
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center text-slate-500 dark:text-slate-400">
+                    No alerts yet. They'll appear here once the cron detects something.
                 </div>
             {% else %}
-                <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
                     <table class="w-full text-sm">
-                        <thead class="bg-gray-50 text-gray-600">
+                        <thead class="bg-slate-50 dark:bg-slate-800/50 text-slate-600 dark:text-slate-400 text-xs uppercase tracking-wider">
                             <tr>
-                                <th class="text-left p-3 font-medium">Wykryte</th>
-                                <th class="text-left p-3 font-medium">Wydane / publikowane</th>
-                                <th class="text-left p-3 font-medium">Źródło</th>
-                                <th class="text-left p-3 font-medium">Co</th>
+                                <th class="text-left px-4 py-3 font-medium">Detected</th>
+                                <th class="text-left px-4 py-3 font-medium">Released / published</th>
+                                <th class="text-left px-4 py-3 font-medium">Source</th>
+                                <th class="text-left px-4 py-3 font-medium">What changed</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-100">
+                        <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                             {% for h in alert_history %}
-                                <tr class="hover:bg-gray-50">
-                                    <td class="p-3 font-mono text-xs text-gray-700 whitespace-nowrap align-top">
-                                        {{ h.detected_at|string|truncate(19,true,"") }}
-                                    </td>
-                                    <td class="p-3 font-mono text-xs text-emerald-700 whitespace-nowrap align-top">
-                                        {{ (h.store_release_date or h.published_date or "")|string|truncate(19,true,"") }}
-                                    </td>
-                                    <td class="p-3 align-top">
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">{{ h.detected_at|string|truncate(19,true,"") }}</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">{{ (h.store_release_date or h.published_date or "—")|string|truncate(19,true,"") }}</td>
+                                    <td class="px-4 py-3 align-top">
                                         {% if h.source == "ms_release_notes" %}
-                                            <span class="badge bg-blue-100 text-blue-800">MS {{ h.channel }}</span>
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300">MS {{ h.channel }}</span>
                                         {% else %}
-                                            <span class="badge
-                                                {% if h.platform == 'ios' %}bg-gray-200 text-gray-800
-                                                {% else %}bg-green-100 text-green-800{% endif %}">
-                                                {{ h.app_name }} {{ h.platform|upper }}
-                                            </span>
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded {% if h.platform == 'ios' %}bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300{% else %}bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300{% endif %}">{{ h.app_name }} {{ h.platform|upper }}</span>
                                         {% endif %}
                                     </td>
-                                    <td class="p-3 text-gray-700 align-top">
+                                    <td class="px-4 py-3 align-top">
                                         {% if h.is_new_release %}
-                                            <strong class="text-emerald-700">NEW RELEASE</strong> v{{ h.old_version }} → v{{ h.new_version }}
+                                            <strong class="text-emerald-700 dark:text-emerald-400">NEW RELEASE</strong> v{{ h.old_version }} → v{{ h.new_version }}
                                         {% elif h.source == "ms_release_notes" %}
-                                            v{{ h.new_version }} ({{ (h.platforms or [])|join(", ") }}) — {{ h.n_sections }} sekcji
+                                            v{{ h.new_version }} ({{ (h.platforms or [])|join(", ") }}) — {{ h.n_sections }} sections
                                         {% else %}
-                                            {% if h.n_text_changes %}{{ h.n_text_changes }} tekst{% endif %}
-                                            {% if h.n_visual_changes %}· {{ h.n_visual_changes }} wizualnych{% endif %}
-                                            {% if h.n_iae_changes %}· {{ h.n_iae_changes }} IAE{% endif %}
-                                            {% if h.changed_fields %}
-                                                <span class="text-xs text-gray-500 ml-1">({{ h.changed_fields|join(", ") }})</span>
-                                            {% endif %}
+                                            {% if h.n_text_changes %}{{ h.n_text_changes }} text{% endif %}{% if h.n_visual_changes %} · {{ h.n_visual_changes }} visual{% endif %}{% if h.n_iae_changes %} · {{ h.n_iae_changes }} IAE{% endif %}
+                                            {% if h.changed_fields %}<span class="text-xs text-slate-500 ml-1">({{ h.changed_fields|join(", ") }})</span>{% endif %}
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -297,115 +537,33 @@
                         </tbody>
                     </table>
                 </div>
-                <p class="text-xs text-gray-500 mt-2">
-                    Pokazane ostatnie {{ alert_history|length }} alertów. Pełna historia: <code>history/alerts.jsonl</code> w repo.
-                </p>
             {% endif %}
-        </section>
+        </div>
 
         {# ============================================================ #}
-        {# SEKCJA 2: Current State — co aktualnie jest w sklepie         #}
+        {# VIEW: MS CHANGELOG                                            #}
         {# ============================================================ #}
-        <section id="current" class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Current State — co jest teraz w sklepach</h2>
-            {% for state in all_current_states %}
-                <div class="change-card mb-6 bg-white rounded-lg shadow p-6">
-                    <div class="flex items-start gap-4 mb-4">
-                        {% if state.icon_path %}
-                            <img src="{{ state.icon_path }}" alt="icon" class="w-20 h-20 rounded-2xl border border-gray-200 flex-shrink-0">
-                        {% endif %}
-                        <div class="flex-grow">
-                            <div class="flex items-center justify-between flex-wrap gap-2">
-                                <h3 class="text-xl font-semibold text-gray-900">
-                                    {{ state.app_name }}
-                                    <span class="badge ml-2
-                                        {% if state.platform == 'ios' %}bg-gray-200 text-gray-800
-                                        {% else %}bg-green-100 text-green-800{% endif %}">
-                                        {{ state.platform|upper }}
-                                    </span>
-                                </h3>
-                                {% if state.store_url %}
-                                    <a href="{{ state.store_url }}" target="_blank" class="text-sm text-blue-600 hover:underline">Zobacz w sklepie →</a>
-                                {% endif %}
-                            </div>
-                            <div class="text-sm text-gray-600 mt-1 space-x-3">
-                                <span><strong>Wersja:</strong> {{ state.version or "—" }}</span>
-                                {% if state.release_date %}<span>· {{ state.release_date|string|truncate(20,true,"") }}</span>{% endif %}
-                                {% if state.rating_average %}<span>· {{ "%.2f"|format(state.rating_average) }}★ ({{ state.rating_count or 0 }})</span>{% endif %}
-                            </div>
-                        </div>
-                    </div>
+        <div x-show="view==='changelog'" x-cloak>
+            <h2 class="text-2xl font-bold mb-1">Microsoft official changelog</h2>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">Latest versions published on learn.microsoft.com (Edge mobile).</p>
 
-                    {% if state.in_app_events %}
-                        <div class="mb-4 p-3 bg-pink-50 rounded border border-pink-100">
-                            <h4 class="text-sm font-semibold text-pink-900 mb-2">In-App Events ({{ state.in_app_events|length }})</h4>
-                            {% for ev in state.in_app_events %}
-                                <div class="mb-2 last:mb-0">
-                                    <div class="font-medium text-gray-800">{{ ev.title }}</div>
-                                    {% if ev.subtitle %}<div class="text-sm text-gray-600">{{ ev.subtitle }}</div>{% endif %}
-                                    {% if ev.detail %}<div class="text-sm text-gray-700 mt-1">{{ ev.detail }}</div>{% endif %}
-                                    {% if ev.start_date or ev.end_date %}
-                                        <div class="text-xs text-gray-500 mt-1">
-                                            {{ ev.start_date }} → {{ ev.end_date }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if state.release_notes %}
-                        <details class="mb-3">
-                            <summary class="text-sm font-semibold text-gray-700">Release notes (aktualna wersja)</summary>
-                            <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded border border-gray-200">{{ state.release_notes }}</pre>
-                        </details>
-                    {% endif %}
-
-                    {% if state.description %}
-                        <details class="mb-3">
-                            <summary class="text-sm font-semibold text-gray-700">Opis aplikacji</summary>
-                            <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-2 p-3 bg-gray-50 rounded border border-gray-200">{{ state.description }}</pre>
-                        </details>
-                    {% endif %}
-
-                    {% if state.screenshots %}
-                        <div>
-                            <h4 class="text-sm font-semibold text-gray-700 mb-2">Screenshoty ({{ state.screenshots|length }})</h4>
-                            <div class="flex gap-2 overflow-x-auto pb-2">
-                                {% for ss in state.screenshots %}
-                                    <a href="{{ ss }}" target="_blank" class="flex-shrink-0">
-                                        <img src="{{ ss }}" alt="screenshot" class="ss-thumb h-64 rounded border border-gray-200">
-                                    </a>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </section>
-
-        {# ============================================================ #}
-        {# SEKCJA 3: Microsoft release notes — official changelog        #}
-        {# ============================================================ #}
-        {% if ms_release_snapshots %}
-        <section id="ms-relnotes" class="mb-12">
-            <h2 class="text-2xl font-bold text-gray-900 mb-4">Microsoft official changelog (learn.microsoft.com)</h2>
             {% for snap in ms_release_snapshots %}
-                <div class="mb-6 bg-white rounded-lg shadow p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-3">
-                        Kanał: {{ snap.channel }}
-                        <a href="{{ snap.url }}" target="_blank" class="text-sm font-normal text-blue-600 hover:underline ml-2">źródło →</a>
-                    </h3>
-                    <div class="space-y-3">
-                        {% for v in snap.versions[:5] %}
-                            <details {% if loop.first %}open{% endif %} class="border-l-2 border-gray-200 pl-3">
-                                <summary class="font-medium text-gray-800">
-                                    v{{ v.version }} <span class="text-xs text-gray-500">({{ v.platforms|join(", ") }}) — {{ v.date }}</span>
+                <div class="mb-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                    <div class="px-5 py-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                        <h3 class="font-semibold">Channel: {{ snap.channel }}</h3>
+                        <a href="{{ snap.url }}" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">source →</a>
+                    </div>
+                    <div class="p-5 space-y-3">
+                        {% for v in snap.versions[:10] %}
+                            <details {% if loop.first %}open{% endif %} class="border-l-2 border-slate-200 dark:border-slate-700 pl-3">
+                                <summary class="flex items-center gap-1 font-medium">
+                                    <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                    v{{ v.version }} <span class="text-xs font-normal text-slate-500 dark:text-slate-400">({{ v.platforms|join(", ") }}) — {{ v.date }}</span>
                                 </summary>
                                 {% for s in v.sections %}
-                                    <div class="mt-2 ml-2">
-                                        <div class="text-sm font-semibold text-gray-700">{{ s.heading }}</div>
-                                        <pre class="text-sm text-gray-600 whitespace-pre-wrap mt-1">{{ s.body }}</pre>
+                                    <div class="mt-2 ml-4">
+                                        <p class="text-sm font-semibold text-slate-700 dark:text-slate-300">{{ s.heading }}</p>
+                                        <pre class="text-sm text-slate-600 dark:text-slate-400 whitespace-pre-wrap font-sans mt-1">{{ s.body }}</pre>
                                     </div>
                                 {% endfor %}
                             </details>
@@ -413,12 +571,36 @@
                     </div>
                 </div>
             {% endfor %}
-        </section>
-        {% endif %}
+        </div>
 
-        <footer class="mt-12 pt-8 border-t border-gray-200 text-center text-sm text-gray-500">
-            <p>Edge Listing Monitor — wygenerowane przez monitor.py</p>
-        </footer>
-    </div>
+    </main>
+</div>
+
+<!-- ============================================================ -->
+<!-- LIGHTBOX                                                     -->
+<!-- ============================================================ -->
+<div x-show="lightboxImage" @click="lightboxImage=null" @keydown.escape.window="lightboxImage=null"
+     class="lightbox-overlay fixed inset-0 z-50 flex items-center justify-center p-4 cursor-zoom-out" x-cloak>
+    <button @click.stop="lightboxImage=null" class="absolute top-4 right-4 text-white/80 hover:text-white p-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <img :src="lightboxImage" class="max-w-full max-h-full rounded-lg shadow-2xl" @click.stop>
+</div>
+
+<script>
+function dashboard() {
+    return {
+        view: 'overview',
+        platform: 'ios',
+        sidebarOpen: false,
+        darkMode: window.matchMedia('(prefers-color-scheme: dark)').matches,
+        lightboxImage: null,
+        openLightbox(src) {
+            this.lightboxImage = src;
+        }
+    }
+}
+</script>
+
 </body>
 </html>
