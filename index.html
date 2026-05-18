@@ -69,7 +69,7 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">E</div>
                 <div>
                     <h1 class="text-sm font-semibold leading-tight">Edge Listing Monitor</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-05-18 21:42:20</span></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-05-18 23:53:19</span></p>
                 </div>
             </div>
         </div>
@@ -112,6 +112,10 @@
             
                 
             
+                
+            
+                
+            
             
                 
                 
@@ -125,7 +129,19 @@
                         Microsoft Edge
                     </span>
                     
-                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">1</span>
+                </button>
+            
+                
+                
+                <button @click="view='app-google-chrome'; sidebarOpen=false"
+                    :class="view==='app-google-chrome' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
+                    class="nav-item w-full flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium text-left">
+                    <span class="flex items-center gap-2.5">
+                        
+                            <img src="assets/google-chrome/ios/icon_0.png" alt="" class="w-5 h-5 rounded">
+                        
+                        Google Chrome
+                    </span>
                     
                 </button>
             
@@ -138,7 +154,7 @@
                 class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Alert history
-                <span class="ml-auto text-xs text-slate-500">10</span>
+                <span class="ml-auto text-xs text-slate-500">12</span>
             </button>
             <button @click="view='changelog'; sidebarOpen=false"
                 :class="view==='changelog' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
@@ -148,9 +164,12 @@
             </button>
         </nav>
 
-        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
             <p>Cron runs every 6h via GitHub Actions.</p>
-            <p class="mt-1">Last run: <span class="font-mono">2026-05-18 21:42:20</span></p>
+            <p>Last run: <span class="font-mono">2026-05-18 23:53:19</span></p>
+            <p class="pt-1 mt-1 border-t border-slate-100 dark:border-slate-800/50">
+                Built by <a href="https://www.linkedin.com/in/jan-dziewonski/" target="_blank" class="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Jan Dziewoński</a>
+            </p>
         </div>
     </aside>
 
@@ -172,14 +191,10 @@
             
             
             
-                
-                
-                
-            
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active alerts</p>
-                    <p class="mt-2 text-3xl font-bold text-amber-600 dark:text-amber-400">1</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-400">0</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">New releases</p>
@@ -187,11 +202,11 @@
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Apps monitored</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">1</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">2</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alerts logged</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">10</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">12</p>
                 </div>
             </div>
 
@@ -201,64 +216,14 @@
             
             <h3 class="text-lg font-semibold mb-3 mt-8">Recent alerts</h3>
             
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300 font-medium">All clear</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">No changes detected since the last run.</p>
+                </div>
             
-                <article class="mb-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div class="px-5 py-3 flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800">
-                        <div class="flex items-center gap-3">
-                            
-                            <h4 class="font-semibold">Microsoft Edge</h4>
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-                                IOS
-                            </span>
-                            
-                        </div>
-                        
-                            <a href="https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
-                        
-                    </div>
-
-                    <div class="px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex gap-4 text-xs">
-                        <span class="text-slate-500 dark:text-slate-400">Detected <span class="font-mono text-slate-700 dark:text-slate-300">2026-05-18T21:42:19</span></span>
-                        
-                    </div>
-
-                    <div class="p-5 space-y-5">
-                        
-
-                        
-                            <div>
-                                <h5 class="text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Text changes</h5>
-                                <div class="space-y-3">
-                                    
-                                        <div>
-                                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">rating_average</p>
-                                            
-                                                <div class="text-sm">
-                                                    <div class="text-red-700 dark:text-red-400 line-through opacity-70">4.70891</div>
-                                                    <div class="text-emerald-700 dark:text-emerald-400 mt-1">4.70896</div>
-                                                </div>
-                                            
-                                        </div>
-                                    
-                                        <div>
-                                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">rating_count</p>
-                                            
-                                                <div class="text-sm">
-                                                    <div class="text-red-700 dark:text-red-400 line-through opacity-70">508771</div>
-                                                    <div class="text-emerald-700 dark:text-emerald-400 mt-1">508585</div>
-                                                </div>
-                                            
-                                        </div>
-                                    
-                                </div>
-                            </div>
-                        
-
-                        
-
-                        
-                    </div>
-                </article>
             
         </div>
 
@@ -309,7 +274,7 @@
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.71 ★ <span class="text-xs font-normal text-slate-500">(508585)</span></p>
+                                        <p class="mt-1 font-semibold">4.71 ★ <span class="text-xs font-normal text-slate-500">(508503)</span></p>
                                     </div>
                                     <div>
                                         
@@ -453,7 +418,7 @@ Some screens are simulated, subject to change.</pre>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.68 ★ <span class="text-xs font-normal text-slate-500">(1536135)</span></p>
+                                        <p class="mt-1 font-semibold">4.68 ★ <span class="text-xs font-normal text-slate-500">(1536154)</span></p>
                                     </div>
                                     <div>
                                         
@@ -567,6 +532,293 @@ Some screens are simulated, subject to change.</pre>
                 </div>
             </div>
         
+            <div x-show="view==='app-google-chrome'" x-cloak>
+                <div class="flex items-center gap-3 mb-1">
+                    <img src="assets/google-chrome/ios/icon_0.png" class="w-10 h-10 rounded-xl">
+                    <div>
+                        <h2 class="text-2xl font-bold">Google Chrome</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">Current state across platforms.</p>
+                    </div>
+                </div>
+
+                
+                <div x-data="{ platform: 'ios' }" class="mt-6">
+                    <div class="border-b border-slate-200 dark:border-slate-800 flex gap-1">
+                        
+                            <button @click="platform='ios'"
+                                :class="platform==='ios' ? 'border-blue-600 text-blue-600 dark:text-blue-400' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+                                class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors">
+                                IOS
+                            </button>
+                        
+                            <button @click="platform='android'"
+                                :class="platform==='android' ? 'border-blue-600 text-blue-600 dark:text-blue-400' : 'border-transparent text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200'"
+                                class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors">
+                                ANDROID
+                            </button>
+                        
+                    </div>
+
+                    
+                        <div x-show="platform==='ios'" class="pt-5 space-y-4" x-cloak>
+
+                            
+                            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Version</p>
+                                        <p class="mt-1 font-mono font-semibold">148.0.7778.166</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Released</p>
+                                        <p class="mt-1 font-mono text-sm">2026-05-12T15:29:17Z</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
+                                        <p class="mt-1 font-semibold">4.69 ★ <span class="text-xs font-normal text-slate-500">(3492165)</span></p>
+                                    </div>
+                                    <div>
+                                        
+                                            <a href="https://apps.apple.com/us/app/google-chrome/id535886823?uo=4" target="_blank" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            
+                                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                    <summary class="px-5 py-3 flex items-center gap-2 font-medium">
+                                        <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                        Release notes (current version)
+                                    </summary>
+                                    <pre class="px-5 pb-5 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">Thanks for choosing Chrome! This version includes:
+• When a tab is sent from Chrome on another device, you'll get a notification on your lock screen.
+• Customize your New Tab page background by selecting from a set of colors, a preset gallery, or uploading a photo from your device.
+• You can now import your data from Safari, including passwords, credit cards, bookmarks, and browser history.
+• Stability and performance improvements.</pre>
+                                </details>
+                            
+
+                            
+                                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                    <summary class="px-5 py-3 flex items-center gap-2 font-medium">
+                                        <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                        App description
+                                    </summary>
+                                    <pre class="px-5 pb-5 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">Chrome helps you do what’s possible on the web. Download the fast, secure browser by Google.
+
+GET THE BEST OF GOOGLE IN CHROME
+
+• SEARCH WITH GOOGLE - Search and get answers on Google fast. Use your voice to search hands-free.
+• GOOGLE LENS - Search what you see on your screen or with your camera.
+• GOOGLE TRANSLATE - Explore the web in 130+ languages. Translate entire sites in one click.
+
+BROWSE WITH BEST-IN-CLASS SECURITY
+
+• ENHANCED PROTECTION MODE - Browse confidently with the highest level of Chrome’s security.
+• SAFETY CHECK - Get peace of mind with proactive safety alerts.
+• GOOGLE PASSWORD MANAGER - Securely generate and save passwords for fast sign-in, and get alerts if your passwords are at risk.
+
+ACCESS YOUR CHROME ACROSS DEVICES
+
+• SYNC ACROSS DEVICES - Save your things (like bookmarks, tabs, and passwords) and easily access them when you sign in to Chrome on your phone, computer or tablet.
+• TAB GROUPS - Create tab groups to stay organized across devices.
+• AUTOFILL - Save time typing by autofilling your saved payments, addresses and passwords.
+
+Feature availability varies by country and language. Compatibility varies. Check responses for accuracy.</pre>
+                                </details>
+                            
+
+                            
+                                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                    <h3 class="font-semibold mb-3">Screenshots (19)</h3>
+                                    <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_0.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_1.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_1.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_2.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_2.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_3.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_3.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_4.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_4.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_5.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_5.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_6.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_6.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_7.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_7.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_8.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_8.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_iphone_9.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_9.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_0.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_1.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_1.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_2.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_2.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_3.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_3.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_4.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_4.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_5.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_5.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_6.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_6.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_7.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_7.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/ios/screenshots_ipad_8.png" alt="screenshot" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_8.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Click to enlarge.</p>
+                                </div>
+                            
+                        </div>
+                    
+                        <div x-show="platform==='android'" class="pt-5 space-y-4" x-cloak>
+
+                            
+                            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Version</p>
+                                        <p class="mt-1 font-mono font-semibold">Varies with device</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Released</p>
+                                        <p class="mt-1 font-mono text-sm">1778792551</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
+                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48625335)</span></p>
+                                    </div>
+                                    <div>
+                                        
+                                            <a href="https://play.google.com/store/apps/details?id=com.android.chrome&hl=en&gl=us" target="_blank" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                            
+
+                            
+
+                            
+                                <details class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl">
+                                    <summary class="px-5 py-3 flex items-center gap-2 font-medium">
+                                        <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                        App description
+                                    </summary>
+                                    <pre class="px-5 pb-5 text-sm text-slate-700 dark:text-slate-300 whitespace-pre-wrap font-sans">Chrome helps you do what’s possible on the web. Choose the fast, secure browser by Google.
+
+GET THE BEST OF GOOGLE IN CHROME
+
+• SEARCH WITH GOOGLE - Search and get answers on Google fast. Use your voice to search hands-free.
+• GOOGLE LENS - Search what you see around you with your camera.
+• GOOGLE TRANSLATE - Explore the web in 130+ languages. Translate entire sites in one click.
+
+BROWSE WITH BEST-IN-CLASS SECURITY
+
+• ENHANCED PROTECTION MODE - Browse confidently with the highest level of Chrome’s security.
+• SAFETY CHECK - Get peace of mind with proactive safety alerts.
+• GOOGLE PASSWORD MANAGER - Securely generate and save passwords for fast sign-in, and get alerts if your passwords are at risk.
+
+ACCESS YOUR CHROME ACROSS DEVICES
+
+• SYNC ACROSS DEVICES - Save your things (like bookmarks, tabs, and passwords) and easily access them when you sign in to Chrome on your phone, computer or tablet.
+• TAB GROUPS - Create tab groups to stay organized across devices.
+• AUTOFILL - Save time typing by autofilling your saved payments, addresses and passwords.
+
+Feature availability varies by country and language. Compatibility varies. Check responses for accuracy.</pre>
+                                </details>
+                            
+
+                            
+                                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
+                                    <h3 class="font-semibold mb-3">Screenshots (33)</h3>
+                                    <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_0.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_1.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_1.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_2.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_2.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_3.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_3.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_4.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_4.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_5.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_5.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_6.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_6.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_7.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_7.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_8.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_8.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_9.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_9.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_10.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_10.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_11.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_11.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_12.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_12.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_13.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_13.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_14.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_14.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_15.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_15.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_16.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_16.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_17.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_17.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_18.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_18.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_19.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_19.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_20.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_20.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_21.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_21.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_22.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_22.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_23.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_23.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_24.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_24.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_25.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_25.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_26.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_26.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_27.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_27.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_28.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_28.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_29.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_29.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_30.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_30.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/screenshots_31.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/screenshots_31.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                            <img src="assets/google-chrome/android/feature_graphic_0.png" alt="screenshot" @click="openLightbox('assets/google-chrome/android/feature_graphic_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
+                                        
+                                    </div>
+                                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Click to enlarge.</p>
+                                </div>
+                            
+                        </div>
+                    
+                </div>
+            </div>
+        
 
         
         
@@ -589,8 +841,39 @@ Some screens are simulated, subject to change.</pre>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
                             
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T21:42:19</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:09:35</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">1778463374</td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300">Microsoft Edge ANDROID</span>
+                                        
+                                    </td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <strong class="text-emerald-700 dark:text-emerald-400">NEW RELEASE</strong> v147.0.3912.87 → v148.0.3967.55
+                                        
+                                    </td>
+                                </tr>
+                            
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:04:54</td>
                                     <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">—</td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300">Microsoft Edge ANDROID</span>
+                                        
+                                    </td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            2 text
+                                            <span class="text-xs text-slate-500 ml-1">(rating_average, rating_count)</span>
+                                        
+                                    </td>
+                                </tr>
+                            
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:04:52</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">2026-05-11T01:47:11Z</td>
                                     <td class="px-4 py-3 align-top">
                                         
                                             <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Microsoft Edge IOS</span>
@@ -598,8 +881,7 @@ Some screens are simulated, subject to change.</pre>
                                     </td>
                                     <td class="px-4 py-3 align-top">
                                         
-                                            2 text
-                                            <span class="text-xs text-slate-500 ml-1">(rating_average, rating_count)</span>
+                                            <strong class="text-emerald-700 dark:text-emerald-400">NEW RELEASE</strong> v147.0.3912.87 → v148.3967.55
                                         
                                     </td>
                                 </tr>
