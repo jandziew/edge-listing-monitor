@@ -52,11 +52,15 @@ CONFIG_PATH = ROOT / "config.yaml"
 SNAPSHOTS_DIR = ROOT / "snapshots"
 ASSETS_DIR = ROOT / "assets"
 OUTPUT_DIR = ROOT / "output"
+HISTORY_DIR = ROOT / "history"
 
 # Upewnij się, że foldery istnieją
 SNAPSHOTS_DIR.mkdir(exist_ok=True)
 ASSETS_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
+HISTORY_DIR.mkdir(exist_ok=True)
+
+ALERTS_HISTORY_PATH = HISTORY_DIR / "alerts.jsonl"
 
 
 # ============================================================
@@ -290,6 +294,34 @@ def save_snapshot(app_slug: str, platform: str, snapshot: dict) -> None:
     path = snapshot_path(app_slug, platform)
     with open(path, "w", encoding="utf-8") as f:
         json.dump(snapshot, f, indent=2, ensure_ascii=False)
+
+
+def append_alert_to_history(alert: dict) -> None:
+    """Dopisuje wpis do history/alerts.jsonl (JSON Lines — jedna linijka = jeden alert).
+
+    Format append-only — git pamięta pełną historię, plik rośnie liniowo ale wolno
+    (kilka KB / alert). Czytane wstecz przez load_alert_history().
+    """
+    with open(ALERTS_HISTORY_PATH, "a", encoding="utf-8") as f:
+        f.write(json.dumps(alert, ensure_ascii=False) + "\n")
+
+
+def load_alert_history(limit: int = 50) -> list[dict]:
+    """Wczytuje ostatnie N alertów (najnowsze na górze)."""
+    if not ALERTS_HISTORY_PATH.exists():
+        return []
+    lines = ALERTS_HISTORY_PATH.read_text(encoding="utf-8").splitlines()
+    out = []
+    for line in lines[-limit:]:
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except json.JSONDecodeError:
+            continue
+    out.reverse()  # najnowsze na górze
+    return out
 
 
 def asset_path(app_slug: str, platform: str, image_type: str, index: int) -> Path:
@@ -635,6 +667,7 @@ def generate_html_dashboard(
     all_current_states: list[dict] | None = None,
     ms_release_snapshots: list[dict] | None = None,
     ms_release_alerts: list[dict] | None = None,
+    alert_history: list[dict] | None = None,
 ) -> Path:
     """Generuje plik output/dashboard.html.
 
@@ -679,6 +712,7 @@ def generate_html_dashboard(
         all_current_states=all_current_states,
         ms_release_snapshots=ms_release_snapshots,
         ms_release_alerts=ms_release_alerts,
+        alert_history=alert_history or [],
         generated_at=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     )
 
@@ -1062,22 +1096,43 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
     summary_parts.append(f"{len(text_changes)} tekst, {len(visual_changes)} wizualnych, {len(iae_changes)} IAE")
     print(f"[OK] Wykryto zmiany: {' | '.join(summary_parts)}")
 
-    return {
-        "current_state": current_state,
-        "changes": {
-            "app_name": app_name,
-            "app_slug": app_slug,
-            "platform": platform,
-            "store_url": current.get("store_url"),
-            "is_new_release": is_new_release,
-            "new_version": current.get("version") if is_new_release else None,
-            "old_version": previous.get("version") if is_new_release else None,
-            "text_changes": text_changes,
-            "visual_changes": visual_changes,
-            "iae_changes": iae_changes,
-            "detected_at": datetime.datetime.now().isoformat(),
-        },
+    detected_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+    change_record = {
+        "app_name": app_name,
+        "app_slug": app_slug,
+        "platform": platform,
+        "store_url": current.get("store_url"),
+        "is_new_release": is_new_release,
+        "new_version": current.get("version") if is_new_release else None,
+        "old_version": previous.get("version") if is_new_release else None,
+        # release_date = kiedy NAPRAWDĘ apka się wydała (wg sklepu), nie kiedy my to złapaliśmy
+        "store_release_date": current.get("release_date") if is_new_release else None,
+        "text_changes": text_changes,
+        "visual_changes": visual_changes,
+        "iae_changes": iae_changes,
+        "detected_at": detected_at,
     }
+
+    # Historia — append zwięzłego wpisu (bez pełnych diffów obrazków, bez tekstów)
+    append_alert_to_history({
+        "detected_at": detected_at,
+        "source": "app_store",
+        "app_name": app_name,
+        "app_slug": app_slug,
+        "platform": platform,
+        "store_url": current.get("store_url"),
+        "is_new_release": is_new_release,
+        "new_version": current.get("version") if is_new_release else None,
+        "old_version": previous.get("version") if is_new_release else None,
+        "store_release_date": current.get("release_date") if is_new_release else None,
+        "n_text_changes": len(text_changes),
+        "n_visual_changes": len(visual_changes),
+        "n_iae_changes": len(iae_changes),
+        "changed_fields": list(text_changes.keys()),
+        "iae_titles": [(ic.get("event") or {}).get("title") for ic in iae_changes],
+    })
+
+    return {"current_state": current_state, "changes": change_record}
 
 
 MS_RELEASE_SNAPSHOT = SNAPSHOTS_DIR / "microsoft_release_notes_{channel}.json"
@@ -1104,6 +1159,17 @@ def process_microsoft_release_notes(channels: list[str]) -> tuple[list[dict], li
         if change:
             print(f"[OK] Nowe wersje na learn.microsoft.com: {[v['version'] for v in change['new_versions']]}")
             change_alerts.append(change)
+            detected_at = datetime.datetime.now(datetime.timezone.utc).isoformat()
+            for nv in change["new_versions"]:
+                append_alert_to_history({
+                    "detected_at": detected_at,
+                    "source": "ms_release_notes",
+                    "channel": channel,
+                    "new_version": nv.get("version"),
+                    "platforms": nv.get("platforms"),
+                    "published_date": nv.get("date"),
+                    "n_sections": len(nv.get("sections", [])),
+                })
         elif previous is None:
             print("[INFO] Pierwszy run dla MS release notes — baseline")
         else:
@@ -1138,13 +1204,50 @@ def main():
     # Microsoft official release notes
     ms_snapshots, ms_release_alerts = process_microsoft_release_notes(ms_channels)
 
+    # Cross-link: dla każdego app_change z is_new_release, szukamy wpisu o tej wersji
+    # w MS snapshocie. Apple iTunes API potrafi zwracać wersję bez środkowych zer
+    # (np. "148.3967.55" zamiast "148.0.3967.55"), więc dopuszczamy luźny match po
+    # ostatnich 3 segmentach.
+    ms_version_index = {}
+    for snap in ms_snapshots:
+        for v in snap.get("versions", []):
+            ms_version_index[v["version"]] = {"channel": snap.get("channel"), **v}
+
+    def _version_match(store_v: str, ms_v: str) -> bool:
+        if not store_v or not ms_v:
+            return False
+        if store_v == ms_v:
+            return True
+        # iTunes Lookup często wycina środkowy "0" — Apple zwraca "148.3967.55"
+        # zamiast pełnego "148.0.3967.55". Matchujemy po major + ostatnich 2 segmentach
+        # (patch i build) — to są jedyne dwa numery które się realnie zmieniają.
+        s_parts = store_v.split(".")
+        m_parts = ms_v.split(".")
+        return (len(s_parts) >= 3 and len(m_parts) >= 3
+                and s_parts[0] == m_parts[0]
+                and s_parts[-2:] == m_parts[-2:])
+
+    for change in all_changes:
+        if change.get("is_new_release"):
+            sv = change.get("new_version")
+            matched = ms_version_index.get(sv)
+            if not matched:
+                for mv, payload in ms_version_index.items():
+                    if _version_match(sv, mv):
+                        matched = payload
+                        break
+            if matched:
+                change["ms_release_notes_match"] = matched
+
     # Generuj HTML dashboard
     if settings.get("generate_html_dashboard", True):
+        history = load_alert_history(limit=100)
         dashboard_path = generate_html_dashboard(
             all_changes=all_changes,
             all_current_states=all_current_states,
             ms_release_snapshots=ms_snapshots,
             ms_release_alerts=ms_release_alerts,
+            alert_history=history,
         )
         print(f"\n[OK] Dashboard: {dashboard_path}")
 

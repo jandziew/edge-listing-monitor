@@ -28,8 +28,9 @@
                 <h1 class="text-4xl font-bold text-gray-900">Edge Listing Monitor</h1>
                 <p class="text-gray-500 mt-1">Ostatnia aktualizacja: <span class="font-mono">{{ generated_at }}</span></p>
             </div>
-            <nav class="text-sm text-gray-600 flex gap-4">
+            <nav class="text-sm text-gray-600 flex gap-4 flex-wrap">
                 <a href="#alerts" class="hover:text-blue-600">Alerty</a>
+                <a href="#history" class="hover:text-blue-600">Historia</a>
                 <a href="#current" class="hover:text-blue-600">Current State</a>
                 <a href="#ms-relnotes" class="hover:text-blue-600">MS release notes</a>
             </nav>
@@ -50,16 +51,21 @@
             {# Microsoft official release alerts pierwsze — najważniejsze #}
             {% for ms_change in ms_release_alerts %}
                 <div class="mb-6 bg-white rounded-lg shadow p-6 border-l-4 border-blue-600">
-                    <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
                         <h3 class="text-xl font-semibold text-gray-900">
                             Microsoft official release notes — kanał {{ ms_change.channel }}
                         </h3>
                         <span class="badge bg-blue-100 text-blue-800">NEW VERSION</span>
                     </div>
+                    <div class="text-xs text-gray-500 mb-3">
+                        Wykryte: <span class="font-mono">{{ generated_at }}</span>
+                    </div>
                     {% for v in ms_change.new_versions %}
                         <div class="mt-3 pl-4 border-l-2 border-blue-200">
                             <div class="text-gray-900 font-semibold">
-                                v{{ v.version }} ({{ v.platforms|join(", ") }}) — {{ v.date }}
+                                v{{ v.version }}
+                                <span class="text-sm font-normal text-gray-600">({{ v.platforms|join(", ") }})</span>
+                                <span class="text-sm font-normal text-emerald-700 ml-1" title="data publikacji przez Microsoft">— wydane {{ v.date }}</span>
                             </div>
                             {% for s in v.sections %}
                                 <details class="mt-2">
@@ -75,7 +81,7 @@
             {% for app_change in all_changes %}
                 <section class="change-card mb-6 bg-white rounded-lg shadow p-6
                     {% if app_change.is_new_release %}border-l-4 border-emerald-500{% endif %}">
-                    <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                    <div class="flex items-center justify-between mb-2 flex-wrap gap-2">
                         <h3 class="text-xl font-semibold text-gray-900">
                             {% if app_change.is_new_release %}
                                 <span class="badge bg-emerald-100 text-emerald-800 mr-2">NEW RELEASE</span>
@@ -99,6 +105,33 @@
                             </a>
                         {% endif %}
                     </div>
+                    <div class="text-xs text-gray-500 mb-4 flex gap-4 flex-wrap">
+                        <span title="kiedy nasz cron to złapał">
+                            Wykryte: <span class="font-mono">{{ app_change.detected_at|string|truncate(19,true,"") }}</span>
+                        </span>
+                        {% if app_change.store_release_date %}
+                            <span class="text-emerald-700" title="data wydania wg sklepu">
+                                Wydane: <span class="font-mono">{{ app_change.store_release_date|string|truncate(19,true,"") }}</span>
+                            </span>
+                        {% endif %}
+                    </div>
+
+                    {# Cross-link: jeśli wersja matchuje MS official changelog, pokazujemy go inline #}
+                    {% if app_change.ms_release_notes_match %}
+                        {% set ms = app_change.ms_release_notes_match %}
+                        <div class="mb-4 p-3 rounded border border-blue-200 bg-blue-50">
+                            <div class="text-sm font-semibold text-blue-900">
+                                Oficjalny changelog Microsoftu dla v{{ ms.version }}
+                                <span class="text-xs font-normal text-blue-700 ml-1">({{ ms.platforms|join(", ") }} — {{ ms.date }}, kanał {{ ms.channel }})</span>
+                            </div>
+                            {% for s in ms.sections %}
+                                <details class="mt-2">
+                                    <summary class="text-sm text-blue-800 font-medium">{{ s.heading }}</summary>
+                                    <pre class="text-sm text-gray-700 whitespace-pre-wrap mt-1 ml-2">{{ s.body }}</pre>
+                                </details>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
 
                     {% if app_change.text_changes %}
                         <div class="mb-6">
@@ -203,6 +236,71 @@
                     {% endif %}
                 </section>
             {% endfor %}
+        </section>
+
+        {# ============================================================ #}
+        {# SEKCJA 1.5: Historia alertów — wszystkie alerty kiedykolwiek  #}
+        {# ============================================================ #}
+        <section id="history" class="mb-12">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Historia alertów</h2>
+            {% if not alert_history %}
+                <div class="bg-white rounded-lg shadow p-6 text-center text-gray-500">
+                    Brak alertów w historii — pojawią się tu po pierwszej wykrytej zmianie.
+                </div>
+            {% else %}
+                <div class="bg-white rounded-lg shadow overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 text-gray-600">
+                            <tr>
+                                <th class="text-left p-3 font-medium">Wykryte</th>
+                                <th class="text-left p-3 font-medium">Wydane / publikowane</th>
+                                <th class="text-left p-3 font-medium">Źródło</th>
+                                <th class="text-left p-3 font-medium">Co</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            {% for h in alert_history %}
+                                <tr class="hover:bg-gray-50">
+                                    <td class="p-3 font-mono text-xs text-gray-700 whitespace-nowrap align-top">
+                                        {{ h.detected_at|string|truncate(19,true,"") }}
+                                    </td>
+                                    <td class="p-3 font-mono text-xs text-emerald-700 whitespace-nowrap align-top">
+                                        {{ (h.store_release_date or h.published_date or "")|string|truncate(19,true,"") }}
+                                    </td>
+                                    <td class="p-3 align-top">
+                                        {% if h.source == "ms_release_notes" %}
+                                            <span class="badge bg-blue-100 text-blue-800">MS {{ h.channel }}</span>
+                                        {% else %}
+                                            <span class="badge
+                                                {% if h.platform == 'ios' %}bg-gray-200 text-gray-800
+                                                {% else %}bg-green-100 text-green-800{% endif %}">
+                                                {{ h.app_name }} {{ h.platform|upper }}
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="p-3 text-gray-700 align-top">
+                                        {% if h.is_new_release %}
+                                            <strong class="text-emerald-700">NEW RELEASE</strong> v{{ h.old_version }} → v{{ h.new_version }}
+                                        {% elif h.source == "ms_release_notes" %}
+                                            v{{ h.new_version }} ({{ (h.platforms or [])|join(", ") }}) — {{ h.n_sections }} sekcji
+                                        {% else %}
+                                            {% if h.n_text_changes %}{{ h.n_text_changes }} tekst{% endif %}
+                                            {% if h.n_visual_changes %}· {{ h.n_visual_changes }} wizualnych{% endif %}
+                                            {% if h.n_iae_changes %}· {{ h.n_iae_changes }} IAE{% endif %}
+                                            {% if h.changed_fields %}
+                                                <span class="text-xs text-gray-500 ml-1">({{ h.changed_fields|join(", ") }})</span>
+                                            {% endif %}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <p class="text-xs text-gray-500 mt-2">
+                    Pokazane ostatnie {{ alert_history|length }} alertów. Pełna historia: <code>history/alerts.jsonl</code> w repo.
+                </p>
+            {% endif %}
         </section>
 
         {# ============================================================ #}
