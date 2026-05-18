@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-05-18T10:10:36.728876+00:00",
+  "fetched_at": "2026-05-18T15:38:23.540161+00:00",
   "name": "Microsoft Edge",
   "version": "148.3967.55",
   "release_date": "2026-05-11T01:47:11Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70896,
-  "rating_count": 508585,
+  "rating_average": 4.70899,
+  "rating_count": 508503,
   "size_bytes": 481293312,
   "images": {
     "icon": [

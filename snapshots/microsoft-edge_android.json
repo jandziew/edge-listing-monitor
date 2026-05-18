@@ -1,7 +1,7 @@
 {
   "platform": "android",
   "country": "us",
-  "fetched_at": "2026-05-18T10:11:12.529256+00:00",
+  "fetched_at": "2026-05-18T15:38:23.729492+00:00",
   "name": "Microsoft Edge",
   "version": "148.0.3967.55",
   "release_date": 1778463374,
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0,
   "category": "Communication",
-  "rating_average": 4.6782494,
-  "rating_count": 1535990,
+  "rating_average": 4.6779647,
+  "rating_count": 1536064,
   "size_bytes": 0,
   "images": {
     "icon": [
