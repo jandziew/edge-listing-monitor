@@ -263,49 +263,114 @@ Workflow chodzi sam co 6h, klient dostaje alerty, dashboard żyje pod własnym U
 
 ---
 
-## 9. Plan szkolenia z klientem (warsztat 2h, krok po kroku)
+## 9. Plan szkolenia z klientem — call 1h (zaktualizowane)
 
-### Co przygotować PRZED warsztatem
-- Klient ma laptop z zainstalowanym Antigravity.
-- Klient ma konto Google (do AI Studio + ewentualnie Workspace).
-- Klient ma konto GitHub.
-- Ty masz gotowy projekt na swoim GitHubie (już go masz po dzisiejszej pracy).
-- Slack/Google Chat ze sobą żeby wysyłać linki w trakcie.
+> **Zmiana scope vs poprzednia wersja:** klient chce się nauczyć **jak to zbudować w Antigravity**, nie tylko zobaczyć gotowe. Call 1h w środę wieczorem = pokaz flow + omówienie krytycznych momentów + materiały które klient zabiera do domu i odtwarza sam. Nie hands-on building wspólnie.
 
-### Czas 0:00 – 0:15: Wprowadzenie (bez kodu)
-- Powiedz analogię ze screenshot-codziennie.
-- Pokaż żywy dashboard z Twojego repo (zrób to dziś wieczorem!).
-- Powiedz **co konkretnie zbudujemy w te 2h** — żeby klient miał oczekiwania.
+### Co przygotować PRZED callem
+- ✅ Gotowe repo z działającym produktem (masz: `github.com/jandziew/edge-listing-monitor`)
+- ✅ Live dashboard pod Pages URL (masz: `jandziew.github.io/edge-listing-monitor`)
+- ✅ Trzy dokumenty do wysłania klientowi po callu:
+  - `KLIENT_GUIDE_ANTIGRAVITY.md` — główny przewodnik (filozofia + flow + security + deploy)
+  - `PROMPTY_KOPIUJ_WKLEJ.md` — biblioteka gotowych promptów do Gemini i Antigravity
+  - `PRD_Edge_Listing_Monitor.md` — przykładowy PRD jako wzorzec
+- Notatka mailowa do klienta DZIEŃ przed: „Załóż konta na github.com i cloudflare.com — darmowe, bez karty. Reszta poczeka na call."
+- Drugi monitor / share screen przygotowany (Antigravity + Gemini chat + przeglądarka z live dashboardem)
 
-### Czas 0:15 – 0:30: Antigravity setup
-- Klient otwiera Antigravity, tworzy workspace.
-- Pierwszy prompt: "Sklonuj repo `[URL Twojego repo]` i wytłumacz mi co tam jest".
-- Agent czyta, robi Artifact z opisem struktury. Klient widzi że to **nie jest magia**.
+### Plan 60-minutowy
 
-### Czas 0:30 – 1:00: Lokalne uruchomienie
-- Klient kopiuje `.env.example` na `.env`, wkleja Gemini key.
-- Agent uruchamia `pip install -r requirements.txt` w terminalu Antigravity.
-- Agent uruchamia `python monitor.py`.
-- Klient widzi że folder się zapełnia plikami JSON i obrazkami.
-- Klient otwiera `output/dashboard.html` — pusty (pierwszy run).
+**0:00 – 0:05 Setup callu**
+- Wita-wita, czy słychać, czy widać ekran
+- Pytanie ramowe: „Jaki jest Twój cel? Co chciałbyś umieć po tej sesji?"
 
-### Czas 1:00 – 1:30: Drugi run + sztuczna zmiana (wow moment)
-- **Backup plan dla braku realnej zmiany:** wracamy do folderu, ręcznie edytujemy plik snapshot (zmieniamy 1 słowo w opisie), uruchamiamy znów.
-- Klient widzi alert + dashboard z diff.
-- Jeszcze lepiej: ręcznie podmieniamy 1 obrazek w `assets/` na inny (np. lustro), uruchamiamy.
-- **Gemini Vision opisuje co się zmieniło** — klient czyta i wpada w zachwyt.
+**0:05 – 0:10 Live demo finalnego produktu**
+- Otwieram dashboard `jandziew.github.io/edge-listing-monitor` na full screen
+- Pokazuję: Alerty / Historia / Current State / MS changelog cross-link
+- „To zbudowałem w 2 dni z Antigravity. Pokażę Ci flow który tam użyłem."
+- **Cel:** klient widzi efekt końcowy, ma motywację
 
-### Czas 1:30 – 2:00: Deploy do chmury + Q&A
-- Razem pushujemy do GitHuba klienta.
-- Razem dodajemy GitHub Secret z Gemini key.
-- Razem włączamy workflow.
-- Pokazujemy klientowi gdzie znaleźć: dashboard URL, historię commitów, listę alertów.
-- Q&A — odpowiadamy na pytania, pokazujemy jak dodać nową apkę w `config.yaml`.
+**0:10 – 0:20 Filozofia + flow (slajdy / whiteboard)**
+- 3 zasady (nie czyta w myślach / mały krok / nie wie czego nie wie)
+- Diagram flow: Gemini → PRD → Antigravity → deploy
+- **Najważniejszy moment** kiedy klient nauczy się jednej rzeczy: **„rozmowa z Gemini PRZED Antigravity oszczędza 80% frustracji"**
+- Pokaż na slajdzie jak wygląda dobry PRD vs zły prompt typu „zbuduj mi appkę"
 
-### Po warsztacie
-- Klient zostaje z **działającym produktem w chmurze**.
-- Klient ma w głowie **co znaczą każde z 10 narzędzi** które używamy.
-- Klient wie że **może sam dodawać apki edytując 1 plik**.
+**0:20 – 0:30 Live: Gemini chat — od pomysłu do PRD**
+- Otwieram `gemini.google.com` na live
+- Wymyślam fikcyjny przykład (NIE Edge — żeby klient widział że flow nie jest specyficzny dla naszego projektu)
+  - Np: „chcę co rano dostawać podsumowanie nowych przetargów w mojej branży z gov.pl"
+  - Albo coś bliskiego biznesowi klienta
+- Pokazuję prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja A1
+- Gemini pyta, ja odpowiadam (klient widzi że to nie magia)
+- Po 3-4 wymianach skracam: „normalnie tu by była rozmowa 15 min, ale w skrócie..." → wklejam A4 → generuję PRD na ekranie
+
+**0:30 – 0:45 Live: Antigravity — od PRD do pierwszego skeletonu**
+- Otwieram Antigravity, tworzę nowy projekt
+- Wklejam pierwszy prompt z `PROMPTY_KOPIUJ_WKLEJ.md` sekcja B1 z dopisanym PRD
+- Agent pokazuje plan działania
+- Akceptuję plan (B3), agent zaczyna pierwszy krok
+- Pokazuję **turning point**: agent generuje plik, ja **otwieram go i pokazuję klientowi** co tam jest — „nie akceptuję ślepo, czytam co dostałem"
+- Krótko o `.env`, `.gitignore`, GitHub Secrets (przekierowanie do sekcji 6 KLIENT_GUIDE'a)
+
+**0:45 – 0:55 Deploy + bezpieczeństwo (talking-head, nie hands-on)**
+- Slajd / diagram: Cloudflare Pages + Access (rekomendacja) vs GitHub Pages (tylko jeśli public)
+- Czemu Cloudflare a nie Vercel/Netlify: free tier ma password gate przez email OTP (live demo z incognito jeśli wystarczy czasu)
+- 60-sekundowy revoke wycieklego klucza API (pokaż w AI Studio)
+- Lista „kiedy zatrzymać i poprosić developera" z KLIENT_GUIDE sekcja 8
+
+**0:55 – 1:00 Q&A + materiały**
+- Wysyłam linki w trakcie callu (Slack/mail):
+  - Link do trzech dokumentów (KLIENT_GUIDE, PROMPTY, PRD)
+  - Link do mojego repo jako wzorca
+  - Link do `gemini.google.com` i `antigravity.google.com`
+- „Wiesz wszystko żeby odtworzyć sam. Spróbuj w weekend, daj znać jak poszło, zorganizujemy debug session."
+
+### Backup plany podczas callu
+
+| Sytuacja | Co robisz |
+|----------|-----------|
+| Klient nie ma jeszcze Antigravity | Pokazujesz na swoim, wysyłasz mu instalator po callu |
+| Gemini live się sypie / wolny response | Masz **wygenerowany PRD** wcześniej, wklejasz „o tutaj mam przygotowany, normalnie tak by wyglądał" |
+| Antigravity ma kosmiczny crash | Pokazujesz nagrane wideo z poprzedniej sesji (zarejestruj Loom dzień wcześniej) |
+| Klient mówi „nic z tego nie rozumiem" | Wracasz do sekcji 1 KLIENT_GUIDE — „to jest właśnie ten moment, każdy go ma. Nie musisz dziś wszystko ogarnąć — masz dokument, do którego wracasz" |
+| Klient pyta „a czy nie da się tego inaczej" | Walidujesz pytanie, ale wracasz do flow — „świetna myśl, zapamiętajmy to na potem, teraz dokończmy dziś" |
+
+### Po callu (w ciągu 24h)
+
+- Email z podsumowaniem: 3 linki do dokumentów + 1 zdanie „Twój pierwszy krok: otwórz `gemini.google.com` i przerób promptów A1-A4 z `PROMPTY_KOPIUJ_WKLEJ.md` z własnym pomysłem"
+- Calendar invite na opcjonalną debug session za tydzień (30 min)
+
+---
+
+## 9b. Outline serii filmików edukacyjnych (opcjonalnie, do nagrania później)
+
+Jeśli klient po kilku tygodniach mówi „to powinno być nagranie żebym mógł wracać/pokazać kolegom" — masz gotowy outline. Każdy odcinek 8-12 minut, screen recording + voiceover. Razem ~60 min materiału.
+
+| # | Tytuł | Treść | Długość |
+|---|-------|-------|---------|
+| 1 | Mindset i flow | 3 zasady, diagram Gemini→Antigravity→Deploy, motywacja | 8 min |
+| 2 | Gemini chat: od pomysłu do PRD | Live recording rozmowy z Gemini, jak wyciągać PRD, czerwone flagi | 10 min |
+| 3 | Antigravity: setup i pierwszy prompt | Instalacja, workspace, wklejenie PRD, akceptacja planu | 12 min |
+| 4 | Bezpieczeństwo: .env, .gitignore, klucze API | Co wycieka, jak revokować, jak ustawiać limity | 8 min |
+| 5 | Deploy do Cloudflare Pages + Access | Live deploy od zera, konfiguracja email OTP, klient testuje z incognito | 12 min |
+| 6 | Cron, alerty, iteracje | GitHub Actions, Telegram/Chat webhooks, jak iterować po MVP | 10 min |
+
+**Stack do nagrania:** Loom albo OBS, mikrofon USB, edycja w iMovie. Łącznie 6 odcinków = 1 dzień nagrania + 1 dzień montażu. Warto tylko jeśli klient (lub Ty) ma plan publikacji albo szerszej dystrybucji w firmie.
+
+### Format slajdów do callu (jeśli chcesz przygotować dzień wcześniej)
+
+Jeden plik PPT/Google Slides, max 8 slajdów:
+
+1. **Tytuł** — „Buduj mikro-narzędzia w Antigravity — flow który działa"
+2. **Co dziś pokażę** — 1) flow Gemini→Antigravity→Deploy 2) live demo 3) dokumenty na wynos
+3. **Demo finalnego produktu** — screenshot dashboardu, link
+4. **Filozofia** — 3 zasady (3 ikonki + 1 zdanie każda)
+5. **Flow** — diagram Gemini → PRD → Antigravity → Cloudflare
+6. **Etap kluczowy: PRD** — przykład złego promptu vs dobrego PRD (side-by-side)
+7. **Bezpieczeństwo** — checklist 6 punktów (sekcja 6 KLIENT_GUIDE'a)
+8. **Co dalej** — 3 dokumenty + zaproszenie do debug session
+
+Każdy slajd = jedno zdanie + jedna grafika/screen. Klient zapamięta ramę, szczegóły dostanie w dokumentach.
 
 ---
 
