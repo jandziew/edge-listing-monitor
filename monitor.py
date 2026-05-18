@@ -730,48 +730,211 @@ def generate_html_dashboard(
 # SEKCJA 7: Alerty (Google Chat i email)
 # ============================================================
 
+DASHBOARD_BASE_URL = os.getenv("DASHBOARD_BASE_URL", "https://jandziew.github.io/edge-listing-monitor")
+
+
+def _abs_url(rel_path: str | None) -> str | None:
+    """Konwertuje relatywną ścieżkę (assets/...) na publiczny URL pod GitHub Pages.
+    Google Chat Cards wymagają publicznych URL-i obrazków, lokalne pliki nie działają.
+    """
+    if not rel_path:
+        return None
+    return f"{DASHBOARD_BASE_URL.rstrip('/')}/{rel_path.lstrip('/')}"
+
+
 def send_google_chat_alert(app_name: str, platform: str, text_changes: dict, visual_changes: list[dict],
                             iae_changes: list[dict] | None = None,
-                            is_new_release: bool = False) -> None:
-    """Wysyła wiadomość do Google Chat Space przez incoming webhook."""
+                            is_new_release: bool = False,
+                            store_url: str | None = None) -> None:
+    """Wysyła kartę Cards V2 do Google Chat Space przez incoming webhook.
+
+    Format Cards V2 (zamiast plain text):
+    - Header z nazwą apki + platformą + ikoną
+    - Sekcje per typ zmiany (new release, text, visual, IAE)
+    - Obrazki side-by-side (publiczny URL z GitHub Pages)
+    - Fixed footer z przyciskami: View in store, Open dashboard
+
+    Wymaga GOOGLE_CHAT_WEBHOOK_URL w env. Opcjonalnie DASHBOARD_BASE_URL
+    (default: jandziew.github.io/edge-listing-monitor).
+    """
     webhook_url = os.getenv("GOOGLE_CHAT_WEBHOOK_URL")
     if not webhook_url:
-        print("[INFO] GOOGLE_CHAT_WEBHOOK_URL nie ustawiony, pomijam alert na Google Chat")
+        print("[INFO] GOOGLE_CHAT_WEBHOOK_URL not set, skipping Google Chat alert")
         return
 
-    header = f"*{app_name} ({platform.upper()})*"
+    iae_changes = iae_changes or []
+    sections = []
+
+    # === SEKCJA: New release ===
     if is_new_release:
         new_v = (text_changes.get("version") or {}).get("new", "?")
-        header = f"🚀 *NEW RELEASE* — {app_name} ({platform.upper()}) v{new_v}"
-    text_lines = [f"{header} — wykryto zmiany"]
+        old_v = (text_changes.get("version") or {}).get("old", "?")
+        sections.append({
+            "header": "🚀 New release",
+            "widgets": [{
+                "decoratedText": {
+                    "topLabel": "Version bump",
+                    "text": f"<b>v{new_v}</b>",
+                    "bottomLabel": f"Previous: v{old_v}",
+                    "wrapText": True,
+                }
+            }],
+        })
 
+    # === SEKCJA: Text changes ===
     if text_changes:
-        text_lines.append("\n*Tekst:*")
+        widgets = []
         for field, change in text_changes.items():
-            text_lines.append(f"• {field}: zmieniono")
+            if field == "version" and is_new_release:
+                continue  # już pokazane wyżej
+            old_val = str(change.get("old", ""))[:80]
+            new_val = str(change.get("new", ""))[:80]
+            widgets.append({
+                "decoratedText": {
+                    "topLabel": field,
+                    "text": f"<font color=\"#16a34a\">{_html_escape(new_val)}</font>",
+                    "bottomLabel": f"Was: {_html_escape(old_val)}" if old_val else "(new)",
+                    "wrapText": True,
+                }
+            })
+        if widgets:
+            sections.append({
+                "header": "Text changes",
+                "collapsible": True,
+                "uncollapsibleWidgetsCount": 3,
+                "widgets": widgets,
+            })
 
+    # === SEKCJA: Visual changes ===
     if visual_changes:
-        text_lines.append("\n*Grafika:*")
-        for vc in visual_changes:
+        widgets = []
+        for vc in visual_changes[:5]:  # max 5 żeby karta się nie rozdęła
+            label = f"{vc['image_type']} #{vc['index']}"
             if vc["change_type"] == "changed":
-                desc = vc.get("ai_description", "")
-                text_lines.append(f"• {vc['image_type']} #{vc['index']}: {desc}")
+                desc = vc.get("ai_description") or "Visual change detected."
+                widgets.append({
+                    "decoratedText": {
+                        "topLabel": label,
+                        "text": f"<b>Changed</b> — {_html_escape(desc[:200])}",
+                        "wrapText": True,
+                    }
+                })
+                # Dorzucamy side-by-side image (jeśli dostępny publicznie)
+                sxs_url = _abs_url(vc.get("side_by_side_path"))
+                if sxs_url:
+                    widgets.append({"image": {"imageUrl": sxs_url, "altText": "Before vs after"}})
             elif vc["change_type"] == "added":
-                text_lines.append(f"• {vc['image_type']} #{vc['index']}: DODANY")
+                widgets.append({
+                    "decoratedText": {
+                        "topLabel": label,
+                        "text": "<b>Added</b> — new asset detected.",
+                        "wrapText": True,
+                    }
+                })
+                new_url = _abs_url(vc.get("new_path"))
+                if new_url:
+                    widgets.append({"image": {"imageUrl": new_url, "altText": "New asset"}})
+            else:
+                widgets.append({
+                    "decoratedText": {
+                        "topLabel": label,
+                        "text": f"<b>{_html_escape(vc['change_type'])}</b>",
+                        "wrapText": True,
+                    }
+                })
+        if len(visual_changes) > 5:
+            widgets.append({"textParagraph": {"text": f"<i>… and {len(visual_changes) - 5} more visual changes (see dashboard)</i>"}})
+        sections.append({
+            "header": "Visual changes",
+            "collapsible": False,
+            "widgets": widgets,
+        })
 
+    # === SEKCJA: In-App Events ===
     if iae_changes:
-        text_lines.append("\n*In-App Events:*")
+        widgets = []
         for ic in iae_changes:
-            ev = ic.get("event", {})
-            text_lines.append(f"• [{ic['change_type'].upper()}] {ev.get('title','(brak tytułu)')}")
+            ev = ic.get("event") or {}
+            change_label = ic["change_type"].upper()
+            widgets.append({
+                "decoratedText": {
+                    "topLabel": f"In-App Event · {change_label}",
+                    "text": f"<b>{_html_escape(ev.get('title') or '(no title)')}</b>",
+                    "bottomLabel": _html_escape((ev.get("detail") or "")[:120]),
+                    "wrapText": True,
+                }
+            })
+        sections.append({"header": "In-App Events", "widgets": widgets})
 
-    message = {"text": "\n".join(text_lines)}
+    # Fallback gdy brak żadnych zmian (defensive — nie powinno się zdarzyć)
+    if not sections:
+        sections.append({"widgets": [{"textParagraph": {"text": "<i>Change detected but no details available.</i>"}}]})
+
+    # === Footer z przyciskami ===
+    buttons = []
+    if store_url:
+        buttons.append({
+            "text": "View in store",
+            "onClick": {"openLink": {"url": store_url}},
+        })
+    buttons.append({
+        "text": "Open dashboard",
+        "onClick": {"openLink": {"url": DASHBOARD_BASE_URL}},
+    })
+
+    # === Header karty ===
+    subtitle = f"{platform.upper()}"
+    if is_new_release:
+        subtitle = f"{platform.upper()} · 🚀 NEW RELEASE"
+    elif visual_changes or text_changes or iae_changes:
+        change_summary = []
+        if text_changes: change_summary.append(f"{len(text_changes)} text")
+        if visual_changes: change_summary.append(f"{len(visual_changes)} visual")
+        if iae_changes: change_summary.append(f"{len(iae_changes)} IAE")
+        subtitle = f"{platform.upper()} · {' · '.join(change_summary)}"
+
+    card = {
+        "header": {
+            "title": app_name,
+            "subtitle": subtitle,
+        },
+        "sections": sections,
+    }
+
+    if buttons:
+        card["fixedFooter"] = {
+            "primaryButton": buttons[0],
+        }
+        if len(buttons) > 1:
+            card["fixedFooter"]["secondaryButton"] = buttons[1]
+
+    message = {
+        "cardsV2": [{
+            "cardId": f"alert-{app_name.lower().replace(' ', '-')}-{platform}",
+            "card": card,
+        }]
+    }
 
     try:
-        requests.post(webhook_url, json=message, timeout=10).raise_for_status()
-        print(f"[OK] Wysłano alert na Google Chat dla {app_name} {platform}")
+        r = requests.post(webhook_url, json=message, timeout=15)
+        r.raise_for_status()
+        print(f"[OK] Sent Google Chat Cards V2 alert for {app_name} {platform}")
     except Exception as e:
-        print(f"[ERR] Google Chat alert nie poszedł: {e}")
+        print(f"[ERR] Google Chat alert failed: {e}")
+        # Fallback do plain text żeby user dostał chociaż coś
+        try:
+            fallback_text = f"*{app_name} ({platform.upper()})* — change detected. Dashboard: {DASHBOARD_BASE_URL}"
+            requests.post(webhook_url, json={"text": fallback_text}, timeout=10).raise_for_status()
+            print("[OK] Sent fallback plain-text Google Chat alert")
+        except Exception as e2:
+            print(f"[ERR] Plain-text fallback also failed: {e2}")
+
+
+def _html_escape(text: str) -> str:
+    """Escape znaków HTML dla Cards V2 (Google używa ograniczonego HTML w textParagraph/decoratedText)."""
+    if not text:
+        return ""
+    return (text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
 
 
 def _escape_telegram_md(text: str) -> str:
@@ -1079,7 +1242,8 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
     alerts_cfg = settings.get("alerts", {})
     if alerts_cfg.get("google_chat", {}).get("enabled"):
         send_google_chat_alert(app_name, platform, text_changes, visual_changes,
-                                iae_changes=iae_changes, is_new_release=is_new_release)
+                                iae_changes=iae_changes, is_new_release=is_new_release,
+                                store_url=current.get("store_url"))
     if alerts_cfg.get("telegram", {}).get("enabled"):
         send_telegram_alert(app_name, platform, text_changes, visual_changes,
                              iae_changes=iae_changes, is_new_release=is_new_release)

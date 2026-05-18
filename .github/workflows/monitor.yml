@@ -32,6 +32,9 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Public URL używany w Google Chat Cards V2 jako base dla obrazków
+          # i przycisku "Open dashboard". Można nadpisać sekretem w GH Settings.
+          DASHBOARD_BASE_URL: ${{ vars.DASHBOARD_BASE_URL || 'https://jandziew.github.io/edge-listing-monitor' }}
         run: python monitor.py
 
       - name: Commit and push snapshots & assets
