@@ -3,23 +3,42 @@
 # Skrypt automatycznie zacznie ją monitorować w następnym runie.
 
 apps:
-  - name: "Microsoft Edge (US)"
-    slug: "microsoft-edge"  # zachowujemy stary slug — istniejące snapshoty zostają z continuity
+  - name: "Microsoft Edge"
+    slug: "microsoft-edge"
+    alerts_enabled: true  # slider on/off — gdy false: monitorujemy + dashboard, ale BEZ pushy
     ios:
       bundle_id: "com.microsoft.msedge"
-      country: "us"  # kod kraju ISO, np. us, pl, gb, de
+      country: "us"  # kod kraju ISO. Empirycznie sprawdziliśmy że release_date jest
+                     # globalnie zsynchronizowany dla Edge (PL = US co do sekundy),
+                     # więc nie ma sensu duplikować apki per kraj. Dla apek lokalizowanych
+                     # (np. lokalne banki) zrób osobną entry z innym slugiem i krajem.
     android:
       package_name: "com.microsoft.emmx"
       country: "us"
 
-  - name: "Microsoft Edge (PL)"
-    slug: "microsoft-edge-pl"
+  - name: "Google Chrome"
+    slug: "google-chrome"
+    alerts_enabled: true  # przykład — monitorujemy konkurencję dla Edge
     ios:
-      bundle_id: "com.microsoft.msedge"
-      country: "pl"
+      bundle_id: "com.google.chrome.ios"
+      country: "us"
     android:
-      package_name: "com.microsoft.emmx"
-      country: "pl"
+      package_name: "com.android.chrome"
+      country: "us"
+
+  # Przykład: monitoring SILENT (snapshot + dashboard, BEZ alertów na Google Chat).
+  # Przydatne gdy chcesz mieć historię zmian dla apki ale nie chcesz dostawać pushy.
+  # Odkomentuj żeby aktywować.
+  #
+  # - name: "Mozilla Firefox"
+  #   slug: "mozilla-firefox"
+  #   alerts_enabled: false  # ← silent mode
+  #   ios:
+  #     bundle_id: "org.mozilla.ios.Firefox"
+  #     country: "us"
+  #   android:
+  #     package_name: "org.mozilla.firefox"
+  #     country: "us"
 
   # Przykład rozszerzenia (odkomentuj żeby aktywować):
   # - name: "Google Chrome"

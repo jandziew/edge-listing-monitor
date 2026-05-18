@@ -1256,23 +1256,29 @@ def process_app_platform(app_config: dict, platform: str, settings: dict) -> dic
     # Zapisujemy nowy snapshot
     save_snapshot(app_slug, platform, current)
 
-    # Alerty
+    # Alerty — sprawdzamy per-app slider `alerts_enabled` (default True, gdy false
+    # apka jest monitorowana ale alerty nie idą na żaden kanał — snapshoty i dashboard
+    # nadal się aktualizują).
+    app_alerts_enabled = app_config.get("alerts_enabled", True)
     alerts_cfg = settings.get("alerts", {})
-    if alerts_cfg.get("google_chat", {}).get("enabled"):
-        icon_url = (current.get("images") or {}).get("icon", [None])[0]
-        send_google_chat_alert(app_name, platform, text_changes, visual_changes,
-                                iae_changes=iae_changes, is_new_release=is_new_release,
-                                store_url=current.get("store_url"),
-                                app_icon_url=icon_url)
-    if alerts_cfg.get("telegram", {}).get("enabled"):
-        send_telegram_alert(app_name, platform, text_changes, visual_changes,
-                             iae_changes=iae_changes, is_new_release=is_new_release)
-    if alerts_cfg.get("email", {}).get("enabled"):
-        send_email_alert(
-            app_name, platform, text_changes, visual_changes,
-            recipients=alerts_cfg["email"].get("recipients", []),
-            iae_changes=iae_changes, is_new_release=is_new_release,
-        )
+    if app_alerts_enabled:
+        if alerts_cfg.get("google_chat", {}).get("enabled"):
+            icon_url = (current.get("images") or {}).get("icon", [None])[0]
+            send_google_chat_alert(app_name, platform, text_changes, visual_changes,
+                                    iae_changes=iae_changes, is_new_release=is_new_release,
+                                    store_url=current.get("store_url"),
+                                    app_icon_url=icon_url)
+        if alerts_cfg.get("telegram", {}).get("enabled"):
+            send_telegram_alert(app_name, platform, text_changes, visual_changes,
+                                 iae_changes=iae_changes, is_new_release=is_new_release)
+        if alerts_cfg.get("email", {}).get("enabled"):
+            send_email_alert(
+                app_name, platform, text_changes, visual_changes,
+                recipients=alerts_cfg["email"].get("recipients", []),
+                iae_changes=iae_changes, is_new_release=is_new_release,
+            )
+    else:
+        print(f"[INFO] {app_name}: alerts_enabled=false — change captured w snapshocie i dashboardzie, alerty pominięte")
 
     summary_parts = []
     if is_new_release:
