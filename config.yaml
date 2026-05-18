@@ -3,14 +3,23 @@
 # Skrypt automatycznie zacznie ją monitorować w następnym runie.
 
 apps:
-  - name: "Microsoft Edge"
-    slug: "microsoft-edge"  # używany jako nazwa folderów (bez spacji, bez polskich znaków)
+  - name: "Microsoft Edge (US)"
+    slug: "microsoft-edge"  # zachowujemy stary slug — istniejące snapshoty zostają z continuity
     ios:
       bundle_id: "com.microsoft.msedge"
       country: "us"  # kod kraju ISO, np. us, pl, gb, de
     android:
       package_name: "com.microsoft.emmx"
       country: "us"
+
+  - name: "Microsoft Edge (PL)"
+    slug: "microsoft-edge-pl"
+    ios:
+      bundle_id: "com.microsoft.msedge"
+      country: "pl"
+    android:
+      package_name: "com.microsoft.emmx"
+      country: "pl"
 
   # Przykład rozszerzenia (odkomentuj żeby aktywować):
   # - name: "Google Chrome"
