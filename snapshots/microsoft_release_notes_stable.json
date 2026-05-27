@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-05-26T20:11:53.720330+00:00",
+  "fetched_at": "2026-05-27T04:04:09.148785+00:00",
   "versions": [
+    {
+      "version": "148.0.3967.84",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "May 26, 2026",
+      "sections": []
+    },
     {
       "version": "148.0.3967.70",
       "platforms": [
@@ -253,14 +262,6 @@
           "body": "[iOS]\nImprove the user experience of PacProxy\n[Android]\nImprove the user experience of Share Device Mode"
         }
       ]
-    },
-    {
-      "version": "144.0.3719.115",
-      "platforms": [
-        "Android"
-      ],
-      "date": "February 12, 2026",
-      "sections": []
     }
   ]
 }
