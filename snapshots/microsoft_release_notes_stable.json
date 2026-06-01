@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-06-01T17:45:20.268559+00:00",
+  "fetched_at": "2026-06-01T21:35:51.107737+00:00",
   "versions": [
+    {
+      "version": "148.0.3967.97",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "June 1, 2026",
+      "sections": []
+    },
     {
       "version": "148.0.3967.84",
       "platforms": [
@@ -236,32 +245,6 @@
       ],
       "date": "March 5, 2026",
       "sections": []
-    },
-    {
-      "version": "145.0.3800.85",
-      "platforms": [
-        "Android",
-        "iOS"
-      ],
-      "date": "March 2, 2026",
-      "sections": [
-        {
-          "heading": "General updates",
-          "body": "[iOS & Android]\nSupport Copilot Mode FRE New UI for MSA users\n[iOS & Android]\nSupport Copilot Prompt Card in NTP for AAD users\n[iOS & Android]\nSupport Copilot Summary Notification in Address bar for AAD users\n[iOS]\nUpgrade Intune MAM SDK to version 21.4.0\n[iOS & Android]\nUpgrade OneAuth SDK to version 8.2.1"
-        },
-        {
-          "heading": "New policies",
-          "body": "[iOS]\nSupport New Policy of ManagedTopSites for configure managed top sites on New Tab Page\n(Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of ReadAloudEnabled for enable Read Aloud feature\n(Policy document\nMicrosoft Edge Browser Policy Documentation ReadAloudEnabled | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of EdgeEDropEnabled for enable Drop feature\n(Policy document\nMicrosoft Edge Browser Policy Documentation EdgeEDropEnabled | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy of ManagedNtpShortcuts for configure managed shortcuts on the New Tab Page\n(Policy document\nMicrosoft Edge Browser Policy Documentation ManagedNtpShortcuts | Microsoft Learn\n)\n[iOS & Android]\nSupport New Policy about Copilot Mode for AAD users (Policy document\nManage Microsoft Edge on iOS and Android With Intune - Microsoft Intune | Microsoft Learn\n)"
-        },
-        {
-          "heading": "Bug fixes",
-          "body": "[iOS]\nResolve the Data leak issue about protected file opening in InPrivate mode\n[iOS]\nResolve the Data leak issue caused by identity switch not being able to handle External Files correctly\n[iOS]\nFix the issue where attempting to open OneDrive downloaded files was failing\n[iOS]\nFix brand information fetch failure for some case under BrandLogo and BrandColor policy configure\n[Android]\nFix crash issue when Intune blocks print action"
-        },
-        {
-          "heading": "New enhancements",
-          "body": "[iOS]\nImprove the user experience of PacProxy\n[Android]\nImprove the user experience of Share Device Mode"
-        }
-      ]
     }
   ]
 }

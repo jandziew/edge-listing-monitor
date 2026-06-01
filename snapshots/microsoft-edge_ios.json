@@ -1,21 +1,21 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-05-25T14:58:17.988505+00:00",
+  "fetched_at": "2026-06-01T21:35:49.014671+00:00",
   "name": "Microsoft Edge",
-  "version": "148.3967.84",
-  "release_date": "2026-05-25T01:53:52Z",
+  "version": "148.3967.97",
+  "release_date": "2026-06-01T02:04:53Z",
   "description": "Browse with Microsoft Edge, your everyday web browser with built-in Copilot. From finding information to making sense of it, Copilot works alongside you to streamline everyday browsing, so you can turn ideas into action and get it done faster. \n\nCopilot in Edge helps you search, browse, and explore, so you can make decisions faster with more confidence, all in one place.  Summarize lengthy articles and videos, get answers about what you are browsing, and turn ideas into drafts or images – without breaking your flow.  Whether you need a quick answer or deeper help, Copilot in Edge adapts to support how you work, right when you need it. \n\nStay safer with built-in security tools like tracking prevention, AdBlock Plus and Microsoft Defender Smartscreen. When you want extra privacy, switch to InPrivate mode to keep your browsing history protected.  \n\nDo more with less effort.  With Microsoft Edge, everyday browsing is faster, more intuitive, and focused. \n\nExplore the web effortlessly with Copilot built-in \n• The Copilot-inspired new tab page brings together Copilot with browsing. Now your queries will get routed to search, chat or web automatically – all in one place. \n• Copilot understands context across your open tabs, helping you compare information, summarize, brainstorm and connect ideas across pages, so you can move faster and make decisions with confidence without switching tabs. \n• Get help from what’s on your screen. With Vision, Copilot can scan, analyze, and brainstorm with you on the content you’re browsing. \n• Quickly summarize the content of the webpage, PDF or video you are viewing \n• Get the right level of help for the moment—quick answers when you’re moving fast, deeper insights when you need it. \n\nMake the most of your time online \n• Microsoft Edge is a fast, reliable web browser designed to help you stay focused and get things done. \n• Listen to articles and pages with Read Aloud while multitasking, using natural sounding voices in your preferred language. \n• Group tabs by topic with one click to keep browsing organized and clutter free. \n• Customize your experience with extensions for shopping, blocking distractions, and more. \n• View webpages your way with page translation as you browse. \n• Earn Microsoft Rewards points faster by browsing in Microsoft Edge. \n\nStay safer online \n• Tracking Prevention helps protect your personal data. \n• InPrivate mode keeps your activity private. \n• Password monitoring alerts you if saved credentials are found on the dark web. \n• AdBlock Plus blocks unwanted ads and distractions. \n• Microsoft Defender SmartScreen helps protect you from phishing and malware. \n\nSome screens are simulated, subject to change.",
   "release_notes": "Welcome to Microsoft Edge! Here's what's new in this release:\n• Introducing Themes: Personalize Edge with colors and wallpapers. Tap a theme and the whole browser matches — your style, your tab.\n• Redesigned New Tab Page: Experience a fresh, Copilot-powered New Tab Page with a smarter search box that knows whether to search the web or chat with Copilot.\n• Journeys: Edge understands what you're working on and suggests next steps from your browsing activity.\n• Copilot in Edge Preview: Join the preview to unlock the full AI experience, try new features early, and help shape what comes next.\nUpgrade now to enjoy a smarter, faster, and more productive Microsoft Edge.",
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70819,
-  "rating_count": 514188,
-  "size_bytes": 484996096,
+  "rating_average": 4.70747,
+  "rating_count": 519637,
+  "size_bytes": 485000192,
   "images": {
     "icon": [
-      "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/95/4b/80/954b802a-a6c2-8ee8-fbf2-8a6a953ed6fc/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/512x512bb.jpg"
+      "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/d9/52/f3/d952f380-669f-c1e4-1a0a-1875ca60b51b/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/512x512bb.jpg"
     ],
     "screenshots_iphone": [
       "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/df/f2/77/dff2779c-7c6d-c012-8e74-5f532a068a99/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_01.png/1284x2778bb.jpg",
