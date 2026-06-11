@@ -1,8 +1,34 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-06-11T04:12:05.247319+00:00",
+  "fetched_at": "2026-06-11T10:40:50.907265+00:00",
   "versions": [
+    {
+      "version": "149.0.4022.53",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "June 8, 2026",
+      "sections": [
+        {
+          "heading": "General updates",
+          "body": "[Android]\nUpgrade Intune SDK to version 12.2.0\n[iOS]\nUpgrade Intune SDK to version 21.5.2"
+        },
+        {
+          "heading": "New Policies",
+          "body": "[Android & iOS]\nSupport added for the\nPictureInPictureOverlayEnabled\npolicy, which allows configuring the Picture in Picture overlay feature on supported webpages (Policy document\nMicrosoft Edge Browser Policy Documentation PictureInPictureOverlayEnabled | Microsoft Learn\n)"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[iOS]\nFix the data leak issue when downloading vCard file\n[iOS]\nFix the issue where the managed favorites policy did not take effect"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[Android & iOS]\nImprove the user experience of the Copilot Summary feature\n[Android & iOS]\nImprove the user experience of the scan code when using the Edge Camera\n[iOS]\nImprove the user experience of the show page info feature"
+        }
+      ]
+    },
     {
       "version": "148.0.3967.97",
       "platforms": [
@@ -47,19 +73,19 @@
       "sections": [
         {
           "heading": "General updates",
-          "body": "[iOS] Upgrade Tunnel SDK to version 2.0.0\n[iOS & Android] Upgrade OneAuth SDK to version 9.3.3"
+          "body": "[iOS]\nUpgrade Tunnel SDK to version 2.0.0\n[iOS & Android]\nUpgrade OneAuth SDK to version 9.3.3"
         },
         {
           "heading": "New Policies",
-          "body": "[iOS & Android] Added support for the\nCopilotNewTabPageEnabled\npolicy to configure the availability of the Copilot new tab page\nMicrosoft Edge Browser Policy Documentation â CopilotNewTabPageEnabled | Microsoft Learn"
+          "body": "[iOS & Android]\nAdded support for the\nCopilotNewTabPageEnabled\npolicy to configure the availability of the Copilot new tab page\nMicrosoft Edge Browser Policy Documentation â CopilotNewTabPageEnabled | Microsoft Learn"
         },
         {
           "heading": "Bug fixes",
-          "body": "[iOS] Fix the issue about data leak under\nIncognitoModeAvailability\npolicy\n[Android] Fix the issue where the Policies of Brand Info does not work under some environment"
+          "body": "[iOS]\nFix the issue about data leak under\nIncognitoModeAvailability\npolicy\n[Android]\nFix the issue where the Policies of Brand Info does not work under some environment"
         },
         {
           "heading": "New enhancements",
-          "body": "[iOS] Improve the user experience of Copilot New Tab Card\n[iOS & Android] Improve the user experience of Copilot Multi Tab Summary feature\n[iOS & Android] Improve the user experience of Copilot Video Summary feature\n[iOS & Android] Improve the user experience of Web single sign on"
+          "body": "[iOS]\nImprove the user experience of Copilot New Tab Card\n[iOS & Android]\nImprove the user experience of Copilot Multi Tab Summary feature\n[iOS & Android]\nImprove the user experience of Copilot Video Summary feature\n[iOS & Android]\nImprove the user experience of Web single sign on"
         }
       ]
     },
@@ -105,15 +131,15 @@
       "sections": [
         {
           "heading": "New Policies",
-          "body": "[Android] Support New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[Android] Support New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
+          "body": "[Android]\nSupport New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[Android]\nSupport New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
         },
         {
           "heading": "Bug fixes",
-          "body": "[Android] Fix the file upload to\nOneDrive\nfailing issue under Intune MAM\n[Android] Fix the issue about file upload from\nOneDrive\nfailing under Intune\n[Android] Fix the issue about opening attachments in Outlook.com triggers switch to personal account sometimes"
+          "body": "[Android]\nFix the file upload to\nOneDrive\nfailing issue under Intune MAM\n[Android]\nFix the issue about file upload from\nOneDrive\nfailing under Intune\n[Android]\nFix the issue about opening attachments in Outlook.com triggers switch to personal account sometimes"
         },
         {
           "heading": "New enhancements",
-          "body": "[Android] Improve the user experience of AAD Copilot\n[Android] Improve the user experience of Copilot New Tab Card\n[Android] Improve the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
+          "body": "[Android]\nImprove the user experience of AAD Copilot\n[Android]\nImprove the user experience of Copilot New Tab Card\n[Android]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
         }
       ]
     },
@@ -126,19 +152,19 @@
       "sections": [
         {
           "heading": "General updates",
-          "body": "[iOS] Upgrade Intune MAM SDK to version 21.5.1\n[iOS] Upgrade Tunnel SDK to version 1.7.1"
+          "body": "[iOS]\nUpgrade Intune MAM SDK to version 21.5.1\n[iOS]\nUpgrade Tunnel SDK to version 1.7.1"
         },
         {
           "heading": "New Policies",
-          "body": "[iOS] Support New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[iOS] Support New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
+          "body": "[iOS]\nSupport New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[iOS]\nSupport New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
         },
         {
           "heading": "Bug fixes",
-          "body": "[iOS] Fix the issue where the exit InPrivate button still show when\nIncognitoModeAvailability\npolicy is set to forced\n[iOS] Fix the Policy of\nSmartScreenAllowListDomains\nnot work as expected\n[iOS] Fix the Policy of\nBlockSignIn\nnot work as expected"
+          "body": "[iOS]\nFix the issue where the exit InPrivate button still show when\nIncognitoModeAvailability\npolicy is set to forced\n[iOS]\nFix the Policy of\nSmartScreenAllowListDomains\nnot work as expected\n[iOS]\nFix the Policy of\nBlockSignIn\nnot work as expected"
         },
         {
           "heading": "New enhancements",
-          "body": "[iOS] Support to view SSL/TLS certificate information from the\nPageInfo\npanel (Under Experiment)\n[iOS] Improve the user experience under incognito mode\n[iOS] Improve the user experience of AAD Copilot\n[iOS] Improve the user experience of Copilot New Tab Card\n[iOS] Improve the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
+          "body": "[iOS]\nSupport to view SSL/TLS certificate information from the\nPageInfo\npanel (Under Experiment)\n[iOS]\nImprove the user experience under incognito mode\n[iOS]\nImprove the user experience of AAD Copilot\n[iOS]\nImprove the user experience of Copilot New Tab Card\n[iOS]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
         }
       ]
     },
@@ -236,14 +262,6 @@
         "iOS"
       ],
       "date": "March 9, 2026",
-      "sections": []
-    },
-    {
-      "version": "145.0.3800.92",
-      "platforms": [
-        "iOS"
-      ],
-      "date": "March 5, 2026",
       "sections": []
     }
   ]
