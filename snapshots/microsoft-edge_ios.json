@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-09T14:56:54.306133+00:00",
+  "fetched_at": "2026-06-12T10:17:50.046907+00:00",
   "name": "Microsoft Edge",
   "version": "149.4022.53",
   "release_date": "2026-06-08T01:46:18Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70662,
-  "rating_count": 524635,
+  "rating_average": 4.70607,
+  "rating_count": 527246,
   "size_bytes": 487953408,
   "images": {
     "icon": [
@@ -40,15 +40,6 @@
     ]
   },
   "in_app_events": [
-    {
-      "id": "6762239713",
-      "title": "Meet Copilot in Edge",
-      "subtitle": "What starts here, gets done here!",
-      "detail": "Copilot in Edge helps you get clear answers, make confident decisions, and get more done without leaving the page.",
-      "start_date": "2026-05-12T07:00:00.000Z",
-      "end_date": "2026-06-12T07:00:00.000Z",
-      "badge": "available"
-    },
     {
       "id": "6771328904",
       "title": "Make Edge your own!",
