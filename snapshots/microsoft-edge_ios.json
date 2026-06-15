@@ -1,42 +1,42 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-12T10:17:50.046907+00:00",
+  "fetched_at": "2026-06-15T20:58:03.311916+00:00",
   "name": "Microsoft Edge",
-  "version": "149.4022.53",
-  "release_date": "2026-06-08T01:46:18Z",
+  "version": "149.4022.68",
+  "release_date": "2026-06-15T02:09:57Z",
   "description": "Browse with Microsoft Edge, your everyday web browser with built-in Copilot. From finding information to making sense of it, Copilot works alongside you to streamline everyday browsing, so you can turn ideas into action and get it done faster. \n\nCopilot in Edge helps you search, browse, and explore, so you can make decisions faster with more confidence, all in one place.  Summarize lengthy articles and videos, get answers about what you are browsing, and turn ideas into drafts or images – without breaking your flow.  Whether you need a quick answer or deeper help, Copilot in Edge adapts to support how you work, right when you need it. \n\nStay safer with built-in security tools like tracking prevention, AdBlock Plus and Microsoft Defender Smartscreen. When you want extra privacy, switch to InPrivate mode to keep your browsing history protected.  \n\nDo more with less effort.  With Microsoft Edge, everyday browsing is faster, more intuitive, and focused. \n\nExplore the web effortlessly with Copilot built-in \n• The Copilot-inspired new tab page brings together Copilot with browsing. Now your queries will get routed to search, chat or web automatically – all in one place. \n• Copilot understands context across your open tabs, helping you compare information, summarize, brainstorm and connect ideas across pages, so you can move faster and make decisions with confidence without switching tabs. \n• Get help from what’s on your screen. With Vision, Copilot can scan, analyze, and brainstorm with you on the content you’re browsing. \n• Quickly summarize the content of the webpage, PDF or video you are viewing \n• Get the right level of help for the moment—quick answers when you’re moving fast, deeper insights when you need it. \n\nMake the most of your time online \n• Microsoft Edge is a fast, reliable web browser designed to help you stay focused and get things done. \n• Listen to articles and pages with Read Aloud while multitasking, using natural sounding voices in your preferred language. \n• Group tabs by topic with one click to keep browsing organized and clutter free. \n• Customize your experience with extensions for shopping, blocking distractions, and more. \n• View webpages your way with page translation as you browse. \n• Earn Microsoft Rewards points faster by browsing in Microsoft Edge. \n\nStay safer online \n• Tracking Prevention helps protect your personal data. \n• InPrivate mode keeps your activity private. \n• Password monitoring alerts you if saved credentials are found on the dark web. \n• AdBlock Plus blocks unwanted ads and distractions. \n• Microsoft Defender SmartScreen helps protect you from phishing and malware. \n\nSome screens are simulated, subject to change.",
-  "release_notes": "Welcome to Microsoft Edge! Here's what's new in this release:\n• Ask Copilot with an image: Quickly send an image to Copilot for smart insights and helpful answers.\n• Bug fixes, stability, and performance improvements.\nUpgrade now to enjoy a smarter, faster, and more productive Microsoft Edge.",
+  "release_notes": "Welcome to Microsoft Edge! Here's what's new in this release:\n• New World Cup themes: Pick your team and make Edge yours. Wallpapers, colors, and styles to match your squad every time you open the browser.\n• Fixed some bugs and improved stability and performance.\nUpgrade now to enjoy a smarter, faster, and more productive Microsoft Edge.",
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70607,
-  "rating_count": 527246,
-  "size_bytes": 487953408,
+  "rating_average": 4.7058,
+  "rating_count": 529240,
+  "size_bytes": 488076288,
   "images": {
     "icon": [
-      "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/e9/ca/a2/e9caa25f-2613-58e7-a688-13977965d00d/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/512x512bb.jpg"
+      "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/19/cd/e9/19cde96d-744d-1aa2-d2e3-1e55f8eeefc3/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-0-85-220.png/512x512bb.jpg"
     ],
     "screenshots_iphone": [
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/df/f2/77/dff2779c-7c6d-c012-8e74-5f532a068a99/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_01.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/1c/98/53/1c9853ff-ac3a-9169-d4cf-1461cd5840ad/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_02.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/de/d1/80/ded180d7-2505-6183-f338-93bf7037ab9c/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_03.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/9d/80/f0/9d80f0ee-eafc-df7e-395c-9ae2b6791363/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_04.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/86/2d/32/862d3266-40e5-f559-4b8b-1096830e0a21/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_05.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/14/f2/04/14f20496-0d13-7870-434e-3c640b138c59/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_06.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a6/3c/38/a63c3843-f231-4d22-4492-e24c43ad423f/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_07.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/76/9c/bc/769cbc61-2c4b-ca27-c80d-895c919312b7/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_08.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e9/0b/99/e90b999f-b787-8392-3819-c38e5b390e4f/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_09.png/1284x2778bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d1/58/48/d158480d-fd32-66f5-4b50-a5a65ce11542/Microsoft_MicrosoftEdge_iOS_6.7_en-US_ScreenshotLocalization_10.png/1284x2778bb.jpg"
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e4/30/22/e43022ca-1d19-a53a-0e2d-e5bc2a950d92/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_01.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/a9/29/60/a92960a8-9eed-2872-ce5a-d0c2eb6d3ac7/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_02.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2b/fc/d0/2bfcd0fb-a4c3-2346-40ee-0bb5a92f7aaf/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_03.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/88/a7/a1/88a7a126-6d59-8c31-e6fd-d7561e18f8a7/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_04.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/3c/b3/a3/3cb3a39f-d1cd-9698-a4be-4797e075a345/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_05.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/bc/2b/a2/bc2ba2c8-a5c3-a57b-de0e-c3a9e3ec6516/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_06.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/53/e0/97/53e0973d-b094-1c08-f934-79cc46fd3df3/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_07.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ee/70/84/ee70843e-ee5c-c753-addd-d0cb7bb29dae/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_08.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/af/a9/fd/afa9fdf0-b2e8-331b-ded2-98ee687bf590/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_09.png/1320x2868bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/d9/07/9f/d9079f8c-7094-55ac-f17f-ce935dedfe5a/Microsoft_MicrosoftEdge_iOS_6.9_en-US_ScreenshotMockup_260612_10.png/1320x2868bb.jpg"
     ],
     "screenshots_ipad": [
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a1/06/22/a1062224-7d2f-efc3-46b1-1685153a8b5e/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_01.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c8/9a/0b/c89a0b0b-9240-924d-d3b6-f503b8926f02/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_02.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/26/3e/8f/263e8f10-9c8d-6ed6-cb72-31f91dcf5420/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_03.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/ca/a3/c7/caa3c7a7-8719-20cc-c76e-e8bff609e44f/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_04.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/c6/de/cd/c6decdd2-e2cd-624a-5774-e107e3d7e9da/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_05.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/2b/55/95/2b5595c2-6bab-eed1-962c-079115c0ae60/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_06.png/2048x2732bb.jpg",
-      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/87/1f/98/871f9801-538d-f858-8866-f996038cfb00/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_07.png/2048x2732bb.jpg"
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/da/7e/6e/da7e6e32-4fb0-88aa-f6a3-8016507aef34/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_01.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/81/4a/3b/814a3ba9-f1dc-592a-54df-87f2b2b90b27/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_02.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/61/8c/0e/618c0ec5-8c71-edb2-1ed5-80a112942b93/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_03.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/4f/0b/0c/4f0b0ca1-cc51-9d04-3fd7-10349a208cad/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_04.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/7c/dd/81/7cdd8150-1264-acc9-431f-d5a21f2d1197/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_05.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/fd/7e/7a/fd7e7a3a-1271-0592-6e3d-9cc8685a194e/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_06.png/2048x2732bb.jpg",
+      "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/62/17/65/62176566-14bf-5da2-0bae-c808bfc8890c/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_07.png/2048x2732bb.jpg"
     ]
   },
   "in_app_events": [

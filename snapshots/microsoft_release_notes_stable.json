@@ -1,8 +1,24 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-06-15T12:21:41.888550+00:00",
+  "fetched_at": "2026-06-15T20:59:03.611617+00:00",
   "versions": [
+    {
+      "version": "149.0.4022.68",
+      "platforms": [
+        "iOS"
+      ],
+      "date": "June 15, 2026",
+      "sections": []
+    },
+    {
+      "version": "149.0.4022.67",
+      "platforms": [
+        "Android"
+      ],
+      "date": "June 15, 2026",
+      "sections": []
+    },
     {
       "version": "149.0.4022.53",
       "platforms": [
@@ -229,40 +245,6 @@
           "body": "[Android]\nImprove user experience during Google enterprise enrollment.\n[Android]\nImprove user experience under Shared Device Mode."
         }
       ]
-    },
-    {
-      "version": "146.0.3856.59",
-      "platforms": [
-        "iOS"
-      ],
-      "date": "March 18, 2026",
-      "sections": [
-        {
-          "heading": "General Updates",
-          "body": "[iOS]\nUpgrade Intune MAM SDK to version\n21.5.0\n[iOS]\nUpgrade Tunnel SDK to version\n1.7.0\n[iOS]\nUpgrade OneAuth SDK to version\n9.1.0"
-        },
-        {
-          "heading": "New Policies",
-          "body": "[iOS]\nSupport new policy\nAllowSurfGame\nto configure whether users can play the Surf game.   Policy documentation:\nMicrosoft Edge Browser Policy Documentation â AllowSurfGame\n[iOS]\nSupport new policy\nAntiParallelOnStartUpEnabled\nto configure prevention of parallel page loading from restored tabs and external-link tabs on startup."
-        },
-        {
-          "heading": "Bug Fixes",
-          "body": "[iOS]\nResolve data leak issue allowing unmanaged files to open under InPrivate mode.\n[iOS]\nResolve data leak issue related to protected file opening in InPrivate mode under Intune MAM.\n[iOS]\nFix issue where opening downloaded PDF files was blocked when Allowed URLs is enabled in Intune App Configuration."
-        },
-        {
-          "heading": "New Enhancements",
-          "body": "[iOS]\nImprove user experience for policies NewTabPage.BrandLogo and NewTabPage.BrandColor."
-        }
-      ]
-    },
-    {
-      "version": "145.0.3800.99",
-      "platforms": [
-        "Android",
-        "iOS"
-      ],
-      "date": "March 9, 2026",
-      "sections": []
     }
   ]
 }
