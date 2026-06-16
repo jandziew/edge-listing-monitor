@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-15T20:58:03.311916+00:00",
+  "fetched_at": "2026-06-16T16:59:07.020942+00:00",
   "name": "Microsoft Edge",
   "version": "149.4022.68",
   "release_date": "2026-06-15T02:09:57Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.7058,
-  "rating_count": 529240,
+  "rating_average": 4.70577,
+  "rating_count": 529341,
   "size_bytes": 488076288,
   "images": {
     "icon": [
@@ -40,6 +40,15 @@
     ]
   },
   "in_app_events": [
+    {
+      "id": "6776081398",
+      "title": "World Cup themes are here",
+      "subtitle": "Cheer for your team. Color your browser.",
+      "detail": "Pick your team and make Edge yours. Wallpapers, colors, and styles to match your squad every time you open Edge.",
+      "start_date": "2026-06-16T16:00:00.000Z",
+      "end_date": "2026-07-16T16:00:00.000Z",
+      "badge": "happening"
+    },
     {
       "id": "6771328904",
       "title": "Make Edge your own!",
