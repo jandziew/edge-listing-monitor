@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-16T16:59:07.020942+00:00",
+  "fetched_at": "2026-06-17T04:21:04.118100+00:00",
   "name": "Microsoft Edge",
   "version": "149.4022.68",
   "release_date": "2026-06-15T02:09:57Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70577,
-  "rating_count": 529341,
+  "rating_average": 4.70566,
+  "rating_count": 530410,
   "size_bytes": 488076288,
   "images": {
     "icon": [
@@ -48,15 +48,6 @@
       "start_date": "2026-06-16T16:00:00.000Z",
       "end_date": "2026-07-16T16:00:00.000Z",
       "badge": "happening"
-    },
-    {
-      "id": "6771328904",
-      "title": "Make Edge your own!",
-      "subtitle": "Your browser, redesigned.",
-      "detail": "Wallpapers and colors, now fully customizable. Open Theme Hub and pick your new look.",
-      "start_date": "2026-05-24T16:00:00.000Z",
-      "end_date": "2026-06-24T16:00:00.000Z",
-      "badge": "available"
     }
   ],
   "store_url": "https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4"
