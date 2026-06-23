@@ -1,7 +1,7 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-06-23T03:48:07.877276+00:00",
+  "fetched_at": "2026-06-23T09:45:13.005439+00:00",
   "versions": [
     {
       "version": "149.0.4022.80",
