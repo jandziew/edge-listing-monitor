@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-06-22T20:51:19.750022+00:00",
+  "fetched_at": "2026-06-23T03:48:07.877276+00:00",
   "versions": [
+    {
+      "version": "149.0.4022.80",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "June 22, 2026",
+      "sections": []
+    },
     {
       "version": "149.0.4022.68",
       "platforms": [
@@ -224,27 +233,6 @@
       ],
       "date": "March 23, 2026",
       "sections": []
-    },
-    {
-      "version": "146.0.3856.62",
-      "platforms": [
-        "Android"
-      ],
-      "date": "March 19, 2026",
-      "sections": [
-        {
-          "heading": "General Updates",
-          "body": "[Android]\nUpgrade OneAuth SDK to version\n9.1.0"
-        },
-        {
-          "heading": "Bug Fixes",
-          "body": "[Android]\nFix issue where policy IncognitoModeAvailability did not work as expected.\n[Android]\nFix issue where file uploads to OneDrive failed under Intune MAM."
-        },
-        {
-          "heading": "New Enhancements",
-          "body": "[Android]\nImprove user experience during Google enterprise enrollment.\n[Android]\nImprove user experience under Shared Device Mode."
-        }
-      ]
     }
   ]
 }
