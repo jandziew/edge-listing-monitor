@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-25T09:26:35.314194+00:00",
+  "fetched_at": "2026-06-25T20:04:02.310328+00:00",
   "name": "Microsoft Edge",
   "version": "149.4022.80",
   "release_date": "2026-06-22T02:15:42Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70533,
-  "rating_count": 535088,
+  "rating_average": 4.70528,
+  "rating_count": 535678,
   "size_bytes": 488059904,
   "images": {
     "icon": [
@@ -39,6 +39,16 @@
       "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/80/be/e3/80bee356-20b9-2038-3e29-ded2baf8ed87/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_07.png/2048x2732bb.jpg"
     ]
   },
-  "in_app_events": [],
+  "in_app_events": [
+    {
+      "id": "6775734420",
+      "title": "Never Miss a Goal",
+      "subtitle": "Follow your team. Get reminders and scores.",
+      "detail": "Pick your team, get kick-off reminders, and stay on top of every big moment.",
+      "start_date": "2026-06-25T16:00:00.000Z",
+      "end_date": "2026-07-21T15:30:00.000Z",
+      "badge": "happening"
+    }
+  ],
   "store_url": "https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4"
 }
