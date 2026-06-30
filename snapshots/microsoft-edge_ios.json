@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-06-29T20:01:17.822535+00:00",
+  "fetched_at": "2026-06-30T20:01:47.032328+00:00",
   "name": "Microsoft Edge",
   "version": "149.4022.96",
   "release_date": "2026-06-29T08:54:51Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70492,
-  "rating_count": 537964,
+  "rating_average": 4.70479,
+  "rating_count": 538347,
   "size_bytes": 488059904,
   "images": {
     "icon": [
@@ -46,6 +46,15 @@
       "subtitle": "Follow your team. Get reminders and scores.",
       "detail": "Pick your team, get kick-off reminders, and stay on top of every big moment.",
       "start_date": "2026-06-25T16:00:00.000Z",
+      "end_date": "2026-07-21T15:30:00.000Z",
+      "badge": "happening"
+    },
+    {
+      "id": "6785806224",
+      "title": "Back Your Team with Themes",
+      "subtitle": "Cheer for your team. Color your browser.",
+      "detail": "Pick your team and make Edge yours. Wallpapers, colors, and styles to match your squad every time you open Edge.",
+      "start_date": "2026-06-30T16:00:00.000Z",
       "end_date": "2026-07-21T15:30:00.000Z",
       "badge": "happening"
     }
