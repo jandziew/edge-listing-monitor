@@ -69,7 +69,7 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">E</div>
                 <div>
                     <h1 class="text-sm font-semibold leading-tight">Edge Listing Monitor</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-06-30 20:01:53</span></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-07-01 04:07:50</span></p>
                 </div>
             </div>
         </div>
@@ -129,8 +129,6 @@
                         Microsoft Edge
                     </span>
                     
-                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">1</span>
-                    
                 </button>
             
                 
@@ -156,7 +154,7 @@
                 class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Alert history
-                <span class="ml-auto text-xs text-slate-500">7</span>
+                <span class="ml-auto text-xs text-slate-500">6</span>
             </button>
             <button @click="view='changelog'; sidebarOpen=false"
                 :class="view==='changelog' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
@@ -168,7 +166,7 @@
 
         <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
             <p>Cron runs every 6h via GitHub Actions.</p>
-            <p>Last run: <span class="font-mono">2026-06-30 20:01:53</span></p>
+            <p>Last run: <span class="font-mono">2026-07-01 04:07:50</span></p>
             <p class="pt-1 mt-1 border-t border-slate-100 dark:border-slate-800/50">
                 Built by <a href="https://www.linkedin.com/in/jandziewonski/" target="_blank" class="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Jan Dziewoński</a>
             </p>
@@ -193,14 +191,10 @@
             
             
             
-                
-                
-                
-            
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active alerts</p>
-                    <p class="mt-2 text-3xl font-bold text-amber-600 dark:text-amber-400">1</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-400">0</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">New releases</p>
@@ -212,7 +206,7 @@
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alerts logged</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">7</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">6</p>
                 </div>
             </div>
 
@@ -222,58 +216,14 @@
             
             <h3 class="text-lg font-semibold mb-3 mt-8">Recent alerts</h3>
             
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center">
+                    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
+                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+                    </div>
+                    <p class="text-slate-700 dark:text-slate-300 font-medium">All clear</p>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">No changes detected since the last run.</p>
+                </div>
             
-                <article class="mb-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
-                    <div class="px-5 py-3 flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800">
-                        <div class="flex items-center gap-3">
-                            
-                            <h4 class="font-semibold">Microsoft Edge</h4>
-                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
-                                IOS
-                            </span>
-                            
-                        </div>
-                        
-                            <a href="https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
-                        
-                    </div>
-
-                    <div class="px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex gap-4 text-xs">
-                        <span class="text-slate-500 dark:text-slate-400">Detected <span class="font-mono text-slate-700 dark:text-slate-300">2026-06-30T20:01:47</span></span>
-                        
-                    </div>
-
-                    <div class="p-5 space-y-5">
-                        
-
-                        
-
-                        
-
-                        
-                            <div>
-                                <h5 class="text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">In-App Events</h5>
-                                <div class="space-y-2">
-                                    
-                                        <div class="border-l-4 border-pink-400 dark:border-pink-600 pl-3 py-1">
-                                            <div class="flex items-center gap-2">
-                                                <p class="font-medium text-sm">Back Your Team with Themes</p>
-                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
-                                                    bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300
-                                                    ">added</span>
-                                            </div>
-                                            <p class="text-sm text-slate-600 dark:text-slate-400">Cheer for your team. Color your browser.</p>
-                                            <p class="text-sm text-slate-700 dark:text-slate-300 mt-1">Pick your team and make Edge yours. Wallpapers, colors, and styles to match your squad every time you open Edge.</p>
-                                            
-                                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1 font-mono">2026-06-30T16:00:00.000Z → 2026-07-21T15:30:00.000Z</p>
-                                            
-                                        </div>
-                                    
-                                </div>
-                            </div>
-                        
-                    </div>
-                </article>
             
         </div>
 
@@ -476,7 +426,7 @@ Some screens are simulated, subject to change.</pre>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1551118)</span></p>
+                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1551305)</span></p>
                                     </div>
                                     <div>
                                         
@@ -748,11 +698,11 @@ Feature availability varies by country and language. Compatibility varies. Check
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Released</p>
-                                        <p class="mt-1 font-mono text-sm">1782777747</p>
+                                        <p class="mt-1 font-mono text-sm">1782851735</p>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48804384)</span></p>
+                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48806126)</span></p>
                                     </div>
                                     <div>
                                         
@@ -896,22 +846,6 @@ Feature availability varies by country and language. Compatibility varies. Check
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                            
-                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
-                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-06-30T20:01:47</td>
-                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">—</td>
-                                    <td class="px-4 py-3 align-top">
-                                        
-                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Microsoft Edge IOS</span>
-                                        
-                                    </td>
-                                    <td class="px-4 py-3 align-top">
-                                        
-                                             · 1 IAE
-                                            
-                                        
-                                    </td>
-                                </tr>
                             
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                     <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:09:35</td>
