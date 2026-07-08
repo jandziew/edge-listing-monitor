@@ -1,7 +1,7 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-07-07T19:58:44.146652+00:00",
+  "fetched_at": "2026-07-08T02:53:02.049012+00:00",
   "versions": [
     {
       "version": "150.0.4078.50",
@@ -10,7 +10,24 @@
         "iOS"
       ],
       "date": "July 6, 2026",
-      "sections": []
+      "sections": [
+        {
+          "heading": "General updates",
+          "body": "[iOS]\nUpgrade Intune SDK to version 21.6.0"
+        },
+        {
+          "heading": "New Policies",
+          "body": "[iOS & Android]\nSupport New Policy of\nExtensionInstallForcelist\nwhich allows to specify a list of extensions that install silently"
+        },
+        {
+          "heading": "Bug fixes",
+          "body": "[iOS]\nFix the issue where the\nManagedFavorites\npolicy does not work in some cases\n[iOS]\nFix the leak issue where tabs could be closed under locked view mode\n[Android]\nFix the issue where PDF print is disabled by Intune protection policies in some cases\n[Android]\nFix the issue where PDF download to OneDrive is blocked when disable the \"Local Storage\" option\n[Android]\nFix the issue where the\nPasswordManagerEnabled\npolicy does not take effect"
+        },
+        {
+          "heading": "New enhancements",
+          "body": "[iOS]\nImprove the user experience of sign in account\n[Android]\nImprove the user experience of scanning QR code feature by using Edge built in Camera\n[Android]\nImprove the user experience of web single sign on\n[iOS & Android]\nImprove the user experience of Copilot Summary feature\n[iOS & Android]\nImprove the user experience of Copilot New Tab Card"
+        }
+      ]
     },
     {
       "version": "149.0.4022.105",
