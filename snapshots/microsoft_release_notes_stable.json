@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-07-13T14:39:19.993157+00:00",
+  "fetched_at": "2026-07-13T19:25:56.077226+00:00",
   "versions": [
+    {
+      "version": "150.0.4078.65",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "July 13, 2026",
+      "sections": []
+    },
     {
       "version": "150.0.4078.58",
       "platforms": [
@@ -244,14 +253,6 @@
           "body": "[iOS]\nSupport to view SSL/TLS certificate information from the\nPageInfo\npanel (Under Experiment)\n[iOS]\nImprove the user experience under incognito mode\n[iOS]\nImprove the user experience of AAD Copilot\n[iOS]\nImprove the user experience of Copilot New Tab Card\n[iOS]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
         }
       ]
-    },
-    {
-      "version": "146.0.3856.102",
-      "platforms": [
-        "iOS"
-      ],
-      "date": "April 7, 2026",
-      "sections": []
     }
   ]
 }
