@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-07-16T13:57:28.536884+00:00",
+  "fetched_at": "2026-07-16T19:14:53.220106+00:00",
   "name": "Google Chrome",
   "version": "151.0.7922.25",
   "release_date": "2026-07-15T16:23:10Z",
@@ -10,8 +10,8 @@
   "seller_name": "Google LLC",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.68762,
-  "rating_count": 3662930,
+  "rating_average": 4.68761,
+  "rating_count": 3662586,
   "size_bytes": 388909056,
   "images": {
     "icon": [
@@ -41,6 +41,16 @@
       "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/e4/1b/ff/e41bffc5-f913-2939-ab79-bfbd135bfeeb/APP_IPAD_PRO_129-8.png/576x768bb.png"
     ]
   },
-  "in_app_events": [],
+  "in_app_events": [
+    {
+      "id": "6791036158",
+      "title": "Try Gemini in Chrome",
+      "subtitle": "Never browse the same way again",
+      "detail": "Get answers, summaries, and insights while you browse with Gemini in Chrome.",
+      "start_date": "2026-07-16T16:00:00.000Z",
+      "end_date": "2026-08-16T16:00:00.000Z",
+      "badge": "available"
+    }
+  ],
   "store_url": "https://apps.apple.com/us/app/google-chrome/id535886823?uo=4"
 }
