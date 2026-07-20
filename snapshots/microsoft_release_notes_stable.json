@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-07-20T14:10:04.348399+00:00",
+  "fetched_at": "2026-07-20T19:45:58.216074+00:00",
   "versions": [
+    {
+      "version": "150.0.4078.81",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "July 20, 2026",
+      "sections": []
+    },
     {
       "version": "150.0.4078.65",
       "platforms": [
@@ -226,31 +235,6 @@
         {
           "heading": "New enhancements",
           "body": "[Android]\nImprove the user experience of AAD Copilot\n[Android]\nImprove the user experience of Copilot New Tab Card\n[Android]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
-        }
-      ]
-    },
-    {
-      "version": "147.0.3912.60",
-      "platforms": [
-        "iOS"
-      ],
-      "date": "April 14, 2026",
-      "sections": [
-        {
-          "heading": "General updates",
-          "body": "[iOS]\nUpgrade Intune MAM SDK to version 21.5.1\n[iOS]\nUpgrade Tunnel SDK to version 1.7.1"
-        },
-        {
-          "heading": "New Policies",
-          "body": "[iOS]\nSupport New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[iOS]\nSupport New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
-        },
-        {
-          "heading": "Bug fixes",
-          "body": "[iOS]\nFix the issue where the exit InPrivate button still show when\nIncognitoModeAvailability\npolicy is set to forced\n[iOS]\nFix the Policy of\nSmartScreenAllowListDomains\nnot work as expected\n[iOS]\nFix the Policy of\nBlockSignIn\nnot work as expected"
-        },
-        {
-          "heading": "New enhancements",
-          "body": "[iOS]\nSupport to view SSL/TLS certificate information from the\nPageInfo\npanel (Under Experiment)\n[iOS]\nImprove the user experience under incognito mode\n[iOS]\nImprove the user experience of AAD Copilot\n[iOS]\nImprove the user experience of Copilot New Tab Card\n[iOS]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
         }
       ]
     }
