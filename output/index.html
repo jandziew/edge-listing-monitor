@@ -69,7 +69,7 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">E</div>
                 <div>
                     <h1 class="text-sm font-semibold leading-tight">Edge Listing Monitor</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-07-19 19:09:33</span></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-07-20 03:25:19</span></p>
                 </div>
             </div>
         </div>
@@ -129,6 +129,8 @@
                         Microsoft Edge
                     </span>
                     
+                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">1</span>
+                    
                 </button>
             
                 
@@ -154,7 +156,7 @@
                 class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Alert history
-                <span class="ml-auto text-xs text-slate-500">6</span>
+                <span class="ml-auto text-xs text-slate-500">7</span>
             </button>
             <button @click="view='changelog'; sidebarOpen=false"
                 :class="view==='changelog' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
@@ -166,7 +168,7 @@
 
         <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
             <p>Cron runs every 6h via GitHub Actions.</p>
-            <p>Last run: <span class="font-mono">2026-07-19 19:09:33</span></p>
+            <p>Last run: <span class="font-mono">2026-07-20 03:25:19</span></p>
             <p class="pt-1 mt-1 border-t border-slate-100 dark:border-slate-800/50">
                 Built by <a href="https://www.linkedin.com/in/jandziewonski/" target="_blank" class="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Jan Dziewoński</a>
             </p>
@@ -191,10 +193,14 @@
             
             
             
+                
+                
+                
+            
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active alerts</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-400">0</p>
+                    <p class="mt-2 text-3xl font-bold text-amber-600 dark:text-amber-400">1</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">New releases</p>
@@ -206,7 +212,7 @@
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alerts logged</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">6</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">7</p>
                 </div>
             </div>
 
@@ -216,14 +222,289 @@
             
             <h3 class="text-lg font-semibold mb-3 mt-8">Recent alerts</h3>
             
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center">
-                    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </div>
-                    <p class="text-slate-700 dark:text-slate-300 font-medium">All clear</p>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">No changes detected since the last run.</p>
-                </div>
             
+                <article class="mb-4 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+                    <div class="px-5 py-3 flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            
+                            <h4 class="font-semibold">Microsoft Edge</h4>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                IOS
+                            </span>
+                            
+                        </div>
+                        
+                            <a href="https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
+                        
+                    </div>
+
+                    <div class="px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex gap-4 text-xs">
+                        <span class="text-slate-500 dark:text-slate-400">Detected <span class="font-mono text-slate-700 dark:text-slate-300">2026-07-20T03:25:13</span></span>
+                        
+                    </div>
+
+                    <div class="p-5 space-y-5">
+                        
+
+                        
+
+                        
+                            <div>
+                                <h5 class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Visual changes</h5>
+                                <div class="space-y-5">
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #0</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Brak istotnej zmiany wizualnej. Obrazy są identyczne pod względem tekstu, kolorów, ikon i układu.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_0_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_0_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_0.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_0.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_0_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_0_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #1</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Wersja nowa całkowicie zmienia przekaz: zamiast ogólnego przedstawienia wielu abstrakcyjnych funkcji Copilot, skupia się na konkretnej demonstracji aplikacji w akcji – podsumowywaniu artykułów. Nagłówek i towarzyszący mu przycisk zostały zaktualizowane, precyzyjniej akcentując kluczową funkcję 'Summarize'. Zmieniono więc strategię prezentacji z szerokiego zakresu możliwości na realistyczne pokazanie jednej, kluczowej funkcji.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_1_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_1_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_1.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_1.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_1_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_1_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #4</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Stara wersja promowała funkcję asystenta głosowego „Talk to Copilot”, ukazując interakcję z przeglądarką i stroną internetową Contoso, z ikoną mikrofonu w nagłówku. Nowa wersja całkowicie zmienia fokus na „Extensions”, wyświetlając ekran zarządzania rozszerzeniami z listą dostępnych dodatków i przyciskami „Get”. Widoczne są nowe elementy interfejsu wewnątrz telefonu związane z zarządzaniem rozszerzeniami, zastępując te dotyczące asystenta głosowego.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_4_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_4_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_4.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_4.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_4_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_4_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #5</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Stara wersja przedstawiała ekran główny aplikacji z funkcją "Journeys", spersonalizowanymi skrótami do innych aplikacji i kartą z treścią. Nowa wersja całkowicie zmienia fokus, prezentując szczegółowy pulpit nawigacyjny "Rewards" z profilem użytkownika, punktami i opcjami ich wykorzystania. Zmienił się tekst nagłówka, ikony (zegar na wstążkę nagród) oraz układ elementów wewnątrz telefonu, odzwierciedlając nową, skoncentrowaną na nagrodach funkcjonalność.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_5_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_5_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_5.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_5.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_5_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_5_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #6</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główna zmiana dotyczy promowanej funkcji: stara wersja prezentowała "Extensions" (rozszerzenia), a nowa skupia się na "Tracking Prevention" (ochrona przed śledzeniem). Przekłada się to na całkowitą zmianę tekstu nagłówka, nazwy przycisku oraz zawartości ekranu telefonu, który teraz przedstawia szczegóły funkcji prywatności z ikoną tarczy i przełącznikiem, zamiast listy rozszerzeń.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_6_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_6_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_6.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_6.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_6_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_6_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #7</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główna zmiana polega na innej prezentowanej funkcjonalności aplikacji: stara wersja promowała system nagród ('Rewards') z jasnym interfejsem, natomiast nowa skupia się na prywatności przeglądania ('Privacy') z ciemnym motywem. Tekst nagłówka i ikona w dymku zostały zmienione, aby odzwierciedlić ten nowy akcent, choć ogólny layout zewnętrznych elementów promocyjnych (tło, styl czcionki, ramka telefonu) pozostał bez zmian.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_7_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_7_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_7.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_7.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_7_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_7_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #8</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Aplikacja zmieniła prezentowaną funkcję z "Tracking Prevention" na "Ad Blocker". Widać to w nowym tytule nagłówka i w aplikacji, zmienionej ikonie (z tarczy na logo ABP) oraz w treści pod przełącznikiem, która teraz oferuje zaawansowane ustawienia zamiast opisu trybu.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_8_before.png" alt="before" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_8_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/microsoft-edge/ios/screenshots_iphone_8.png" alt="after" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_8.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/microsoft-edge/ios/_alerts/screenshots_iphone_8_diff.png" @click="openLightbox('assets/microsoft-edge/ios/_alerts/screenshots_iphone_8_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        
+
+                        
+                    </div>
+                </article>
             
         </div>
 
@@ -367,7 +648,7 @@ Some screens are simulated, subject to change.</pre>
 
                             
                                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-5">
-                                    <h3 class="font-semibold mb-3">Screenshots (17)</h3>
+                                    <h3 class="font-semibold mb-3">Screenshots (16)</h3>
                                     <div class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1">
                                         
                                             <img src="assets/microsoft-edge/ios/screenshots_iphone_0.png" alt="screenshot" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
@@ -387,8 +668,6 @@ Some screens are simulated, subject to change.</pre>
                                             <img src="assets/microsoft-edge/ios/screenshots_iphone_7.png" alt="screenshot" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_7.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
                                         
                                             <img src="assets/microsoft-edge/ios/screenshots_iphone_8.png" alt="screenshot" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_8.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
-                                        
-                                            <img src="assets/microsoft-edge/ios/screenshots_iphone_9.png" alt="screenshot" @click="openLightbox('assets/microsoft-edge/ios/screenshots_iphone_9.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
                                         
                                             <img src="assets/microsoft-edge/ios/screenshots_ipad_0.png" alt="screenshot" @click="openLightbox('assets/microsoft-edge/ios/screenshots_ipad_0.png')" class="ss-thumb h-72 flex-shrink-0 rounded-lg border border-slate-200 dark:border-slate-700">
                                         
@@ -425,7 +704,7 @@ Some screens are simulated, subject to change.</pre>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1561104)</span></p>
+                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1561228)</span></p>
                                     </div>
                                     <div>
                                         
@@ -717,7 +996,7 @@ Feature availability varies by country and language. Compatibility varies. Check
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48902495)</span></p>
+                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48904928)</span></p>
                                     </div>
                                     <div>
                                         
@@ -861,6 +1140,22 @@ Feature availability varies by country and language. Compatibility varies. Check
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                            
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-07-20T03:25:13</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">—</td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Microsoft Edge IOS</span>
+                                        
+                                    </td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                             · 7 visual
+                                            
+                                        
+                                    </td>
+                                </tr>
                             
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                     <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:09:35</td>
