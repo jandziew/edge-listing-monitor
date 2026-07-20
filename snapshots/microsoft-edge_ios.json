@@ -1,7 +1,7 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-07-20T09:18:22.746247+00:00",
+  "fetched_at": "2026-07-20T14:09:58.351281+00:00",
   "name": "Microsoft Edge",
   "version": "150.4078.81",
   "release_date": "2026-07-20T01:55:29Z",
@@ -10,8 +10,8 @@
   "seller_name": "Microsoft Corporation",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.70389,
-  "rating_count": 549022,
+  "rating_average": 4.70387,
+  "rating_count": 548814,
   "size_bytes": 544208896,
   "images": {
     "icon": [
@@ -38,25 +38,6 @@
       "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e3/01/2e/e3012ed4-a3b4-64ec-7001-c10127908232/Microsoft_MicrosoftEdge_iOS_13_en-US_ScreenshotLocalization_07.png/2048x2732bb.jpg"
     ]
   },
-  "in_app_events": [
-    {
-      "id": "6775734420",
-      "title": "Never Miss a Goal",
-      "subtitle": "Follow your team. Get reminders and scores.",
-      "detail": "Pick your team, get kick-off reminders, and stay on top of every big moment.",
-      "start_date": "2026-06-25T16:00:00.000Z",
-      "end_date": "2026-07-21T15:30:00.000Z",
-      "badge": "happening"
-    },
-    {
-      "id": "6785806224",
-      "title": "Back Your Team with Themes",
-      "subtitle": "Cheer for your team. Color your browser.",
-      "detail": "Pick your team and make Edge yours. Wallpapers, colors, and styles to match your squad every time you open Edge.",
-      "start_date": "2026-06-30T16:00:00.000Z",
-      "end_date": "2026-07-21T15:30:00.000Z",
-      "badge": "happening"
-    }
-  ],
+  "in_app_events": [],
   "store_url": "https://apps.apple.com/us/app/microsoft-edge/id1288723196?uo=4"
 }
