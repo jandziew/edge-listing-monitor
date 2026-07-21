@@ -1,21 +1,21 @@
 {
   "platform": "ios",
   "country": "us",
-  "fetched_at": "2026-07-16T19:14:53.220106+00:00",
+  "fetched_at": "2026-07-21T19:26:22.393258+00:00",
   "name": "Google Chrome",
-  "version": "151.0.7922.25",
-  "release_date": "2026-07-15T16:23:10Z",
+  "version": "151.0.7922.43",
+  "release_date": "2026-07-21T16:44:32Z",
   "description": "Chrome helps you do what’s possible on the web. Download the fast, secure browser by Google.\n\nGET THE BEST OF GOOGLE IN CHROME\n\n• SEARCH WITH GOOGLE - Search and get answers on Google fast. Use your voice to search hands-free.\n• GOOGLE LENS - Search what you see on your screen or with your camera.\n• GOOGLE TRANSLATE - Explore the web in 130+ languages. Translate entire sites in one click.\n\nBROWSE WITH BEST-IN-CLASS SECURITY\n\n• ENHANCED PROTECTION MODE - Browse confidently with the highest level of Chrome’s security.\n• SAFETY CHECK - Get peace of mind with proactive safety alerts.\n• GOOGLE PASSWORD MANAGER - Securely generate and save passwords for fast sign-in, and get alerts if your passwords are at risk.\n\nACCESS YOUR CHROME ACROSS DEVICES\n\n• SYNC ACROSS DEVICES - Save your things (like bookmarks, tabs, and passwords) and easily access them when you sign in to Chrome on your phone, computer or tablet.\n• TAB GROUPS - Create tab groups to stay organized across devices.\n• AUTOFILL - Save time typing by autofilling your saved payments, addresses and passwords.\n\nFeature availability varies by country and language. Compatibility varies. Check responses for accuracy.",
   "release_notes": "Thanks for choosing Chrome! This version includes:\n• Stability and performance improvements.",
   "seller_name": "Google LLC",
   "price": 0.0,
   "category": "Utilities",
-  "rating_average": 4.68761,
-  "rating_count": 3662586,
-  "size_bytes": 388909056,
+  "rating_average": 4.68759,
+  "rating_count": 3676788,
+  "size_bytes": 388950016,
   "images": {
     "icon": [
-      "https://is1-ssl.mzstatic.com/image/thumb/Purple221/v4/aa/f3/73/aaf37329-4990-6c49-dfb7-94e1ed785d2f/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/512x512bb.jpg"
+      "https://is1-ssl.mzstatic.com/image/thumb/Purple211/v4/58/80/2c/58802c5d-b492-89d5-62f9-1cd04ea84077/AppIcon-0-0-1x_U007epad-0-0-0-1-0-0-sRGB-85-220.png/512x512bb.jpg"
     ],
     "screenshots_iphone": [
       "https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/e4/7a/c1/e47ac1d5-5591-a730-00aa-400063ce55ee/APP_IPHONE_55-0.png/392x696bb.png",
