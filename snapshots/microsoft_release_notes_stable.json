@@ -1,8 +1,17 @@
 {
   "channel": "stable",
   "url": "https://learn.microsoft.com/en-us/deployedge/microsoft-edge-relnote-mobile-stable-channel",
-  "fetched_at": "2026-07-27T14:39:35.151389+00:00",
+  "fetched_at": "2026-07-27T19:36:58.474968+00:00",
   "versions": [
+    {
+      "version": "150.0.4078.96",
+      "platforms": [
+        "Android",
+        "iOS"
+      ],
+      "date": "July 27, 2026",
+      "sections": []
+    },
     {
       "version": "150.0.4078.81",
       "platforms": [
@@ -216,27 +225,6 @@
       ],
       "date": "April 16, 2026",
       "sections": []
-    },
-    {
-      "version": "147.0.3912.60",
-      "platforms": [
-        "Android"
-      ],
-      "date": "April 15, 2026",
-      "sections": [
-        {
-          "heading": "New Policies",
-          "body": "[Android]\nSupport New Policy of\nDownloadBlockedForFileTypes\nfor allows to specify a list of file type extensions that are blocked from downloading (Policy document\nMicrosoft Edge Browser Policy Documentation DownloadBlockedForFileTypes | Microsoft Learn\n)\n[Android]\nSupport New Policy of\nManagedTopSites\nfor control a list of managed top site shortcuts displayed on the New Tab Page (Policy document\nMicrosoft Edge Browser Policy Documentation ManagedTopSites | Microsoft Learn\n)"
-        },
-        {
-          "heading": "Bug fixes",
-          "body": "[Android]\nFix the file upload to\nOneDrive\nfailing issue under Intune MAM\n[Android]\nFix the issue about file upload from\nOneDrive\nfailing under Intune\n[Android]\nFix the issue about opening attachments in Outlook.com triggers switch to personal account sometimes"
-        },
-        {
-          "heading": "New enhancements",
-          "body": "[Android]\nImprove the user experience of AAD Copilot\n[Android]\nImprove the user experience of Copilot New Tab Card\n[Android]\nImprove the user experience of the Policies of\nNewTabPage.BrandLogo\nand\nNewTabPage.BrandColor"
-        }
-      ]
     }
   ]
 }
