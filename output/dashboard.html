@@ -69,7 +69,7 @@
                 <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold">E</div>
                 <div>
                     <h1 class="text-sm font-semibold leading-tight">Edge Listing Monitor</h1>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-07-29 08:43:38</span></p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-tight">Last update <span class="font-mono">2026-07-29 14:16:26</span></p>
                 </div>
             </div>
         </div>
@@ -143,6 +143,8 @@
                         Google Chrome
                     </span>
                     
+                        <span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300">1</span>
+                    
                 </button>
             
 
@@ -154,7 +156,7 @@
                 class="nav-item w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-left">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 Alert history
-                <span class="ml-auto text-xs text-slate-500">6</span>
+                <span class="ml-auto text-xs text-slate-500">7</span>
             </button>
             <button @click="view='changelog'; sidebarOpen=false"
                 :class="view==='changelog' ? 'bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'"
@@ -166,7 +168,7 @@
 
         <div class="absolute bottom-0 left-0 right-0 p-3 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 space-y-1.5">
             <p>Cron runs every 6h via GitHub Actions.</p>
-            <p>Last run: <span class="font-mono">2026-07-29 08:43:38</span></p>
+            <p>Last run: <span class="font-mono">2026-07-29 14:16:26</span></p>
             <p class="pt-1 mt-1 border-t border-slate-100 dark:border-slate-800/50">
                 Built by <a href="https://www.linkedin.com/in/jandziewonski/" target="_blank" class="font-medium text-slate-700 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400">Jan Dziewoński</a>
             </p>
@@ -191,14 +193,18 @@
             
             
             
+                
+                
+                
+            
             <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active alerts</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-400">0</p>
+                    <p class="mt-2 text-3xl font-bold text-amber-600 dark:text-amber-400">1</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">New releases</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-400">0</p>
+                    <p class="mt-2 text-3xl font-bold text-emerald-600 dark:text-emerald-400">1</p>
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Apps monitored</p>
@@ -206,7 +212,7 @@
                 </div>
                 <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-4">
                     <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Alerts logged</p>
-                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">6</p>
+                    <p class="mt-2 text-3xl font-bold text-slate-700 dark:text-slate-200">7</p>
                 </div>
             </div>
 
@@ -216,14 +222,662 @@
             
             <h3 class="text-lg font-semibold mb-3 mt-8">Recent alerts</h3>
             
-                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 text-center">
-                    <div class="w-12 h-12 mx-auto rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center mb-3">
-                        <svg class="w-6 h-6 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-                    </div>
-                    <p class="text-slate-700 dark:text-slate-300 font-medium">All clear</p>
-                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">No changes detected since the last run.</p>
-                </div>
             
+                <article class="mb-4 bg-white dark:bg-slate-900 rounded-xl border border-emerald-300 dark:border-emerald-800 overflow-hidden">
+                    <div class="px-5 py-3 flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800">
+                        <div class="flex items-center gap-3">
+                            
+                                <span class="text-xs font-bold px-2 py-1 rounded bg-emerald-500 text-white">NEW RELEASE</span>
+                            
+                            <h4 class="font-semibold">Google Chrome</h4>
+                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">
+                                IOS
+                            </span>
+                            
+                                <span class="text-sm text-slate-500 dark:text-slate-400">v151.0.7922.43 → <strong class="text-emerald-700 dark:text-emerald-400">v151.0.7922.57</strong></span>
+                            
+                        </div>
+                        
+                            <a href="https://apps.apple.com/us/app/google-chrome/id535886823?uo=4" target="_blank" class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline">View in store →</a>
+                        
+                    </div>
+
+                    <div class="px-5 py-2 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800 flex gap-4 text-xs">
+                        <span class="text-slate-500 dark:text-slate-400">Detected <span class="font-mono text-slate-700 dark:text-slate-300">2026-07-29T14:16:20</span></span>
+                        
+                            <span class="text-emerald-700 dark:text-emerald-400">Released <span class="font-mono">2026-07-28T17:00:36Z</span></span>
+                        
+                    </div>
+
+                    <div class="p-5 space-y-5">
+                        
+
+                        
+                            <div>
+                                <h5 class="text-sm font-semibold mb-2 text-slate-700 dark:text-slate-300">Text changes</h5>
+                                <div class="space-y-3">
+                                    
+                                        <div>
+                                            <p class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">version</p>
+                                            
+                                                <div class="text-sm">
+                                                    <div class="text-red-700 dark:text-red-400 line-through opacity-70">151.0.7922.43</div>
+                                                    <div class="text-emerald-700 dark:text-emerald-400 mt-1">151.0.7922.57</div>
+                                                </div>
+                                            
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        
+
+                        
+                            <div>
+                                <h5 class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Visual changes</h5>
+                                <div class="space-y-5">
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #0</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> W nowej wersji interfejsu Chrome zauważalne są istotne zmiany: pod paskiem wyszukiwania dodano nowe przyciski "AI Mode" oraz "Incognito", a sam pasek wzbogacono o ikonę Google 'G' po lewej stronie. Dodatkowo, jeden z domyślnych skrótów aplikacji został zmieniony z "Maps" na "Translate".
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_0_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_0_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_0.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_0.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_0_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_0_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #1</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główna zmiana polega na rebrandingu i zmianie prezentowanej funkcji z "Google Lens" na "Gemini". Nagłówek i ikona w niebieskim przycisku zostały zaktualizowane, a zawartość ekranu telefonu przedstawia teraz interakcję z asystentem AI podczas przeglądania strony, zamiast wizualnego wyszukiwania.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_1_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_1_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_1.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_1.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_1_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_1_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #2</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Stara wersja promowała tłumaczenie stron internetowych w Chrome, natomiast nowa skupia się na funkcji wyszukiwania wizualnego Google Lens. Zmieniono całkowicie nagłówek, tekst i ikonę przycisku na „Lens”, a także zastąpiono zawartość ekranu telefonu interfejsem Google Lens zamiast Chrome, prezentując zupełnie inną funkcjonalność.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_2_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_2_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_2.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_2.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_2_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_2_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #3</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Zmienił się prezentowany feature: ze starego autofill (automatycznego wypełniania danych) na nową funkcję tłumaczenia stron internetowych. Widać to w tekście i ikonie na górnej niebieskiej etykiecie oraz w zawartości ekranu telefonu, która zamiast formularza wysyłki pokazuje tłumaczoną stronę. Nowa wersja ukazuje również interfejs przeglądarki Chrome na dole ekranu telefonu, co potwierdza kontekst aplikacji.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_3_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_3_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_3.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_3.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_3_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_3_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #4</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Nowy screenshot znacząco zmienia prezentowaną funkcję aplikacji, przechodząc od zarządzania kartami przeglądarki do autouzupełniania haseł i danych płatniczych. Zmieniono nagłówek promocyjny oraz ikonę w niebieskim polu (z "tabs" na "Autofill" z ikoną zaznaczenia). Zawartość ekranu telefonu przedstawia teraz wypełniony formularz zamiast otwartych zakładek, co wizualnie ilustruje nową funkcję.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_4_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_4_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_4.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_4.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_4_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_4_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #5</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Nowy zrzut ekranu znacząco zmienił swój przekaz i układ wizualny. Stara wersja podkreślała dostęp do Chrome na wielu urządzeniach, pokazując telefon i tablet z ekranem startowym/pobieraniem i ikoną urządzeń. Nowa skupia się na zarządzaniu zakładkami, prezentując szczegółowy widok otwartych kart w siatce na jednym telefonie oraz zmieniony tekst i ikonę w niebieskim dymku.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_5_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_5_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_5.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_5.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_5_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_5_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #6</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> (brak opisu AI)
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_6_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_6_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_6.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_6.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_6_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_6_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #7</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główny przekaz marketingowy zmienił się z „Security” na „Incognito”, co widoczne jest w tekście nagłówka oraz dodaniu ikony kapelusza do nowego przycisku. Nowy zrzut ekranu przedstawia tryb incognito w ciemnym motywie z dużą ikoną i rozbudowanym opisem, podczas gdy stary pokazywał jasny ekran „Kontroli Bezpieczeństwa” z listą opcji. Całkowicie zmieniono prezentowaną funkcjonalność i estetykę wizualną aplikacji.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_7_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_7_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_7.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_7.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_7_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_7_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #8</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> (brak opisu AI)
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_8_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_8_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_8.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_8.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_8_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_8_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_iphone #9</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Te dwa screenshoty przedstawiają dwie różne funkcje tej samej aplikacji (ustawienie domyślnej przeglądarki vs. zarządzanie zakładkami), a nie starą i nową wersję tego samego ekranu interfejsu. W związku z tym nie można ich porównać pod kątem ewolucji wizualnej konkretnych elementów.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_9_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_9_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_iphone_9.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_iphone_9.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_iphone_9_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_iphone_9_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #1</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główną zmianą jest prezentowana funkcjonalność: stara wersja promowała automatyczne wypełnianie haseł i płatności ("Autofill"), natomiast nowa skupia się na wyszukiwaniu wizualnym za pomocą Google Lens. W związku z tym zmieniono nagłówek, ikonę w niebieskim "chipie" (z symbolu klucza na ikonę Lens) oraz całą zawartość wyświetlaną na ekranie iPada, by odzwierciedlić nową funkcję.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_1_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_1_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_1.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_1.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_1_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_1_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #3</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Nowa wersja całkowicie zmieniła komunikat marketingowy z zarządzania zakładkami na autofill haseł i płatności, co widać po zmienionym tekście i ikonie tarczy (zamiast wielu kwadratów). Zrzut ekranu w tablecie prezentuje inną funkcjonalność – formularz z automatycznie wypełnionymi danymi zamiast widoku zarządzania zakładkami.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_3_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_3_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_3.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_3.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_3_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_3_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #4</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Wersja nowa znacząco zmienia fokus z dostępu do Chrome na wielu urządzeniach na zarządzanie kartami, co widać po zmienionym nagłówku i ikonie. Zamiast widoku stron internetowych na kilku urządzeniach, nowa grafika prezentuje interfejs siatki kart w ciemnym motywie, wprowadzając nowe elementy UI do zarządzania otwartymi stronami.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_4_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_4_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_4.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_4.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_4_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_4_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #5</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Nowa wersja znacznie zmienia komunikat marketingowy z "Incognito" na "dostęp na wielu urządzeniach". Zamiast jednego ciemnego ekranu Incognito na iPadzie, nowa grafika prezentuje dynamiczną kompozycję z kilku urządzeń (iPad, iPhone'y) pokazujących kolorowe strony Chrome i Google, podkreślając ekosystem i uniwersalność przeglądarki. Zmieniono całkowicie layout i przedstawiane funkcje.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_5_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_5_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_5.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_5.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_5_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_5_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #6</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Główna zmiana polega na całkowitej zmianie tematu i treści: stara wersja promowała „Security” z okienkiem „Safety Check” na jasnym tle, podczas gdy nowa skupia się na trybie „Incognito” prezentowanym na ciemnym tle. Zmieniono nagłówek, ikonę na górze oraz całą zawartość ekranu i jego kolorystykę, prezentując inną funkcję przeglądarki. Dodatkowo, w nowej wersji pasek adresu jest bardziej rozbudowany.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_6_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_6_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_6.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_6.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_6_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_6_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #7</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> Nowa wersja całkowicie zmieniła prezentowaną funkcjonalność aplikacji – zamiast zarządzania zakładkami (Mobile Bookmarks) prezentuje ekran z funkcją bezpieczeństwa (Safety Check). Zmienił się także tekst nagłówka nad zrzutem ekranu, z 'bookmarks' na 'Security', odzwierciedlając nową treść. Ogólny układ i styl wizualny (kolory, typografia) pozostały jednak niezmienione.
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_7_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_7_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_7.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_7.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_7_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_7_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                        <div>
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <p class="text-sm font-medium">screenshots_ipad #8</p>
+                                                <span class="text-xs font-semibold px-1.5 py-0.5 rounded
+                                                    bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300
+                                                    ">changed</span>
+                                            </div>
+                                            
+                                                <div class="mb-3 p-3 rounded-md bg-violet-50 dark:bg-violet-950/40 border border-violet-100 dark:border-violet-900 text-sm text-violet-900 dark:text-violet-200">
+                                                    <span class="font-semibold">AI:</span> (brak opisu AI)
+                                                </div>
+                                            
+                                            
+                                                <div class="grid grid-cols-2 gap-3">
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">Before</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_8_before.png" alt="before" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_8_before.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                    <div>
+                                                        <p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase mb-1">After</p>
+                                                        <img src="assets/google-chrome/ios/screenshots_ipad_8.png" alt="after" @click="openLightbox('assets/google-chrome/ios/screenshots_ipad_8.png')" class="ss-thumb w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </div>
+                                                </div>
+                                                
+                                                    <details class="mt-2">
+                                                        <summary class="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200">
+                                                            <svg class="chevron w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M6 4l8 6-8 6V4z"/></svg>
+                                                            Side-by-side comparison
+                                                        </summary>
+                                                        <img src="assets/google-chrome/ios/_alerts/screenshots_ipad_8_diff.png" @click="openLightbox('assets/google-chrome/ios/_alerts/screenshots_ipad_8_diff.png')" class="ss-thumb mt-2 max-w-full rounded border border-slate-200 dark:border-slate-700">
+                                                    </details>
+                                                
+                                            
+                                        </div>
+                                    
+                                </div>
+                            </div>
+                        
+
+                        
+                    </div>
+                </article>
             
         </div>
 
@@ -274,7 +928,7 @@
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.70 ★ <span class="text-xs font-normal text-slate-500">(554210)</span></p>
+                                        <p class="mt-1 font-semibold">4.70 ★ <span class="text-xs font-normal text-slate-500">(553793)</span></p>
                                     </div>
                                     <div>
                                         
@@ -396,7 +1050,7 @@ Some screens are simulated, subject to change.</pre>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1566082)</span></p>
+                                        <p class="mt-1 font-semibold">4.67 ★ <span class="text-xs font-normal text-slate-500">(1566216)</span></p>
                                     </div>
                                     <div>
                                         
@@ -545,15 +1199,15 @@ Some screens are simulated, subject to change.</pre>
                                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Version</p>
-                                        <p class="mt-1 font-mono font-semibold">151.0.7922.43</p>
+                                        <p class="mt-1 font-mono font-semibold">151.0.7922.57</p>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Released</p>
-                                        <p class="mt-1 font-mono text-sm">2026-07-21T16:44:32Z</p>
+                                        <p class="mt-1 font-mono text-sm">2026-07-28T17:00:36Z</p>
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.69 ★ <span class="text-xs font-normal text-slate-500">(3696256)</span></p>
+                                        <p class="mt-1 font-semibold">4.69 ★ <span class="text-xs font-normal text-slate-500">(3698656)</span></p>
                                     </div>
                                     <div>
                                         
@@ -688,7 +1342,7 @@ Feature availability varies by country and language. Compatibility varies. Check
                                     </div>
                                     <div>
                                         <p class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Rating</p>
-                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48962358)</span></p>
+                                        <p class="mt-1 font-semibold">4.13 ★ <span class="text-xs font-normal text-slate-500">(48964266)</span></p>
                                     </div>
                                     <div>
                                         
@@ -832,6 +1486,21 @@ Feature availability varies by country and language. Compatibility varies. Check
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                            
+                                <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-07-29T14:16:20</td>
+                                    <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top text-emerald-700 dark:text-emerald-400">2026-07-28T17:00:36Z</td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">Google Chrome IOS</span>
+                                        
+                                    </td>
+                                    <td class="px-4 py-3 align-top">
+                                        
+                                            <strong class="text-emerald-700 dark:text-emerald-400">NEW RELEASE</strong> v151.0.7922.43 → v151.0.7922.57
+                                        
+                                    </td>
+                                </tr>
                             
                                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/50">
                                     <td class="px-4 py-3 font-mono text-xs whitespace-nowrap align-top">2026-05-18T23:09:35</td>
